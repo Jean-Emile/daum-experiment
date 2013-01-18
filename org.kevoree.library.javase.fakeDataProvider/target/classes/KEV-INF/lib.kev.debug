@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kevoree:ContainerRoot xmlns:kevoree="http://kevoree/1.0" xmlns:xsi="http://wwww.w3.org/2001/XMLSchema-instance" xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xsi:type="kevoree:ContainerRoot">
+<typeDefinitions xsi:type="kevoree:ComponentType" name="TrustManagerMover" factoryBean="org.kevoree.library.javase.trustStuff.TrustManagerMoverFactory" bean="org.kevoree.library.javase.trustStuff.TrustManagerMover" startMethod="start" stopMethod="stop" updateMethod="update" deployUnits="//@deployUnits.0">
+<dictionaryType>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="refreshSpeed" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="5000" attribute="//@typeDefinitions.0/@dictionaryType/@attributes.0">
+</defaultValues>
+</dictionaryType>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="ComputerDataProvider" factoryBean="org.kevoree.library.javase.fakeDataProvider.ComputerDataProviderFactory" bean="org.kevoree.library.javase.fakeDataProvider.ComputerDataProvider" startMethod="start" stopMethod="stop" updateMethod="update" deployUnits="//@deployUnits.0">
+<dictionaryType>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="refresh_speed" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="2000" attribute="//@typeDefinitions.1/@dictionaryType/@attributes.0">
+</defaultValues>
+</dictionaryType>
+<required xsi:type="kevoree:PortTypeRef" name="ram" optional="true" noDependency="true" ref="//@typeDefinitions.10">
+</required>
+<provided xsi:type="kevoree:PortTypeRef" name="cpu" optional="false" noDependency="false" ref="//@typeDefinitions.5">
+<mappings xsi:type="kevoree:PortTypeMapping" beanMethodName="getCpu" serviceMethodName="getCpu">
+</mappings>
+<mappings xsi:type="kevoree:PortTypeMapping" beanMethodName="getCpu" serviceMethodName="getCpu">
+</mappings>
+</provided>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="FakeReasoner" factoryBean="org.kevoree.library.FakeReasonerFactory" bean="org.kevoree.library.FakeReasoner" startMethod="start" stopMethod="stop" deployUnits="//@deployUnits.0">
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="ClientHW" factoryBean="org.kevoree.library.javase.fakeDataProvider.ClientHWFactory" bean="org.kevoree.library.javase.fakeDataProvider.ClientHW" startMethod="start" stopMethod="stop" deployUnits="//@deployUnits.0">
+<required xsi:type="kevoree:PortTypeRef" name="cpu" optional="true" noDependency="false" ref="//@typeDefinitions.5">
+</required>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="FakeReasoner2" factoryBean="org.kevoree.library.javase.fakeDataProvider.FakeReasoner2Factory" bean="org.kevoree.library.javase.fakeDataProvider.FakeReasoner2" startMethod="start" stopMethod="stop" deployUnits="//@deployUnits.0">
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ServicePortType" name="org.kevoree.library.javase.fakeDataProvider.Ihardware" synchrone="false">
+<operations xsi:type="kevoree:Operation" name="getCpu" returnType="//@dataTypes.0">
+</operations>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:NodeType" name="JavaSENode">
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="TrustManager" factoryBean="org.kevoree.library.javase.trustStuff.TrustManagerFactory" bean="org.kevoree.library.javase.trustStuff.TrustManager" startMethod="start" stopMethod="stop" updateMethod="update" deployUnits="//@deployUnits.0">
+<dictionaryType>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="refreshSpeed" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="5000" attribute="//@typeDefinitions.7/@dictionaryType/@attributes.0">
+</defaultValues>
+</dictionaryType>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="FakeDataProvider" factoryBean="org.kevoree.library.javase.fakeDataProvider.FakeDataProviderFactory" bean="org.kevoree.library.javase.fakeDataProvider.FakeDataProvider" startMethod="start" stopMethod="stop" updateMethod="update" deployUnits="//@deployUnits.0">
+<dictionaryType>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="range_min" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="refresh_speed" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="range_max" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="2000" attribute="//@typeDefinitions.8/@dictionaryType/@attributes.1">
+</defaultValues>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="0" attribute="//@typeDefinitions.8/@dictionaryType/@attributes.0">
+</defaultValues>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="50" attribute="//@typeDefinitions.8/@dictionaryType/@attributes.2">
+</defaultValues>
+</dictionaryType>
+<required xsi:type="kevoree:PortTypeRef" name="out" optional="true" noDependency="true" ref="//@typeDefinitions.10">
+</required>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:ComponentType" name="FakeTrustServer" factoryBean="org.kevoree.library.javase.trustStuff.FakeTrustServerFactory" bean="org.kevoree.library.javase.trustStuff.FakeTrustServer" startMethod="start" stopMethod="stop" updateMethod="update" deployUnits="//@deployUnits.0">
+<dictionaryType>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="maxTrust" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="trustValue" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="minTrust" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<attributes xsi:type="kevoree:DictionaryAttribute" name="refreshSpeed" optional="true" state="false" fragmentDependant="false">
+</attributes>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="5000" attribute="//@typeDefinitions.9/@dictionaryType/@attributes.3">
+</defaultValues>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="0.0" attribute="//@typeDefinitions.9/@dictionaryType/@attributes.2">
+</defaultValues>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="1.0" attribute="//@typeDefinitions.9/@dictionaryType/@attributes.0">
+</defaultValues>
+<defaultValues xsi:type="kevoree:DictionaryValue" value="0.5" attribute="//@typeDefinitions.9/@dictionaryType/@attributes.1">
+</defaultValues>
+</dictionaryType>
+</typeDefinitions>
+<typeDefinitions xsi:type="kevoree:MessagePortType" name="org.kevoree.framework.MessagePort" synchrone="false">
+</typeDefinitions>
+<repositories xsi:type="kevoree:Repository" url="http://repo1.maven.org/maven2">
+</repositories>
+<repositories xsi:type="kevoree:Repository" url="http://maven.kevoree.org/release">
+</repositories>
+<repositories xsi:type="kevoree:Repository" url="http://maven.kevoree.org/snapshots">
+</repositories>
+<dataTypes xsi:type="kevoree:TypedElement" name="java.lang.Object">
+</dataTypes>
+<libraries xsi:type="kevoree:TypeLibrary" name="JavaSE" subTypes="//@typeDefinitions.0 //@typeDefinitions.1 //@typeDefinitions.2 //@typeDefinitions.3 //@typeDefinitions.4 //@typeDefinitions.7 //@typeDefinitions.8 //@typeDefinitions.9">
+</libraries>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.library.javase.fakeDataProvider" unitName="org.kevoree.library.javase.fakeDataProvider" version="1.0" hashcode="201301181449012" type="jar" requiredLibs="//@deployUnits.1 //@deployUnits.2 //@deployUnits.3 //@deployUnits.4 //@deployUnits.5 //@deployUnits.6 //@deployUnits.7 //@deployUnits.8 //@deployUnits.9 //@deployUnits.10" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.tools" unitName="org.kevoree.tools.javase.framework" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.framework" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.api" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.model" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.model.context" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.adaptation.model" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree" unitName="org.kevoree.kcl" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.scala-lang" unitName="scala-library" version="2.9.2" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.slf4j" unitName="slf4j-api" version="1.6.4" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.tools" unitName="org.kevoree.tools.annotation.api" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.6">
+</deployUnits>
+</kevoree:ContainerRoot>
