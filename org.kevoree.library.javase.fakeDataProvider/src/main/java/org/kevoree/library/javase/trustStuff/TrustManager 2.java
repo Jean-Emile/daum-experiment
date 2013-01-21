@@ -157,6 +157,7 @@ public class TrustManager extends AbstractComponentType implements Runnable {
         }
     }
 
+    //This method retrieves the node where a component instance passed as argument is running
     private ContainerNode retrieveExecutingOnNode(ComponentInstance component) {
 
         ContainerNode nodeRes = null;
@@ -174,7 +175,9 @@ public class TrustManager extends AbstractComponentType implements Runnable {
 
     }
 
-
+    // This method returns the name of the instance of a channel that is being used by some of the required ports of any
+    // component instance. It takes as an argument the name of the type of the component instance.
+    //NOTE: this method has lots of limitations... use it wisely.
     private String retrieveChannel(String s) {
 
         String channel="";
@@ -197,6 +200,8 @@ public class TrustManager extends AbstractComponentType implements Runnable {
         return channel;
     }
 
+    // This method returns the component instance of type componentType that is using the cannel instance of name channel.
+    //It assumes that there will be only one component instance using that channel.
     private ComponentInstance retrieveInstanceUsingChannel(String componentType, String channel) {
 
         boolean usedByComponent = false;

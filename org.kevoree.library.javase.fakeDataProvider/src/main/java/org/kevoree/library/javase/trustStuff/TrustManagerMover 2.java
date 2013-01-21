@@ -118,7 +118,8 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
         }
     }
 
-    //Given a componentType, it returns the channel instance it is using (assumes using only one channel instance)
+    //Given a componentType, it returns the channel instance it is using (assumes using only one channel instance through
+    //a required port)
     private Channel retrieveChannelInstance(String s) {
 
         Channel channel = null;
@@ -142,6 +143,7 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
         return channel;
     }
 
+    //This method retrieves the first found component instance of type componentType
     private ComponentInstance retrieveInstance(String componentType) {
 
         ContainerRoot root = getModelService().getLastModel();
@@ -159,6 +161,7 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
 
     }
 
+    // This method retrieves the node where at least one component instance of type componentType is running
     private ContainerNode executingComponentInstance(String componentType) {
 
         ContainerRoot root = getModelService().getLastModel();
