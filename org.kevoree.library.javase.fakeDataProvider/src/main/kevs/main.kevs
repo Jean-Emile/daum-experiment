@@ -44,7 +44,7 @@ addNode node2:JavaSENode
 updateDictionary node2{logLevel="INFO",coreLogLevel="WARN"}
  {
   addComponent FakeTrust154@node1 : FakeTrustServer {maxTrust='1.0',refreshSpeed='15000',minTrust='0.0',trustValue='0.5'}
-updateDictionary FakeTrust154@node1 
+updateDictionary FakeTrust154@node1
 }
 
  {
@@ -54,8 +54,8 @@ addChannel NioChanne594 : NioChannel {port='9002'}
 bind KTinyWebS453.response@node0 => NioChanne594
 bind KTinyWebS453.handler@node0 => NioChanne594
 updateDictionary NioChanne594 {port='9000'}@node0,{port='9002'}@node2
-updateDictionary KTinyWebS453@node0 
-updateDictionary TrustMana890@node0 
+updateDictionary KTinyWebS453@node0
+updateDictionary TrustMana890@node0
 }
 
  {
@@ -71,12 +71,12 @@ bind webServer.response@editor_node => responseChannel
 bind iaasPage.content@editor_node => responseChannel
 bind iaasManager.submit@editor_node => iaasDelegateChannel
 bind iaasPage.delegate@editor_node => iaasDelegateChannel
-updateDictionary requestChannel 
-updateDictionary responseChannel 
-updateDictionary iaasDelegateChannel 
-updateDictionary iaasPage@editor_node 
-updateDictionary iaasManager@editor_node 
-updateDictionary webServer@editor_node 
+updateDictionary requestChannel
+updateDictionary responseChannel
+updateDictionary iaasDelegateChannel
+updateDictionary iaasPage@editor_node
+updateDictionary iaasManager@editor_node
+updateDictionary webServer@editor_node
 }
 
 addChild node1@editor_node
@@ -89,8 +89,8 @@ addChannel NioChanne594 : NioChannel {port='9002'}
 bind HelloWorl981.content@node2 => NioChanne594
 bind HelloWorl981.request@node2 => NioChanne594
 updateDictionary NioChanne594 {port='9000'}@node0,{port='9002'}@node2
-updateDictionary FakeTrust302@node2 
-updateDictionary HelloWorl981@node2 
+updateDictionary FakeTrust302@node2
+updateDictionary HelloWorl981@node2
 }
 
 addGroup sync:BasicGossiperGroup

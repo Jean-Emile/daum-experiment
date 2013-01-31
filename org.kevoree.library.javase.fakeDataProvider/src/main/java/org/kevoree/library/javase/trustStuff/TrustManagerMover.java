@@ -9,6 +9,7 @@ import org.kevoree.api.service.core.script.KevScriptEngine;
 import org.kevoree.api.service.core.script.KevScriptEngineException;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.KevoreePropertyHelper;
+import scala.Option;
 
 import java.io.IOException;
 
@@ -50,6 +51,22 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
         refreshSpeed = Integer.parseInt(getDictionary().get("refreshSpeed").toString());
     }
 
+
+    public int parsePortNumber (String nodeName) {
+        Option<Channel> channelOption = getModelService().getLastModel().findByQuery("hubs[" + getName() + "]", Channel.class);
+        int port = 8000;
+        if (channelOption.isDefined()) {
+            Option<String> portOption = KevoreePropertyHelper.getProperty(channelOption.get(), "port", true, nodeName);
+            if (portOption.isDefined()) {
+                try {
+                    port = Integer.parseInt(portOption.get());
+                } catch (NumberFormatException e) {
+        e.printStackTrace();
+                }
+            }
+        }
+        return port;
+    }
     @Override
     public void run() {
         while (alive) {
@@ -92,6 +109,12 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
 
                 engine.addVariable("componentInstance", instanceName); //Assumes just one instance
 
+
+
+
+                // TODO FIX parsePortNumber
+                //you cannot take to postulate that ports will always start with 9000
+                // it will only work with your assembly of the mode
                 engine.addVariable("portNumberTrustManager", String.valueOf(9000 + Integer.parseInt(getNodeName().substring(getNodeName().length()-1))));
                 engine.addVariable("portNumber1", String.valueOf(9000 + Integer.parseInt(currentNodeOfComponent.getName().substring(currentNodeOfComponent.getName().length()-1))));
                 engine.addVariable("portNumber2", String.valueOf(9000 + Integer.parseInt(nodeChosen.getName().substring(nodeChosen.getName().length()-1))));
