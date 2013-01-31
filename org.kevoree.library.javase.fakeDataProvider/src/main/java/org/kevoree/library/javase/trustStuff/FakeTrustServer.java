@@ -1,6 +1,11 @@
 package org.kevoree.library.javase.trustStuff;
 
+import org.kevoree.ComponentInstance;
+import org.kevoree.ContainerNode;
+import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
+import org.kevoree.api.service.core.script.KevScriptEngine;
+import org.kevoree.api.service.core.script.KevScriptEngineException;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
 
@@ -16,10 +21,10 @@ import java.util.HashMap;
  */
 @ComponentType
 @DictionaryType({
-    @DictionaryAttribute(name="refreshSpeed", defaultValue ="5000", optional=true),
-    @DictionaryAttribute(name="minTrust", defaultValue="0.0", optional=true),
-    @DictionaryAttribute(name="maxTrust", defaultValue="1.0", optional=true),
-    @DictionaryAttribute(name="trustValue", defaultValue="0.5", optional=true)
+        @DictionaryAttribute(name="refreshSpeed", defaultValue ="5000", optional=true),
+        @DictionaryAttribute(name="minTrust", defaultValue="0.0", optional=true),
+        @DictionaryAttribute(name="maxTrust", defaultValue="1.0", optional=true),
+        @DictionaryAttribute(name="trustValue", defaultValue="0.5", optional=true)
 })
 @Library(name = "JavaSE")
 public class FakeTrustServer extends AbstractComponentType implements Runnable {
@@ -34,7 +39,6 @@ public class FakeTrustServer extends AbstractComponentType implements Runnable {
         updateTrustInfo();
         t = new Thread(this);
         alive = true;
-        System.out.println("HELLOOOO!!");
         t.start();
     }
 
@@ -47,7 +51,20 @@ public class FakeTrustServer extends AbstractComponentType implements Runnable {
 
     @Update
     public void update() {
-      updateTrustInfo();
+        updateTrustInfo();
+    }
+
+    private ComponentInstance retrieveInstance(String nodename,String componentType)
+    {
+        ContainerRoot root = getModelService().getLastModel();
+        ComponentInstance res = null;
+        ContainerNode node = root.findByQuery("nodes["+nodename+"]",ContainerNode.class).get();
+        for(ComponentInstance instance :     node.getComponentsForJ()){
+            if(instance.getTypeDefinition().getName().equals(componentType)){
+                return instance;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -55,13 +72,27 @@ public class FakeTrustServer extends AbstractComponentType implements Runnable {
         java.util.Random rand = new java.util.Random();
         while(alive) {
             float randValue = minTrust + rand.nextFloat() * (maxTrust-minTrust);
-            getDictionary().put("trustValue", String.valueOf(randValue));
+
+
+            ContainerRoot model = getModelService().getLastModel();
+
+            KevScriptEngine engine=    getKevScriptEngineFactory().createKevScriptEngine();
+
+            ComponentInstance instance =  retrieveInstance(getNodeName(),"FakeTrustServer");
+            engine.append("updateDictionary "+instance.getName()+"@"+getNodeName()+"  {maxTrust='"+getDictionary().get("maxTrust")+"',refreshSpeed='"+getDictionary().get("refreshSpeed")+"',minTrust='0.0',trustValue='"+randValue+"'}");
+
+            try {
+                engine.interpretDeploy();
+            } catch (KevScriptEngineException e) {
+                e.printStackTrace();
+            }
+
             System.out.println("New trust value: " + String.valueOf(randValue));
-            getModelService().updateModel(getModelService().getLastModel());
+
             try {
                 Thread.sleep(refreshSpeed);
             } catch (InterruptedException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

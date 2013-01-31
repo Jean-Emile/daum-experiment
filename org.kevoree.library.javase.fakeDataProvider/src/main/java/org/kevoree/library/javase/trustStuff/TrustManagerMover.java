@@ -66,6 +66,7 @@ public class TrustManagerMover extends AbstractComponentType implements Runnable
                 for (ComponentInstance component:node.getComponentsForJ()) {
                     if (component.getTypeDefinition().getName().equals("FakeTrustServer")) {
                         nodeTrust =  Float.parseFloat(KevoreePropertyHelper.getProperty(component, "trustValue", false, node.getName()).get());
+                        System.out.println(node.getName()+" trust="+nodeTrust);
                         if (nodeTrust >= maxTrust) {
                             nodeChosen = node;
                             maxTrust = nodeTrust;

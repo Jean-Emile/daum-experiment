@@ -88,7 +88,7 @@
 </typeDefinitions>
 <repositories xsi:type="kevoree:Repository" url="http://maven.kevoree.org/release">
 </repositories>
-<repositories xsi:type="kevoree:Repository" url="http://repo1.maven.org/maven2">
+<repositories xsi:type="kevoree:Repository" url="http://repo.maven.apache.org/maven2">
 </repositories>
 <repositories xsi:type="kevoree:Repository" url="http://maven.kevoree.org/snapshots">
 </repositories>
@@ -96,7 +96,7 @@
 </dataTypes>
 <libraries xsi:type="kevoree:TypeLibrary" name="JavaSE" subTypes="//@typeDefinitions.0 //@typeDefinitions.1 //@typeDefinitions.2 //@typeDefinitions.3 //@typeDefinitions.4 //@typeDefinitions.7 //@typeDefinitions.8 //@typeDefinitions.9">
 </libraries>
-<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.library.javase.fakeDataProvider" unitName="org.kevoree.library.javase.fakeDataProvider" version="1.0" hashcode="201301181449012" type="jar" requiredLibs="//@deployUnits.1 //@deployUnits.2 //@deployUnits.3 //@deployUnits.4 //@deployUnits.5 //@deployUnits.6 //@deployUnits.7 //@deployUnits.8 //@deployUnits.9 //@deployUnits.10" targetNodeType="//@typeDefinitions.5">
+<deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.library.javase.fakeDataProvider" unitName="org.kevoree.library.javase.fakeDataProvider" version="1.0" hashcode="201301311209334" type="jar" requiredLibs="//@deployUnits.1 //@deployUnits.2 //@deployUnits.3 //@deployUnits.4 //@deployUnits.5 //@deployUnits.6 //@deployUnits.7 //@deployUnits.8 //@deployUnits.9 //@deployUnits.10" targetNodeType="//@typeDefinitions.5">
 </deployUnits>
 <deployUnits xsi:type="kevoree:DeployUnit" groupName="org.kevoree.tools" unitName="org.kevoree.tools.javase.framework" version="1.9.0-SNAPSHOT" type="jar" targetNodeType="//@typeDefinitions.5">
 </deployUnits>
