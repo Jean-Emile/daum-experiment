@@ -1,89 +1,106 @@
  {
-addRepo "http://repo1.maven.org/maven2"
 addRepo "http://maven.kevoree.org/release"
-addRepo "http://anteros.ifsic.univ-rennes1.fr:8081/archiva/repository/snapshots"
+addRepo "http://repo1.maven.org/maven2"
 addRepo "http://repo.maven.apache.org/maven2"
+addRepo "http://anteros.ifsic.univ-rennes1.fr:8081/archiva/repository/snapshots"
 addRepo "http://maven.kevoree.org/daum/release"
 addRepo "http://maven.kevoree.org/archiva/repository/snapshots/"
-addRepo "http://repo.typesafe.com/typesafe/releases/"
 addRepo "http://maven.kevoree.org/snapshots"
+addRepo "http://repo.typesafe.com/typesafe/releases/"
 addRepo "http://maven.kevoree.org/daum/snapshots"
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.p2pSock/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.gossiperNetty/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.sky/org.kevoree.library.sky.provider.web/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel.atom/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.nanohttpAutoDiscovery/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/{kevoree.version}'
-merge 'mvn:org.daum.library.javase/org.daum.library.javase.jtouchDB/1.3-SNAPSHOT'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.swingUI/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.tjws/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.nanohttp/{kevoree.version}'
-merge 'mvn:org.kevoree.library.javase.fakeDataProvider/org.kevoree.library.javase.fakeDataProvider/1.0'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.nioChannels/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.api/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.spray/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.authentication/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.fakeDomo/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.mavenCache/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.basicGossiper/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel/{kevoree.version}'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.hazelcast/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.nioChannels/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.swingUI/{kevoree.version}'
+merge 'mvn:org.daum.library.javase/org.daum.library.javase.jtouchDB/1.3-SNAPSHOT'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.gossiperNetty/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.spray/{kevoree.version}'
+merge 'mvn:org.kevoree.library.javase.fakeDataProvider/org.kevoree.library.javase.fakeDataProvider/1.0'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.sky/org.kevoree.library.sky.minicloud/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.basicGossiper/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.nanohttp/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.sky/org.kevoree.library.sky.api/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.sky/org.kevoree.library.sky.provider/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.api/{kevoree.version}'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.grapher/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.hazelcast/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.webserver.tjws/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.p2pSock/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.mavenCache/{kevoree.version}'
 addNode node1:JavaSENode
-updateDictionary node1{coreLogLevel="WARN",logLevel="INFO"}
+updateDictionary node1{logLevel="INFO",coreLogLevel="WARN"}
 addNode node0:JavaSENode
-updateDictionary node0{coreLogLevel="WARN",logLevel="INFO"}
+updateDictionary node0{logLevel="INFO",coreLogLevel="WARN"}
+addNode editor_node:MiniCloudNode
+updateDictionary editor_node{logLevel="INFO"}
 addNode node2:JavaSENode
-updateDictionary node2{coreLogLevel="WARN",logLevel="INFO"}
+updateDictionary node2{logLevel="INFO",coreLogLevel="WARN"}
  {
-  addComponent JTouchDB590@node1 : JTouchDB {port_db='8881',path='/tmp/node1/db'}
   addComponent FakeTrust154@node1 : FakeTrustServer {maxTrust='1.0',refreshSpeed='15000',minTrust='0.0',trustValue='0.5'}
-addChannel syncTouch557 : syncTouchDB {dbname='trustdb'}
-bind JTouchDB590.cluster@node1 => syncTouch557
-updateDictionary syncTouch557 
-updateDictionary JTouchDB590@node1 
 updateDictionary FakeTrust154@node1 
 }
 
  {
-  addComponent JTouchDB198@node0 : JTouchDB {port_db='8880',path='/tmp/node0/db'}
   addComponent KTinyWebS453@node0 : KTinyWebServer {}
   addComponent TrustMana890@node0 : TrustManagerMover {refreshSpeed='5000'}
-addChannel syncTouch557 : syncTouchDB {dbname='trustdb'}
 addChannel NioChanne594 : NioChannel {port='9002'}
 bind KTinyWebS453.response@node0 => NioChanne594
 bind KTinyWebS453.handler@node0 => NioChanne594
-bind JTouchDB198.cluster@node0 => syncTouch557
-updateDictionary syncTouch557 
 updateDictionary NioChanne594 {port='9000'}@node0,{port='9002'}@node2
-updateDictionary JTouchDB198@node0 
 updateDictionary KTinyWebS453@node0 
 updateDictionary TrustMana890@node0 
 }
 
  {
-  addComponent FakeTrust302@node2 : FakeTrustServer {maxTrust='1.0',refreshSpeed='18000',minTrust='0.0',trustValue='0.5'}
-  addComponent JTouchDB612@node2 : JTouchDB {port_db='8882',path='/tmp/node2/db'}
+  addComponent iaasPage@editor_node : IaaSKloudResourceManagerPage {urlpattern='/'}
+  addComponent iaasManager@editor_node : IaaSKloudManager {}
+  addComponent webServer@editor_node : KTinyWebServer {port='6003',timeout='10000'}
+addChannel requestChannel : defMSG {}
+addChannel responseChannel : defMSG {}
+addChannel iaasDelegateChannel : defSERVICE {}
+bind webServer.handler@editor_node => requestChannel
+bind iaasPage.request@editor_node => requestChannel
+bind webServer.response@editor_node => responseChannel
+bind iaasPage.content@editor_node => responseChannel
+bind iaasManager.submit@editor_node => iaasDelegateChannel
+bind iaasPage.delegate@editor_node => iaasDelegateChannel
+updateDictionary requestChannel 
+updateDictionary responseChannel 
+updateDictionary iaasDelegateChannel 
+updateDictionary iaasPage@editor_node 
+updateDictionary iaasManager@editor_node 
+updateDictionary webServer@editor_node 
+}
+
+addChild node1@editor_node
+addChild node0@editor_node
+addChild node2@editor_node
+ {
+  addComponent FakeTrust302@node2 : FakeTrustServer {maxTrust='1.0',refreshSpeed='15000',minTrust='0.0',trustValue='0.3872379'}
   addComponent HelloWorl981@node2 : HelloWorldPage {}
-addChannel syncTouch557 : syncTouchDB {dbname='trustdb'}
 addChannel NioChanne594 : NioChannel {port='9002'}
 bind HelloWorl981.content@node2 => NioChanne594
 bind HelloWorl981.request@node2 => NioChanne594
-bind JTouchDB612.cluster@node2 => syncTouch557
-updateDictionary syncTouch557 
 updateDictionary NioChanne594 {port='9000'}@node0,{port='9002'}@node2
 updateDictionary FakeTrust302@node2 
-updateDictionary JTouchDB612@node2 
 updateDictionary HelloWorl981@node2 
 }
 
 addGroup sync:BasicGossiperGroup
 addToGroup sync node1
-updateDictionary sync{interval="20000",ssl="false",port="8001",ip="0.0.0.0"}@node1
+updateDictionary sync{port="8001",ssl="false",interval="20000",ip="0.0.0.0"}@node1
 addToGroup sync node0
-updateDictionary sync{interval="20000",ssl="false",port="8000",ip="0.0.0.0"}@node0
+updateDictionary sync{port="8000",ssl="false",interval="20000",ip="0.0.0.0"}@node0
 addToGroup sync node2
-updateDictionary sync{interval="20000",ssl="false",port="8002",ip="0.0.0.0"}@node2
+updateDictionary sync{port="8002",ssl="false",interval="20000",ip="0.0.0.0"}@node2
+addGroup editor_group:BasicGossiperGroup
 
- updateDictionary JTouchDB612@node2  {maxTrust='1.0',refreshSpeed='18000',minTrust='0.0',trustValue='0.5'}
+updateDictionary editor_group{port="8960",ip="0.0.0.0"}@editor_node
 }

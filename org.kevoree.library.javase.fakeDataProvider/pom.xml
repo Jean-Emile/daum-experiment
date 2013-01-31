@@ -59,6 +59,7 @@
                <plugin>
                    <groupId>org.kevoree.platform</groupId>
                    <artifactId>org.kevoree.platform.mavenrunner</artifactId>
+                   <configuration><targetNode>editor_node</targetNode></configuration>
                    <version>${kevoree.version}</version>
                </plugin>
            </plugins>
