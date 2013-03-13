@@ -1,0 +1,51 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "http://maven.kevoree.org/archiva/repository/snapshots/"
+addRepo "http://maven.kevoree.org/snapshots"
+addRepo "http://repo.typesafe.com/typesafe/releases/"
+
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.basicGossiper/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/{kevoree.version}'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.channeltrust/1.0'
+
+  addGroup group933818060:BasicGroup
+addNode node0:JavaSENode
+addToGroup group933818060 node0
+updateDictionary group933818060{port="8022",ip="0.0.0.0"}@node0
+
+
+addNode node1:JavaSENode
+
+addToGroup group933818060 node1
+updateDictionary group933818060{port="8001",ip="0.0.0.0"}@node1
+
+addNode node2:JavaSENode
+
+addToGroup group933818060 node2
+updateDictionary group933818060{port="8002",ip="0.0.0.0"}@node2
+
+
+
+addNode node4:JavaSENode
+addToGroup group933818060 node4
+updateDictionary group933818060{port="8004",ip="0.0.0.0"}@node4
+
+addNode node5:JavaSENode
+addToGroup group933818060 node5
+updateDictionary group933818060{port="8005",ip="0.0.0.0"}@node5
+
+
+addNode node3:JavaSENode
+
+
+addToGroup group933818060 node3
+updateDictionary group933818060{port="8003",ip="0.0.0.0"}@node3
+
+  addComponent ChannelTr121@node0 : ChannelTrust {}
+updateDictionary ChannelTr121@node0
+
+
+updateDictionary sync{port="8000",ip="0.0.0.0"}@kE0B9A58C5B2A
+
+}
