@@ -1,0 +1,53 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "http://repository.jetbrains.com/all"
+addRepo "http://maven.kevoree.org/archiva/repository/snapshots/"
+addRepo "http://maven.kevoree.org/snapshots"
+addRepo "http://repo.typesafe.com/typesafe/releases/"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.0-SNAPSHOT'
+ merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel/2.0.0-SNAPSHOT'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.0-SNAPSHOT'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.0-SNAPSHOT'
+addNode node1:JavaSENode
+updateDictionary node1{}
+addNode node0:JavaSENode
+addNode node2:JavaSENode
+updateDictionary node2{}
+addNode node3:JavaSENode
+updateDictionary node3{}
+ {
+  addComponent TimeRepon864@node1 : TimeReponseProducer {}
+updateDictionary TimeRepon864@node1 
+}
+
+ {
+  addComponent TimeRepon119@node0 : TimeReponseProducer {refresh='1000'}
+updateDictionary TimeRepon119@node0 
+}
+
+ {
+  addComponent TimeRepon519@node2 : TimeReponseProducer {}
+updateDictionary TimeRepon519@node2 
+}
+
+ {
+  addComponent TimeRepon679@node3 : TimeReponseProducer {}
+updateDictionary TimeRepon679@node3 
+}
+
+addGroup group99261395:BasicGroup
+addToGroup group99261395 node1
+updateDictionary group99261395{port="8001",ip="0.0.0.0"}@node1
+addToGroup group99261395 node0
+updateDictionary group99261395{port="8000",ip="0.0.0.0"}@node0
+addToGroup group99261395 node2
+updateDictionary group99261395{port="8002",ip="0.0.0.0"}@node2
+addToGroup group99261395 node3
+updateDictionary group99261395{port="8003",ip="0.0.0.0"}@node3
+
+
+network node0 => node0 {"KEVOREE.remote.node.ip"= "google.fr"}
+network node1 => node1 {"KEVOREE.remote.node.ip"= "free.fr"}
+network node3 => node3 {"KEVOREE.remote.node.ip"= "orange.fr"}
+}

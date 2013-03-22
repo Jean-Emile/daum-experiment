@@ -1,0 +1,49 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "http://repository.jetbrains.com/all"
+addRepo "http://maven.kevoree.org/archiva/repository/snapshots/"
+addRepo "http://maven.kevoree.org/snapshots"
+addRepo "http://repo.typesafe.com/typesafe/releases/"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/{kevoree.version}'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel/{kevoree.version}'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/{kevoree.version}'
+ merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.camel/{kevoree.version}'
+ merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/{kevoree.version}'
+
+addNode node0:JavaSENode
+ {
+  addComponent WebServer652@node0 : WebServerTrustor {port='8080',trustContext='trust1',timeout='5000'}
+  addComponent TimeRepon416@node0 : TimeReponseProducer {}
+  addComponent HelloWorl798@node0 : HelloWorldPage {urlpattern='/'}
+  addComponent TimeRepon489@node0 : TimeReponseProducer {refresh='1000'}
+addChannel defMSG374 : defMSG {}
+addChannel CamelNett623 : CamelNettyService {port='9600'}
+addChannel defMSG352 : defMSG {}
+
+bind WebServer652.response@node0 => defMSG374
+bind HelloWorl798.content@node0 => defMSG374
+bind WebServer652.service@node0 => CamelNett623
+bind TimeRepon489.service@node0 => CamelNett623
+
+bind WebServer652.handler@node0 => defMSG352
+
+bind HelloWorl798.request@node0 => defMSG352
+
+
+
+
+updateDictionary WebServer652@node0
+updateDictionary defMSG374
+updateDictionary CamelNett623 {port='9600'}@node0
+updateDictionary defMSG352
+updateDictionary TimeRepon416@node0
+updateDictionary HelloWorl798@node0
+updateDictionary TimeRepon489@node0
+}
+
+addGroup group926285129:BasicGroup
+addToGroup group926285129 node0
+updateDictionary group926285129{port="6000",ip="0.0.0.0"}@node0
+}

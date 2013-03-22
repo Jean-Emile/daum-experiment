@@ -1,0 +1,52 @@
+
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "http://repository.jetbrains.com/all"
+addRepo "http://maven.kevoree.org/archiva/repository/snapshots/"
+addRepo "http://repo.typesafe.com/typesafe/releases/"
+addRepo "http://maven.kevoree.org/snapshots"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.0-SNAPSHOT'
+addNode node1:JavaSENode
+updateDictionary node1{}
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.0-SNAPSHOT'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.0-SNAPSHOT'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.0-SNAPSHOT'
+addNode node0:JavaSENode
+ {
+}
+
+ {
+  addComponent WebServer652@node0 : WebServerTrustor {port='8080',trustContext='trust1',timeout='5000'}
+  addComponent HelloWorl798@node0 : HelloWorldPage {urlpattern='/'}
+  addComponent TimeRepon489@node0 : TimeReponseProducer {}
+addChannel defMSG374 : defMSG {}
+addChannel defSERVIC258 : defSERVICE {}
+addChannel defMSG352 : defMSG {}
+bind WebServer652.response@node0 => defMSG374
+bind WebServer652.response@node0 => defMSG374
+bind HelloWorl798.content@node0 => defMSG374
+bind WebServer652.service@node0 => defSERVIC258
+bind WebServer652.service@node0 => defSERVIC258
+bind TimeRepon489.service@node0 => defSERVIC258
+bind WebServer652.handler@node0 => defMSG352
+bind WebServer652.handler@node0 => defMSG352
+bind HelloWorl798.request@node0 => defMSG352
+bind HelloWorl798.request@node0 => defMSG352
+bind HelloWorl798.content@node0 => defMSG374
+bind TimeRepon489.service@node0 => defSERVIC258
+updateDictionary WebServer652@node0
+updateDictionary defMSG374
+updateDictionary defSERVIC258
+updateDictionary defMSG352
+updateDictionary HelloWorl798@node0
+updateDictionary TimeRepon489@node0
+}
+
+addGroup group926285129:BasicGroup
+addToGroup group926285129 node1
+updateDictionary group926285129{port="8001",ip="0.0.0.0"}@node1
+addToGroup group926285129 node0
+updateDictionary group926285129{port="8000",ip="0.0.0.0"}@node0
+network node1 => node1 {"KEVOREE.remote.node.ip"= "free.fr"}
+}
