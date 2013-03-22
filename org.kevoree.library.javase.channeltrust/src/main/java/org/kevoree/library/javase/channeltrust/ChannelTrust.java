@@ -2,6 +2,7 @@ package org.kevoree.library.javase.channeltrust;
 
 
 import org.kevoree.ContainerNode;
+import org.kevoree.MBinding;
 import org.kevoree.annotation.*;
 import org.kevoree.annotation.ChannelTypeFragment;
 import org.kevoree.annotation.ComponentType;
@@ -34,14 +35,35 @@ public class ChannelTrust extends   AbstractChannelFragment {
     @Override
     public Object dispatch(Message msg)
     {
-        if (getBindedPorts().isEmpty() && getOtherFragments().isEmpty()) {
-            logger.debug("No consumer, msg lost");
-        }
+
+        String instanceChannel = getModelElement().getName();
+
+
+      for(MBinding m :  getModelElement().getBindings()){
+
+
+          logger.debug(""+       m.getPort().getPortTypeRef().getRef().getNature());
+
+
+
+      }
+
+
+        // Local
         for (org.kevoree.framework.KevoreePort p : getBindedPorts()) {
+
+            logger.debug(instanceChannel+" Target --> "+p.getComponentName()+" "+p.getName());
+
             forward(p, msg);
         }
+
+        // Remote
         for (KevoreeChannelFragment cf : getOtherFragments()) {
             if (!msg.getPassedNodes().contains(cf.getNodeName())) {
+
+                logger.debug("getName Other "+cf.getName());
+
+
                 forward(cf, msg);
             }
         }
@@ -68,6 +90,8 @@ public class ChannelTrust extends   AbstractChannelFragment {
     @Override
     public ChannelFragmentSender createSender(String remoteNodeName, String remoteChannelName)
     {
+        logger.debug("CreateSender "+getModelElement().getName());
+
         return new NoopChannelFragmentSender();
     }
 

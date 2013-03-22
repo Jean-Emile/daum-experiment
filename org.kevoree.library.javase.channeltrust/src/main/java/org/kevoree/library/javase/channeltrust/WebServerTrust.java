@@ -1,12 +1,11 @@
-package org.kevoree.library.javase.timeResponse;
+package org.kevoree.library.javase.channeltrust;
 
-import org.kevoree.Trust.TrustValue;
-import org.kevoree.Trust.Trustee;
 import org.kevoree.annotation.*;
+import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
 import org.kevoree.library.javase.webserver.KevoreeHttpResponse;
 import org.kevoree.library.javase.webserver.ServerBootstrap;
-import org.kevoree.trustframework.Trustor;
+import org.kevoree.library.javase.webserver.SprayWebServer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,14 +26,12 @@ import org.kevoree.trustframework.Trustor;
 @Provides({
         @ProvidedPort(name = "response", type = PortType.MESSAGE)
 })
-public class WebServerTrustor extends Trustor
+public class WebServerTrust  extends Trustor
 {
 
-    public ServerBootstrap bootstrap = null;
-
+    ServerBootstrap bootstrap = null;
     @Start
     public void start() {
-        super.start();
         bootstrap = new ServerBootstrap(this.getPortByName("handler", MessagePort.class),this);
         bootstrap.startServer(Integer.parseInt(this.getDictionary().get("port").toString()),
                 Long.parseLong(this.getDictionary().get("timeout").toString())
@@ -63,26 +60,19 @@ public class WebServerTrustor extends Trustor
             {
                 KevoreeHttpResponse r = (KevoreeHttpResponse)param;
             }
+
+
+
+
+
         }
     }
 
 
     @Override
     public void compute() {
+        // success
 
-        for(org.kevoree.Trust.Trustor t : model.getTrustors()   ){
-
-            for(Trustee t2 : t.getTrustees())   {
-
-                for(TrustValue v : t2.getValues()){
-
-                   // todo
-
-                }
-            }
-
-
-        }
-
+        // fail
     }
 }

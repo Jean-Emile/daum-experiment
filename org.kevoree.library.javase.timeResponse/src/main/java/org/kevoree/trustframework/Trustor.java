@@ -2,8 +2,8 @@ package org.kevoree.trustframework;
 
 
 import org.kevoree.Trust.TrustRoot;
+import org.kevoree.Trust.TrustValue;
 import org.kevoree.Trust.Trustee;
-import org.kevoree.Trust.Value;
 import org.kevoree.Trust.impl.DefaultTrustFactory;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
@@ -29,7 +29,7 @@ import java.util.List;
 })
 @Library(name = "Trust")
 @ComponentType
-public abstract class Trustor extends AbstractComponentType  implements ITrustor {
+public abstract class Trustor extends AbstractComponentType implements ITrustor {
 
     public DefaultTrustFactory factory =null;
     public TrustRoot model;
@@ -38,28 +38,26 @@ public abstract class Trustor extends AbstractComponentType  implements ITrustor
     public void start(){
         factory = new DefaultTrustFactory();
         model = factory.createTrustRoot();
-
     }
 
     public  abstract void compute();
 
     @Port(method = "addVariable",name = "service")
-    public void addVariable(String trustorquery,String trusteequery,Value value)
+    public void addVariable(String idTrustor,String idTrustee,TrustValue value)
     {
         org.kevoree.Trust.Trustor trustor=null;
         Trustee trustee=null;
-        trustor  =model.findTrustorsByID(trustorquery);
+        trustor  =model.findTrustorsByID(idTrustor);
         if(trustor == null){
             trustor = factory.createTrustor();
-            trustor.setQueryTrustor(trustorquery);
+            trustor.setQueryTrustor(idTrustor);
         }
-        trustee = trustor.findTrusteesByID(trusteequery);
+        trustee = trustor.findTrusteesByID(idTrustee);
         if(trustee ==null){
             trustee = factory.createTrustee();
-            trustee.setQueryTrustee(trusteequery);
+            trustee.setQueryTrustee(idTrustee);
         }
-
-        System.out.println("ADD "+trustor.getQueryTrustor()+" "+trustee.getQueryTrustee()+" "+value.getValue());
+       // System.out.println("ADD "+trustor.getQueryTrustor()+" "+trustee.getQueryTrustee()+" "+value.getValue());
         trustee.addValues(value);
     }
 

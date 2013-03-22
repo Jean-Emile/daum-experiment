@@ -1,7 +1,9 @@
 package org.kevoree.trustframework.api;
 
-import org.kevoree.Trust.Value;
 
+
+
+import org.kevoree.Trust.TrustValue;
 
 import java.util.List;
 
@@ -14,5 +16,5 @@ import java.util.List;
  */
 public interface IVariableProducer
 {
-    public void addVariable(String trustorquery,String trusteequery,Value value);
+    public void addVariable(String trustorquery,String trusteequery,TrustValue value);
 }

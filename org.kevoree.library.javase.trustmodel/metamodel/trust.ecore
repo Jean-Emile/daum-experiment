@@ -14,9 +14,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="Trustee">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="queryTrustee" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"   iD="true" />
     <eStructuralFeatures xsi:type="ecore:EReference" name="values" lowerBound="1"
-        upperBound="-1" eType="#//Value" containment="true"/>
+        upperBound="-1" eType="#//TrustValue" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Value">
+  <eClassifiers xsi:type="ecore:EClass" name="TrustValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="timestamp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

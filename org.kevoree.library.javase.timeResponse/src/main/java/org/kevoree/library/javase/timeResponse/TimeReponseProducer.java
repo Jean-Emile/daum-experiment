@@ -1,7 +1,7 @@
 package org.kevoree.library.javase.timeResponse;
 
 import org.kevoree.ContainerNode;
-import org.kevoree.Trust.Value;
+import org.kevoree.Trust.TrustValue;
 import org.kevoree.annotation.*;
 import org.kevoree.annotation.ComponentType;
 import org.kevoree.trustframework.VariableProducer;
@@ -65,7 +65,7 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
                 // results
                 for(String key : map_time.keySet())
                 {
-                    Value value =  factory.createValue();
+                    TrustValue value =  factory.createTrustValue();
                     value.setValue(map_time.get(key).toString());
                     getPortByName("service", IVariableProducer.class).addVariable(getNodeName(),key,value);
                 }
