@@ -41,7 +41,7 @@ public class WebServerTrustor2 extends Trustor implements Runnable
     @Start
     public void start() {
         //start should receive the name of this trustor to initialize its relationships
-        super.start(getModelElement().getName());
+         super.start();
         bootstrap = new ServerBootstrap(this.getPortByName("handler", MessagePort.class),this);
         bootstrap.startServer(Integer.parseInt(this.getDictionary().get("port").toString()),
                 Long.parseLong(this.getDictionary().get("timeout").toString())
@@ -72,8 +72,6 @@ public class WebServerTrustor2 extends Trustor implements Runnable
     public void responseHandler(Object param) {
         if (bootstrap != null) {
             bootstrap.responseHandler(param);
-
-
             if(param instanceof KevoreeHttpResponse)
             {
                 KevoreeHttpResponse r = (KevoreeHttpResponse)param;
@@ -81,34 +79,4 @@ public class WebServerTrustor2 extends Trustor implements Runnable
         }
     }
 
-    //Will there be problems because the parent class also implements Runnable?
-    //Here is where the reconfiguration code will be. Every x seconds, this component
-    //will analyze its trust relationships and will change the system architecture
-
-    //For separation of concerns, this should be done by another component. This component
-    //should simply access the service offered by this other reconfiguration component.
-    //The reconfiguration component would access a self-adaptation.xml file where there are rules
-    //to change the architecture according to certain trust conditions
-    //e.g. if (trustrelationship(trustor, trustee) < threshold)
-                   //look up another potential trustee
-                   //change binding to this trustee
-
-    //Implementing LISTENERS would be more elegant (When the trustor's metric has a new value for some
-    //relationship, reconfigure is called. In turn, metric implements onVariableChanged listener)
-    //public void onMetricValueChanged()
-    public void run() {
-        //change for alive (but another alive, not trustor's alive)
-        while (true)
-        {
-            getPortByName("reconfiguration", AdaptationManager.class).reconfigure();
-
-            try
-            {
-                Thread.sleep(30000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-}
+  }

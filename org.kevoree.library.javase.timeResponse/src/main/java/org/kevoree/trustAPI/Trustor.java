@@ -2,6 +2,7 @@ package org.kevoree.trustAPI;
 
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
+import org.kevoree.reconfigurationAPI.AdaptationManager;
 import org.kevoree.trustframework.api.IVariableProducer;
 
 import java.sql.Timestamp;
@@ -19,7 +20,7 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
  */
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
-        @DictionaryAttribute(name = "trusteeType", defaultValue ="", optional = false),
+        @DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
         //@DictionaryAttribute(name = "nodesTrustee", defaultValue ="", optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false)
 }     )
@@ -28,6 +29,7 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
         @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
         @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
 })
+// TODO Required Port
 @Library(name = "Trust")
 @ComponentType
 public class Trustor extends AbstractComponentType implements Runnable {
@@ -36,14 +38,39 @@ public class Trustor extends AbstractComponentType implements Runnable {
     public TrustRoot trustModel;
     public boolean alive = false;
     public Thread thread = null;
+    private  Thread reconfiguration_thread;
 
     @Start
-    public void start(String idTrustorChild){
+    public void start(){
+
         factory = new DefaultTrustmetamodelFactory();
         trustModel = factory.createTrustRoot();
         thread = new Thread(this);
         alive = true;
-        initializeTrustRelationships(idTrustorChild);
+       // TODO set ROLE TRUSTOR
+        initializeTrustRelationships(getModelElement().getName());
+        reconfiguration_thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                while (alive)
+                {
+                    getPortByName("reconfiguration", AdaptationManager.class).reconfigure();
+
+                    try
+                    {
+                        Thread.sleep(30000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+        });
+        reconfiguration_thread.start();
+
+
     }
 
     @Update
@@ -55,13 +82,12 @@ public class Trustor extends AbstractComponentType implements Runnable {
     @Stop
     public void stop() {
         alive = false;
+        reconfiguration_thread.interrupt();
     }
 
     //Set all the trust relationships
     //We have to read from the dictionary
-    //We will set trust relationships between the trustor and all the trustee with type
-    //trusteeType and hosted in the node X
-    //For now, let's assume one only trust relationship (i.e. one trustee) for each trustor
+    //We will set trust relationships between the trustor and all the trustee X
     private void initializeTrustRelationships(String idTrustorChild) {
         String context = getDictionary().get("trustContext").toString();
         String idTrustor = idTrustorChild;

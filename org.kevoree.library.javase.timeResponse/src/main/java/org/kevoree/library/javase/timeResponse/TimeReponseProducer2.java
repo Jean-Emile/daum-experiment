@@ -85,4 +85,9 @@ public class TimeReponseProducer2 extends VariableProducer implements Runnable {
 
 
     }
+
+    @Override
+    public void addVariable(String name, String context, Object value, String source, String target) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

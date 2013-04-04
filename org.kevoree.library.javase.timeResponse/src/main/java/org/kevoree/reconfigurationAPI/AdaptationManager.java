@@ -15,25 +15,27 @@ import org.kevoree.trustAPI.VariableProducer;
 @Library(name = "JavaSE")
 @ComponentType
 @DictionaryType({
-        @DictionaryAttribute(name = "configFileName" , defaultValue = "config.xml")
+        @DictionaryAttribute(name = "kevsscript" , defaultValue = "")
 })
 @Provides({
         @ProvidedPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
 })
 public class AdaptationManager extends AbstractComponentType {
 
-    private String fileName = null;
+    private String kevscript = null;
 
     @Start
     public void start() {
-        fileName = this.getDictionary().get("configFileName").toString();
+        kevscript = this.getDictionary().get("kevsscript").toString();
         //read reconfigaration file
     }
 
     @Port(method = "reconfigure", name = "reconfigure")
     public void reconfigure() {
 
-        //Launch kevscript according to the rules read from fileName
+               // IF REPURATION OF NODE0 is under 10 ms DO kevscript
+
+
 
     }
 }

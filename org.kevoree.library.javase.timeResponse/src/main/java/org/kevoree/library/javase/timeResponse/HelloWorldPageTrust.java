@@ -5,7 +5,7 @@ import org.kevoree.annotation.DictionaryType;
 import org.kevoree.library.javase.webserver.AbstractPage;
 import org.kevoree.library.javase.webserver.KevoreeHttpRequest;
 import org.kevoree.library.javase.webserver.KevoreeHttpResponse;
-import org.kevoree.trustAPI.Trustee;
+import org.kevoree.trustAPI.TrusteePage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +20,7 @@ import org.kevoree.trustAPI.Trustee;
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext", optional = false)
 }     )
-public class HelloWorldPageTrust extends AbstractPage {
+public class HelloWorldPageTrust extends TrusteePage {
 
     public KevoreeHttpResponse process (KevoreeHttpRequest request, KevoreeHttpResponse response) {
         StringBuilder builder = new StringBuilder();

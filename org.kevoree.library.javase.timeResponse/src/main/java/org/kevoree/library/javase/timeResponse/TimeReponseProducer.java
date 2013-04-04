@@ -32,13 +32,11 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
     private ConcurrentHashMap<String,Integer>  map_time = new ConcurrentHashMap<String, Integer>();
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
-
     @Start
     public void start(){
         t = new Thread(this);
         alive = true;
         t.start();
-
     }
 
     @Stop

@@ -49,20 +49,16 @@ public class GetHelper {
 
     //It returns a list with the names of all trustee instances of "componentType", with context "context" and
     //running on a node with name nodeName
+    // TODO NODE HASHMAP
     static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String componentType, String nodeName) {
+        KevoreePropertyHelper propertyHelper = new KevoreePropertyHelper();
 
         List<String> components = new ArrayList<String>();
-
         for (ContainerNode node : model.getNodes()) {
             if(node.getName().equals(nodeName)) {
                 for(ComponentInstance component:node.getComponents()) {
-                    String trusteeContext = KevoreePropertyHelper.
-                            getProperty(component, "context", false, node.getName()).get();
-                    String isTrustee = KevoreePropertyHelper.
-                            getProperty(component, "isTrustee", false, node.getName()).get();
-                    if(component.getTypeDefinition().getName().equals(componentType) &&
-                            trusteeContext.equals(context) &&
-                            isTrustee.equals("true")) {
+                    String trusteeContext = propertyHelper.getProperty(component, "context", false, node.getName());
+                    if(component.getTypeDefinition().getName().equals(componentType) && trusteeContext.equals(context)) {
                         components.add(component.getName());
                     }
                 }
