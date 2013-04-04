@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>test</groupId>
+    <artifactId>test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <kevoree.version>2.0.0-SNAPSHOT</kevoree.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>kevoree-release</id>
+            <url>http://maven.kevoree.org/release</url>
+        </repository>
+        <repository>
+            <id>kevoree-snapshots</id>
+            <url>http://maven.kevoree.org/snapshots</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+    <dependency>
+        <groupId>org.kevoree.tools</groupId>
+        <artifactId>org.kevoree.tools.javase.framework</artifactId>
+        <version>${kevoree.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.kevoree.tools</groupId>
+        <artifactId>org.kevoree.tools.annotation.api</artifactId>
+        <version>${kevoree.version}</version>
+    </dependency>
+        <dependency>
+            <artifactId>org.kevoree.library.javase.webserver.spray</artifactId>
+            <groupId>org.kevoree.corelibrary.javase</groupId>
+            <version>${kevoree.version}</version>
+        </dependency>
+    </dependencies>
+
+    
+</project>
