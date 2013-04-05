@@ -1,5 +1,7 @@
 package org.kevoree.trustAPI;
 
+import org.kevoree.annotation.DictionaryAttribute;
+import org.kevoree.annotation.DictionaryType;
 import org.kevoree.library.javase.webserver.AbstractPage;
 
 /**
@@ -9,5 +11,8 @@ import org.kevoree.library.javase.webserver.AbstractPage;
  * Time: 15:38
  * To change this template use File | Settings | File Templates.
  */
+@DictionaryType({
+        @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext", optional = false)
+}     )
 public abstract class TrusteePage extends AbstractPage {
 }

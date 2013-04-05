@@ -6,6 +6,7 @@ import org.kevoree.ContainerRoot;
 import org.kevoree.framework.KevoreePropertyHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -49,7 +50,6 @@ public class GetHelper {
 
     //It returns a list with the names of all trustee instances of "componentType", with context "context" and
     //running on a node with name nodeName
-    // TODO NODE HASHMAP
     static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String componentType, String nodeName) {
         KevoreePropertyHelper propertyHelper = new KevoreePropertyHelper();
 
@@ -70,12 +70,18 @@ public class GetHelper {
 
     //It returns a list with the names of all trustee instances running on every node in the model
     //The trustee instances must have the same context as "context" and must be of "componentType"
-    static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String componentType) {
+    // Node 0 - compInst1, compInst2, ...
+    // Node 1 - compInst45, compInst46
+    static HashMap<String, List<String>> getTrusteeInstanceName(ContainerRoot model, String context, String componentType) {
 
-        List<String> components = new ArrayList<String>();
+        HashMap<String, List<String>> components = new HashMap<String, List<String>>();
+        List<String> componentsOnNode = new ArrayList<String>();
 
         for (ContainerNode node : model.getNodes()) {
-            components.addAll(getTrusteeInstanceName(model, context, componentType, node.getName()));
+            componentsOnNode = getTrusteeInstanceName(model, context, componentType, node.getName());
+            if (componentsOnNode.size() > 0)  {
+                components.put(node.getName(), componentsOnNode);
+            }
         }
 
         return components;

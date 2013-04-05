@@ -6,6 +6,8 @@ import org.kevoree.reconfigurationAPI.AdaptationManager;
 import org.kevoree.trustframework.api.IVariableProducer;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.kevoree.trustmetamodel.*;
@@ -29,7 +31,9 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
         @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
         @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
 })
-// TODO Required Port
+@Requires({
+        @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
+})
 @Library(name = "Trust")
 @ComponentType
 public class Trustor extends AbstractComponentType implements Runnable {
@@ -48,7 +52,7 @@ public class Trustor extends AbstractComponentType implements Runnable {
         thread = new Thread(this);
         alive = true;
        // TODO set ROLE TRUSTOR
-        initializeTrustRelationships(getModelElement().getName());
+        initializeTrustRelationships();
         reconfiguration_thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,8 +73,6 @@ public class Trustor extends AbstractComponentType implements Runnable {
 
         });
         reconfiguration_thread.start();
-
-
     }
 
     @Update
@@ -87,15 +89,36 @@ public class Trustor extends AbstractComponentType implements Runnable {
 
     //Set all the trust relationships
     //We have to read from the dictionary
-    //We will set trust relationships between the trustor and all the trustee X
-    private void initializeTrustRelationships(String idTrustorChild) {
+    //We will set trust relationships between the trustor and all its trustees
+    private void initializeTrustRelationships() {
         String context = getDictionary().get("trustContext").toString();
-        String idTrustor = idTrustorChild;
+        String idTrustor = getModelElement().getName();
         String trusteeType = getDictionary().get("trusteeType").toString();
         String nameMetric = getDictionary().get("metric").toString();
         Metric m = MetricFactory.createMetricInstance(nameMetric);
-        //Get the name of all instances that are trustees to this trustor (according to the dictionary)
-        List<String> idTrustee = GetHelper.getComponentInstanceName(getModelService().getLastModel(), trusteeType);
+
+        //Get all the trustees to this trustor
+        //trustees store: [Node 0, (CompInstance1, CompInstance2, etc)]
+        //                [Node 1, (CompInstance34, CompInstance50, etc)]
+        //We need this becuase the same instance name can be used in different nodes, but for the trust model
+        //we need a unique identifier for trustees. In this case, "nodeName + instanceName"
+        HashMap<String, List<String>> trustees = GetHelper.getTrusteeInstanceName(getModelService().getLastModel(),
+                                                                       context, trusteeType);
+        List<String> idTrustee = new ArrayList<String>();
+        List<String> temp = new ArrayList<String>();
+        String currentName;
+
+        //For each node, we see their instances and we change their names to "nodeName + instanceName"
+        //We accumulate all the instances in the idTrustee list
+        for (String nodeName: trustees.keySet()) {
+            //Get the list of trustees running on this node
+            temp = trustees.get(nodeName);
+            for (int i = 0; i < temp.size(); i++) {
+                currentName = temp.get(i);
+                temp.set(i, nodeName + currentName);
+            }
+            idTrustee.addAll(temp);
+        }
         for (int i = 0; i < idTrustee.size(); i++) {
             addTrustRelationship(m, context, idTrustor, idTrustee.get(i));
         }

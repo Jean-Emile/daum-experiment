@@ -15,11 +15,6 @@ import org.kevoree.trustAPI.TrusteePage;
  * To change this template use File | Settings | File Templates.
  */
 
-//We should extend from Trustee, and Trustee should have this attribute, but
-//I didn't know how to achieve that
-@DictionaryType({
-        @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext", optional = false)
-}     )
 public class HelloWorldPageTrust extends TrusteePage {
 
     public KevoreeHttpResponse process (KevoreeHttpRequest request, KevoreeHttpResponse response) {
