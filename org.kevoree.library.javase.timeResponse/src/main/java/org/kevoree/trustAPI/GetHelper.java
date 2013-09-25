@@ -60,8 +60,10 @@ public class GetHelper {
                 for(ComponentInstance component:node.getComponents()) {
                     //We obtain the context of the component
                     String trusteeContext = propertyHelper.getProperty(component, "context", false, node.getName());
-                    if(component.getTypeDefinition().getName().equals(componentType) &&
-                                    trusteeContext.equals(context)) {
+                    boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
+                    if(isTrustee &&
+                       component.getTypeDefinition().getName().equals(componentType) &&
+                       trusteeContext.equals(context)) {
                         components.add(component.getName());
                     }
 

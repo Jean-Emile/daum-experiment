@@ -20,6 +20,7 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
  * Time: 16:46
  * To change this template use File | Settings | File Templates.
  */
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
         //@DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
@@ -37,7 +38,8 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 })
 @Library(name = "Trust")
 @ComponentType
-public class Trustor extends AbstractComponentType implements Runnable {
+*/
+public class Trustor extends AbstractComponentType implements TrustEntity, Runnable {
 
     public TrustmetamodelFactory factory = null;
     public TrustRoot trustModel = null;
@@ -52,7 +54,9 @@ public class Trustor extends AbstractComponentType implements Runnable {
         trustModel = factory.createTrustRoot();
         thread = new Thread(this);
         alive = true;
-       // TODO set ROLE TRUSTOR
+
+        //It's a trustor
+        getDictionary().put("role", "trustor");
         initializeTrustRelationships();
         //For now, we lay reconfiguration aside
         /*reconfiguration_thread = new Thread(new Runnable() {
