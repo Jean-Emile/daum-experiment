@@ -41,7 +41,7 @@ public class WebServerTrustor2 extends Trustor implements Runnable
     @Start
     public void start() {
         //start should receive the name of this trustor to initialize its relationships
-         super.start();
+        super.start();
         bootstrap = new ServerBootstrap(this.getPortByName("handler", MessagePort.class),this);
         bootstrap.startServer(Integer.parseInt(this.getDictionary().get("port").toString()),
                 Long.parseLong(this.getDictionary().get("timeout").toString())

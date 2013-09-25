@@ -27,6 +27,6 @@ public abstract class Metric extends AbstractComponentType {
                 getVariable("myContext", "ttr");
     }
 
-    //This method must be override by trust engines extending this class
+    //This method must be overridden by trust engines extending this class
     public abstract Object compute();
 }

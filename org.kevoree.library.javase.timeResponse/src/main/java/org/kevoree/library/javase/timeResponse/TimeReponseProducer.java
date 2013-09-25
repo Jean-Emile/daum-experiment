@@ -1,12 +1,14 @@
 package org.kevoree.library.javase.timeResponse;
 
 import org.kevoree.ContainerNode;
-import org.kevoree.Trust.TrustValue;
 import org.kevoree.annotation.*;
-import org.kevoree.annotation.ComponentType;
-import org.kevoree.trustframework.VariableProducer;
-import org.kevoree.trustframework.api.IVariableProducer;
 
+/*import org.kevoree.Trust.TrustValue;
+import org.kevoree.trustframework.VariableProducer;
+import org.kevoree.trustframework.api.IVariableProducer;*/
+
+import org.kevoree.trustAPI.VariableProducer;
+import org.kevoree.trustAPI.Trustor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -32,11 +34,13 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
     private ConcurrentHashMap<String,Integer>  map_time = new ConcurrentHashMap<String, Integer>();
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
+
     @Start
     public void start(){
         t = new Thread(this);
         alive = true;
         t.start();
+
     }
 
     @Stop
@@ -63,16 +67,13 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
                 // results
                 for(String key : map_time.keySet())
                 {
-                    TrustValue value =  factory.createTrustValue();
-                    value.setValue(map_time.get(key).toString());
-                    getPortByName("service", IVariableProducer.class).addVariable(getNodeName(),key,value);
+                    getPortByName("service", Trustor.class).addVariable("myContext", "ttr", getModelElement().getName(),
+                           key, map_time.get(key).toString());
                 }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-
             try
             {
                 Thread.sleep(2000);
@@ -83,5 +84,10 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
         }
 
 
+    }
+
+    @Override
+    public void addVariable(String name, String context, Object value, String source, String target) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

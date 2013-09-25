@@ -3,15 +3,15 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
-import org.kevoree.trustframework.api.IVariableProducer;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.kevoree.trustmetamodel.*;
 import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
+
+import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,11 +22,12 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
  */
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
-        @DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
+        //@DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
         //@DictionaryAttribute(name = "nodesTrustee", defaultValue ="", optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false)
 }     )
 
+//Up to now, the trustor manages metrics variables
 @Provides({
         @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
         @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
@@ -38,11 +39,11 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
 @ComponentType
 public class Trustor extends AbstractComponentType implements Runnable {
 
-    public TrustmetamodelFactory factory =null;
-    public TrustRoot trustModel;
+    public TrustmetamodelFactory factory = null;
+    public TrustRoot trustModel = null;
     public boolean alive = false;
     public Thread thread = null;
-    private  Thread reconfiguration_thread;
+    //private  Thread reconfiguration_thread = null;
 
     @Start
     public void start(){
@@ -53,7 +54,8 @@ public class Trustor extends AbstractComponentType implements Runnable {
         alive = true;
        // TODO set ROLE TRUSTOR
         initializeTrustRelationships();
-        reconfiguration_thread = new Thread(new Runnable() {
+        //For now, we lay reconfiguration aside
+        /*reconfiguration_thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -72,25 +74,25 @@ public class Trustor extends AbstractComponentType implements Runnable {
             }
 
         });
-        reconfiguration_thread.start();
+        reconfiguration_thread.start();       */
     }
 
     @Update
     public void update() {
-        //Reset all the trust relationships
-
+        initializeTrustRelationships();
     }
 
     @Stop
     public void stop() {
         alive = false;
-        reconfiguration_thread.interrupt();
+        //reconfiguration_thread.interrupt();
     }
 
     //Set all the trust relationships
     //We have to read from the dictionary
     //We will set trust relationships between the trustor and all its trustees
-    private void initializeTrustRelationships() {
+    private void initializeTrustRelationships()
+    {
         String context = getDictionary().get("trustContext").toString();
         String idTrustor = getModelElement().getName();
         String trusteeType = getDictionary().get("trusteeType").toString();
@@ -102,25 +104,65 @@ public class Trustor extends AbstractComponentType implements Runnable {
         //                [Node 1, (CompInstance34, CompInstance50, etc)]
         //We need this becuase the same instance name can be used in different nodes, but for the trust model
         //we need a unique identifier for trustees. In this case, "nodeName + instanceName"
-        HashMap<String, List<String>> trustees = GetHelper.getTrusteeInstanceName(getModelService().getLastModel(),
-                                                                       context, trusteeType);
-        List<String> idTrustee = new ArrayList<String>();
-        List<String> temp = new ArrayList<String>();
-        String currentName;
+        HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(),
+                context, trusteeType);
 
         //For each node, we see their instances and we change their names to "nodeName + instanceName"
         //We accumulate all the instances in the idTrustee list
+        List<String> idTrustee = new ArrayList<String>();
+        List<String> temp, temp2 = new ArrayList<String>();
+        String currentName;
         for (String nodeName: trustees.keySet()) {
             //Get the list of trustees running on this node
             temp = trustees.get(nodeName);
             for (int i = 0; i < temp.size(); i++) {
                 currentName = temp.get(i);
-                temp.set(i, nodeName + currentName);
+                temp2.set(i, nodeName + currentName);
             }
-            idTrustee.addAll(temp);
+            idTrustee.addAll(temp2);
         }
-        for (int i = 0; i < idTrustee.size(); i++) {
-            addTrustRelationship(m, context, idTrustor, idTrustee.get(i));
+        //Now, we have all the information regarding the new trust relationship
+        //We know: trustor, trustee, context and metric
+        //We have to create all the necessary entities in the trust metamodel
+        for (String t : idTrustee) {
+            addTrustRelationship(m, context, idTrustor, t);
+        }
+    }
+
+    //This method stores in the trust model the metric to be used by a trustor for a trustee type under
+    //a context. It also creates a trust relationship, and adds trustor and trustee
+    public void addTrustRelationship(Metric metric, String context, String idTrustor, String idTrustee)
+    {
+        org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
+        org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
+        org.kevoree.trustmetamodel.Metric m = trustModel.findMetricsByID(context + trustor + trustee);
+        if (m == null) {
+            m = factory.createMetric();
+            m.setContext(context);
+            m.setIdMetric(context + idTrustor + idTrustee);
+            m.setEngine(metric);
+        }
+        if (trustor == null) {
+            trustor = factory.createTrustor();
+            trustor.setIdTrustor(idTrustor);
+            trustor.addTrustorMetrics(m);
+        }
+        if (trustee == null)  {
+            trustee = factory.createTrustee();
+            trustee.setIdTrustee(idTrustee);
+        }
+        org.kevoree.trustmetamodel.TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
+        if (tr == null) {
+            tr = factory.createTrustRelationship();
+            tr.setIdTRelationship(context + idTrustor + idTrustee);
+            tr.setContext(context);
+            tr.setTrustor(trustor);
+            tr.setTrustee(trustee);
+            org.kevoree.trustmetamodel.TrustValue tv = factory.createTrustValue();
+            tv.setValue("Default value");
+            String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
+            tv.setTimeStamp(timeStamp);
+            tr.setTrustValue(tv);
         }
     }
 
@@ -135,13 +177,13 @@ public class Trustor extends AbstractComponentType implements Runnable {
         if (var == null) {
             var = factory.createVariable();
         }
-            var.setContext(context);
-            var.setIdVariable(context + name);
-            var.setIdSource(idSource);
-            var.setIdTarget(idTarget);
-            VariableValue varVal = factory.createVariableValue();
-            varVal.setValue(value);
-            var.setValue(varVal);
+        var.setContext(context);
+        var.setIdVariable(context + name);
+        var.setIdSource(idSource);
+        var.setIdTarget(idTarget);
+        VariableValue varVal = factory.createVariableValue();
+        varVal.setValue(value);
+        var.setValue(varVal);
     }
 
     @Port(method = "getVariable",name = "serviceGetVariable")
@@ -151,6 +193,7 @@ public class Trustor extends AbstractComponentType implements Runnable {
 
     }
 
+    /*
     //This method retrieves a metric set by a trustor
     public Metric getMetric(String context, String trustor, String trustee) {
         for (org.kevoree.trustmetamodel.Metric m : trustModel.getMetrics()) {
@@ -159,37 +202,6 @@ public class Trustor extends AbstractComponentType implements Runnable {
             }
         }
         return null;
-    }
-
-    public void addTrustRelationship(Metric metric, String context, String idTrustor, String idTrustee) {
-        //This method stores in the trust model the metric to be used by a trustor for a trustee type under
-        //a context. It also creates a trust relationship, and adds trustor and trustee
-        org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
-        org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
-        org.kevoree.trustmetamodel.Metric m = trustModel.findMetricsByID(context + trustor + trustee);
-        if (m == null) {
-            m = factory.createMetric();
-            m.setContext(context);
-            m.setIdMetric(context + idTrustor + idTrustee);
-            m.setEngine((Metric)metric);
-        }
-        if (trustor == null) {
-            trustor = factory.createTrustor();
-            trustor.addTrustorMetrics(m);
-            trustor.setIdTrustor(idTrustor);
-        }
-        if (trustee == null)  {
-            trustee = factory.createTrustee();
-            trustee.setIdTrustee(idTrustee);
-        }
-        TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
-        if (tr == null) {
-            tr = factory.createTrustRelationship();
-            tr.setContext(context);
-            tr.setIdTRelationship(context + idTrustor + idTrustee);
-            tr.setTrustor(trustor);
-            tr.setTrustee(trustee);
-        }
     }
 
     public Object compute(String context, String idTrustor, String idTrustee) {
@@ -221,13 +233,13 @@ public class Trustor extends AbstractComponentType implements Runnable {
     public List<org.kevoree.trustmetamodel.Trustee> getTrustees() {
         return trustModel.getTrustees();
     }
-
+    */
     @Override
     public void run() {
         while (alive)
         {
             //getModelElement().getName() retrieves the trustor ID (instance name of the kevoree component)
-            updateAllTrustRelationships("context", getModelElement().getName());
+            //updateAllTrustRelationships("context", getModelElement().getName());
 
             try
             {
