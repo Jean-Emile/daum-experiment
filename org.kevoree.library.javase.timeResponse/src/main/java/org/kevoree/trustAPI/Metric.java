@@ -22,7 +22,7 @@ public abstract class Metric extends AbstractComponentType {
     public Variable getVariable(String context, String name) {
         //Access trust model and return variable set by source
         //Now we can only access the trust model through the trustor's service
-        //This limitation must be overcome by making the trust model accesible to all components
+        //This limitation must be overcome by making the trust model accessible to all components
         return getPortByName("serviceGetVariable", Trustor.class).
                 getVariable("myContext", "ttr");
     }

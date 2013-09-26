@@ -11,14 +11,9 @@ import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
  * Time: 16:48
  * To change this template use File | Settings | File Templates.
  */
-public class Trustee extends AbstractComponentType implements TrustEntity {
+public class Trustee extends AbstractComponentType {
 
-    @Start
-    public void start()
-    {
-        //It's a trustee
-        getDictionary().put("role", "trustee");
-    }
+    public final String role = "Trustee";
 
 
 }

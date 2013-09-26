@@ -20,11 +20,8 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
  * Time: 16:46
  * To change this template use File | Settings | File Templates.
  */
-/*
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
-        //@DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
-        //@DictionaryAttribute(name = "nodesTrustee", defaultValue ="", optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false)
 }     )
 
@@ -38,14 +35,15 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 })
 @Library(name = "Trust")
 @ComponentType
-*/
-public class Trustor extends AbstractComponentType implements TrustEntity, Runnable {
+
+public class Trustor extends AbstractComponentType implements Runnable {
 
     public TrustmetamodelFactory factory = null;
     public TrustRoot trustModel = null;
     public boolean alive = false;
     public Thread thread = null;
     //private  Thread reconfiguration_thread = null;
+    public final String role = "Trustor";
 
     @Start
     public void start(){

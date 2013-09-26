@@ -9,7 +9,7 @@ import org.kevoree.library.javase.timeResponse.MyTrustEngine;
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
-public class MetricFactory {
+public final class MetricFactory {
 
     //Could be better implemented using enums and switch statement
     static Metric createMetricInstance(String metricName) {
