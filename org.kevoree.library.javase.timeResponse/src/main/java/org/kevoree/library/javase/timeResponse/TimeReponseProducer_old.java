@@ -1,7 +1,7 @@
 package org.kevoree.library.javase.timeResponse;
 
+/*
 import org.kevoree.ContainerNode;
-import org.kevoree.Trust.TrustValue;
 import org.kevoree.annotation.*;
 import org.kevoree.annotation.ComponentType;
 import org.kevoree.trustframework.VariableProducer;
@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 14:59
  * To change this template use File | Settings | File Templates.
  */
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "refresh",defaultValue = "1000", optional =false)
 })
@@ -63,9 +65,12 @@ public class TimeReponseProducer_old extends VariableProducer implements Runnabl
                 // results
                 for(String key : map_time.keySet())
                 {
+                    //NO valid anymore
+
                     TrustValue value =  factory.createTrustValue();
                     value.setValue(map_time.get(key).toString());
                     getPortByName("service", IVariableProducer.class).addVariable(getNodeName(),key,value);
+
                 }
 
             } catch (InterruptedException e) {
@@ -85,3 +90,4 @@ public class TimeReponseProducer_old extends VariableProducer implements Runnabl
 
     }
 }
+*/

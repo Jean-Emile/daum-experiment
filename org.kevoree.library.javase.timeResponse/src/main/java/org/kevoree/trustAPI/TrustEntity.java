@@ -2,7 +2,7 @@ package org.kevoree.trustAPI;
 
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
-import org.kevoree.reconfigurationAPI.AdaptationManager;
+//import org.kevoree.reconfigurationAPI.AdaptationManager;
 import org.kevoree.trustmetamodel.TrustRoot;
 import org.kevoree.trustmetamodel.TrustmetamodelFactory;
 import org.kevoree.trustmetamodel.Variable;
@@ -29,16 +29,16 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false)
-}     )
+})
 
 //Up to now, the trustor manages metrics variables
 @Provides({
-        @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
-        @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
+        //@ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
+        //@ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
 })
-@Requires({
+/*@Requires({
         @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
-})
+})*/
 @Library(name = "Trust")
 @ComponentType
 public class TrustEntity extends AbstractComponentType implements Runnable {
@@ -107,7 +107,7 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         String idTrustor = getModelElement().getName();
         String trusteeType = getDictionary().get("trusteeType").toString();
         String nameMetric = getDictionary().get("metric").toString();
-        Metric m = MetricFactory.createMetricInstance(nameMetric);
+        //Metric m = MetricFactory.createMetricInstance(nameMetric);
 
         //Get all the trustees to this trustor
         //trustees store: [Node 0, (CompInstance1, CompInstance2, etc)]
@@ -135,13 +135,13 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         //We know: trustor, trustee, context and metric
         //We have to create all the necessary entities in the trust metamodel
         for (String t : idTrustee) {
-            addTrustRelationship(m, context, idTrustor, t);
+            //addTrustRelationship(m, context, idTrustor, t);
         }
     }
 
     //This method stores in the trust model the metric to be used by a trustor for a trustee type under
     //a context. It also creates a trust relationship, and adds trustor and trustee
-    public void addTrustRelationship(Metric metric, String context, String idTrustor, String idTrustee)
+    /*public void addTrustRelationship(Metric metric, String context, String idTrustor, String idTrustee)
     {
         org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
         org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
@@ -174,13 +174,13 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
             tv.setTimeStamp(timeStamp);
             tr.setTrustValue(tv);
         }
-    }
+    }      */
 
     //For now, we are going to store the trust model in the Trustor component
     //This will change in the future (it will be shared by all components)
     //This is why the trustor implements the method addVariable, which should be implemented by
     //the VariableProducer
-    @Port(method = "addVariable",name = "serviceAddVariable")
+    //@Port(method = "addVariable",name = "serviceAddVariable")
     public void addVariable(String context, String name, String idSource, String idTarget, String value)
     {
         Variable var = trustModel.findVariablesByID(context + name);
@@ -196,7 +196,7 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         var.setValue(varVal);
     }
 
-    @Port(method = "getVariable",name = "serviceGetVariable")
+    //@Port(method = "getVariable",name = "serviceGetVariable")
     public Variable getVariable(String context, String name)
     {
         return trustModel.findVariablesByID(context + name);

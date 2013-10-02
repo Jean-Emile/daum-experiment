@@ -1,9 +1,11 @@
 package org.kevoree.reconfigurationAPI;
 
+/*
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustAPI.Metric;
 import org.kevoree.trustAPI.VariableProducer;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +14,7 @@ import org.kevoree.trustAPI.VariableProducer;
  * Time: 17:53
  * To change this template use File | Settings | File Templates.
  */
+/*
 @Library(name = "JavaSE")
 @ComponentType
 @DictionaryType({
@@ -39,3 +42,4 @@ public class AdaptationManager extends AbstractComponentType {
 
     }
 }
+*/

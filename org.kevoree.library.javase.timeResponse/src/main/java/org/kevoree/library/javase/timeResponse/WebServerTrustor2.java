@@ -1,8 +1,9 @@
 package org.kevoree.library.javase.timeResponse;
 
-/*import org.kevoree.Trust.TrustValue;
+/*
+import org.kevoree.Trust.TrustValue;
 import org.kevoree.Trust.Trustee;
-import org.kevoree.trustframework.Trustor;*/
+import org.kevoree.trustframework.Trustor;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
 import org.kevoree.trustAPI.Metric;
 import org.kevoree.trustAPI.Trustor;
@@ -12,6 +13,7 @@ import org.kevoree.library.javase.webserver.KevoreeHttpResponse;
 import org.kevoree.library.javase.webserver.ServerBootstrap;
 
 import java.util.concurrent.TimeUnit;
+*/
 
 
 /**
@@ -21,8 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 10:40
  * To change this template use File | Settings | File Templates.
  */
-@Library(name = "JavaSE")
-@ComponentType
+  /*
 @DictionaryType({
         @DictionaryAttribute(name = "port" , defaultValue = "8080"),
         @DictionaryAttribute(name = "timeout" , defaultValue = "5000", optional = true)
@@ -33,6 +34,8 @@ import java.util.concurrent.TimeUnit;
 @Provides({
         @ProvidedPort(name = "response", type = PortType.MESSAGE)
 })
+@Library(name = "JavaSE")
+@ComponentType
 public class WebServerTrustor2 extends Trustor implements Runnable
 {
 
@@ -80,3 +83,4 @@ public class WebServerTrustor2 extends Trustor implements Runnable
     }
 
   }
+  */

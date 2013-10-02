@@ -1,7 +1,9 @@
 package org.kevoree.trustAPI;
 
+/*
 import org.kevoree.annotation.*;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +12,7 @@ import org.kevoree.reconfigurationAPI.AdaptationManager;
  * Time: 16:41
  * To change this template use File | Settings | File Templates.
  */
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
         @DictionaryAttribute(name = "role", defaultValue ="", vals = {"Trustor","Trustee"}),
@@ -19,12 +22,13 @@ import org.kevoree.reconfigurationAPI.AdaptationManager;
 //Up to now, the trustor manages metrics variables
 @Provides({
         @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
-        @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
+        //@ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
 })
-@Requires({
-        @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
-})
+//@Requires({
+        //@RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
+//})
 @Library(name = "Trust")
 @ComponentType
 public interface ITrustEntity {
 }
+*/

@@ -1,5 +1,6 @@
 package org.kevoree.library.javase.timeResponse;
 
+/*
 import com.googlecode.jpingy.Ping;
 import com.googlecode.jpingy.PingArguments;
 import com.googlecode.jpingy.PingResult;
@@ -8,6 +9,7 @@ import org.kevoree.framework.KevoreePlatformHelper;
 
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Time: 15:33
  * To change this template use File | Settings | File Templates.
  */
+/*
 public class PingService implements Runnable {
 
     private ConcurrentHashMap<String,Integer> map_time;
@@ -35,12 +38,14 @@ public class PingService implements Runnable {
 
     public String getAddress(String remoteNodeName)
     {
-        String ip = KevoreePlatformHelper.getProperty(model, remoteNodeName,
-                org.kevoree.framework.Constants.KEVOREE_PLATFORM_REMOTE_NODE_IP());
+        Fix this
+        String ip = KevoreePlatformHelper.instance$.getProperty(model, remoteNodeName,
+                //org.kevoree.framework.Constants.KEVOREE_PLATFORM_REMOTE_NODE_IP());
         if (ip == null || ip.equals("")) {
             ip = "";
         }
         return ip;
+        return null;
     }
 
     @Override
@@ -83,3 +88,4 @@ public class PingService implements Runnable {
             }  }
     }
 }
+*/

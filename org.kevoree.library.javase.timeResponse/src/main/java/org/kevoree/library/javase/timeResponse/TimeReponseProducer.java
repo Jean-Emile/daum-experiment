@@ -1,11 +1,12 @@
 package org.kevoree.library.javase.timeResponse;
 
+/*
 import org.kevoree.ContainerNode;
 import org.kevoree.annotation.*;
 
-/*import org.kevoree.Trust.TrustValue;
+import org.kevoree.Trust.TrustValue;
 import org.kevoree.trustframework.VariableProducer;
-import org.kevoree.trustframework.api.IVariableProducer;*/
+import org.kevoree.trustframework.api.IVariableProducer;
 
 import org.kevoree.trustAPI.VariableProducer;
 import org.kevoree.trustAPI.Trustor;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +24,8 @@ import java.util.concurrent.TimeUnit;
  * Time: 14:59
  * To change this template use File | Settings | File Templates.
  */
+
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "refresh",defaultValue = "1000", optional =false)
 })
@@ -91,3 +95,4 @@ public class TimeReponseProducer extends VariableProducer implements Runnable {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }
+*/

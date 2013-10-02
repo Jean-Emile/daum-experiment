@@ -1,10 +1,11 @@
 package org.kevoree.trustframework;
 
+/*
 import org.kevoree.Trust.impl.DefaultTrustFactory;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustframework.api.IVariableProducer;
-
+    */
 /**
  * Created with IntelliJ IDEA.
  * User: jed
@@ -16,6 +17,7 @@ import org.kevoree.trustframework.api.IVariableProducer;
         @DictionaryAttribute(name = "trustContext" , defaultValue = "",optional = false)
 } )
  */
+/*
 @Requires({
         @RequiredPort(name = "service", type = PortType.SERVICE, className = IVariableProducer.class, optional = true)
 })
@@ -44,3 +46,4 @@ public class VariableProducer extends AbstractComponentType  {
 
 
 }
+         */

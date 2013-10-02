@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 11:16
  * To change this template use File | Settings | File Templates.
  */
-public class GetHelper {
+public final class GetHelper {
 
     //It returns a list with the names of all component instances (of a componentType)
     //running on a node with name nodeName
@@ -52,13 +52,14 @@ public class GetHelper {
     //running on a node with name nodeName
     static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String componentType, String nodeName) {
 
-        KevoreePropertyHelper propertyHelper = new KevoreePropertyHelper();
+        KevoreePropertyHelper propertyHelper = KevoreePropertyHelper.instance$;
 
         List<String> components = new ArrayList<String>();
         for (ContainerNode node : model.getNodes()) {
             if(node.getName().equals(nodeName)) {
                 for(ComponentInstance component:node.getComponents()) {
                     //We obtain the context of the component
+
                     String trusteeContext = propertyHelper.getProperty(component, "context", false, node.getName());
                     boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
                     if(isTrustee &&

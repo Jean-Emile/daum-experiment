@@ -1,6 +1,6 @@
 package org.kevoree.trustframework;
 
-
+/*
 import org.kevoree.Trust.TrustRoot;
 import org.kevoree.Trust.TrustValue;
 import org.kevoree.Trust.Trustee;
@@ -12,6 +12,7 @@ import org.kevoree.trustframework.api.IVariableProducer;
 
 import java.util.ArrayList;
 import java.util.List;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,7 @@ import java.util.List;
  * Time: 11:43
  * To change this template use File | Settings | File Templates.
  */
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "",optional = false)
 }     )
@@ -62,3 +64,4 @@ public abstract class Trustor extends AbstractComponentType implements ITrustor 
     }
 
 }
+*/

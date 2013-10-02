@@ -1,5 +1,6 @@
 package org.kevoree.trustAPI;
 
+/*
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
@@ -12,6 +13,7 @@ import org.kevoree.trustmetamodel.*;
 import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
 
 import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
+*/
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +22,7 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
  * Time: 16:46
  * To change this template use File | Settings | File Templates.
  */
+/*
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false)
@@ -76,7 +79,7 @@ public class Trustor extends AbstractComponentType implements Runnable {
             }
 
         });
-        reconfiguration_thread.start();       */
+        reconfiguration_thread.start();
     }
 
     @Update
@@ -195,7 +198,7 @@ public class Trustor extends AbstractComponentType implements Runnable {
 
     }
 
-    /*
+
     //This method retrieves a metric set by a trustor
     public Metric getMetric(String context, String trustor, String trustee) {
         for (org.kevoree.trustmetamodel.Metric m : trustModel.getMetrics()) {
@@ -235,7 +238,7 @@ public class Trustor extends AbstractComponentType implements Runnable {
     public List<org.kevoree.trustmetamodel.Trustee> getTrustees() {
         return trustModel.getTrustees();
     }
-    */
+
     @Override
     public void run() {
         while (alive)
@@ -252,6 +255,5 @@ public class Trustor extends AbstractComponentType implements Runnable {
 
         }
     }
-
-
 }
+*/

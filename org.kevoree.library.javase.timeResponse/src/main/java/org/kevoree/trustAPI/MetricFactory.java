@@ -1,7 +1,8 @@
 package org.kevoree.trustAPI;
 
+/*
 import org.kevoree.library.javase.timeResponse.MyTrustEngine;
-
+  */
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
@@ -9,6 +10,7 @@ import org.kevoree.library.javase.timeResponse.MyTrustEngine;
  * Time: 11:09
  * To change this template use File | Settings | File Templates.
  */
+/*
 public final class MetricFactory {
 
     //Could be better implemented using enums and switch statement
@@ -20,3 +22,4 @@ public final class MetricFactory {
         return m;
     }
 }
+*/

@@ -1,11 +1,14 @@
 package org.kevoree.trustAPI;
 
+/*
+import org.kevoree.annotation.ComponentType;
 import org.kevoree.annotation.PortType;
 import org.kevoree.annotation.RequiredPort;
 import org.kevoree.annotation.Requires;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustframework.api.IVariableProducer;
 import org.kevoree.trustmetamodel.Variable;
+   */
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,9 +17,11 @@ import org.kevoree.trustmetamodel.Variable;
  * Time: 16:43
  * To change this template use File | Settings | File Templates.
  */
+/*
 @Requires({
         @RequiredPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Trustor.class)
 })
+@ComponentType
 public abstract class Metric extends AbstractComponentType {
 
     public Variable getVariable(String context, String name) {
@@ -30,3 +35,4 @@ public abstract class Metric extends AbstractComponentType {
     //This method must be overridden by trust engines extending this class
     public abstract Object compute();
 }
+*/
