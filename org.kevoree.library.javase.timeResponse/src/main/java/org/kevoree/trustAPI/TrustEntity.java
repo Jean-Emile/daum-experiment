@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
+//import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 
 /**
  * Created with IntelliJ IDEA.
@@ -114,9 +114,9 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         //                [Node 1, (CompInstance34, CompInstance50, etc)]
         //We need this becuase the same instance name can be used in different nodes, but for the trust model
         //we need a unique identifier for trustees. In this case, "nodeName + instanceName"
-        HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(),
-                context, trusteeType);
-
+        //HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(),
+                //context, trusteeType);
+        HashMap<String, List<String>> trustees = null;
         //For each node, we see their instances and we change their names to "nodeName + instanceName"
         //We accumulate all the instances in the idTrustee list
         List<String> idTrustee = new ArrayList<String>();

@@ -12,19 +12,19 @@
            <kevoree.version>2.0.0-SNAPSHOT</kevoree.version>
            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <metamodel.ecore>metamodel/trustMetamodel.ecore</metamodel.ecore>
-        <kotlin.version>0.5.162</kotlin.version>
+        <kotlin.version>0.6.350</kotlin.version>
        </properties>
 
     <dependencies>
            <dependency>
                <groupId>org.kevoree.tools</groupId>
                <artifactId>org.kevoree.tools.javase.framework</artifactId>
-               <version>${kevoree.version}</version>
+               <version>2.0.0-ALPHA</version>
            </dependency>
            <dependency>
                <groupId>org.kevoree.tools</groupId>
                <artifactId>org.kevoree.tools.annotation.api</artifactId>
-               <version>${kevoree.version}</version>
+               <version>2.0.0-ALPHA</version>
            </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -83,6 +83,10 @@
            <repository>
                <id>kevoree-snapshots</id>
                <url>http://maven.kevoree.org/snapshots</url>
+           </repository>
+           <repository>
+               <id>central</id>
+               <url>http://repo1.maven.org/maven2/</url>
            </repository>
        </repositories>
 
