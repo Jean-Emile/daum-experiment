@@ -15,11 +15,12 @@ import org.kevoree.trustmetamodel.Variable;
 public class MyTrustEngine extends Metric {
     @Override
     public Object compute() {
-        Variable x = getVariable("mycontext", "ttr");
+        /*Variable x = getVariable("mycontext", "ttr");
         Variable y = getVariable("mycontext", "ttr2");
 
         float ttr1 = Float.parseFloat(x.getValue().getValue());
         float ttr2 = Float.parseFloat(x.getValue().getValue());
-        return ttr1 / ttr2;  //To change body of implemented methods use File | Settings | File Templates.
+        return ttr1 / ttr2; */ //To change body of implemented methods use File | Settings | File Templates.
+        return "I'm MyTrustEngine";
     }
 }

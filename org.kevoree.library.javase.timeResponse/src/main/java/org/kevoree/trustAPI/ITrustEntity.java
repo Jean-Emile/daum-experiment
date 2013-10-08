@@ -5,6 +5,8 @@ import org.kevoree.annotation.*;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
 */
 
+import org.kevoree.trustmetamodel.Variable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
@@ -29,6 +31,12 @@ import org.kevoree.reconfigurationAPI.AdaptationManager;
 //})
 @Library(name = "Trust")
 @ComponentType
-public interface ITrustEntity {
-}
 */
+public interface ITrustEntity {
+
+    public void addVariable(String context, String name, String idSource, String idTarget, String value);
+    public Variable getVariable(String context, String name);
+
+
+}
+

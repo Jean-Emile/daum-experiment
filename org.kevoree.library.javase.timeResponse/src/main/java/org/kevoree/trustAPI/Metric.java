@@ -16,10 +16,10 @@ import org.kevoree.trustmetamodel.Variable;
  * To change this template use File | Settings | File Templates.
  */
 
-@Requires({
-        @RequiredPort(name = "serviceGetVariable", type = PortType.SERVICE, className = TrustEntity.class)
-})
-@ComponentType
+//@Requires({
+//        @RequiredPort(name = "serviceGetVariable", type = PortType.SERVICE, className = TrustEntity.class)
+//})
+//@ComponentType
 public abstract class Metric extends AbstractComponentType {
 
     public Variable getVariable(String context, String name) {

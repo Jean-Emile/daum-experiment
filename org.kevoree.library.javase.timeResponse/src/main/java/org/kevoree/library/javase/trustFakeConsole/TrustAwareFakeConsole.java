@@ -4,7 +4,7 @@ import org.kevoree.annotation.*;
 import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
-//import org.kevoree.library.ui.layout.KevoreeLayout;
+import org.kevoree.library.ui.layout.KevoreeLayout;
 import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustAPI.TrustException;
 import org.slf4j.Logger;
@@ -54,7 +54,7 @@ public class TrustAwareFakeConsole extends TrustEntity {
         //  frame.setVisible(true);
         frame.appendSystem("/***** CONSOLE INITIALIZED  ********/ ");
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
-           // KevoreeLayout.getInstance().displayTab((JPanel)frame,getName());
+           KevoreeLayout.getInstance().displayTab((JPanel)frame, getName());
         } else {
             localFrame = new JFrame(getName() + "@@@" + getNodeName());
             localFrame.setContentPane(frame);
@@ -70,7 +70,7 @@ public class TrustAwareFakeConsole extends TrustEntity {
         super.stop();
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
-          //  KevoreeLayout.getInstance().releaseTab(getName());
+          KevoreeLayout.getInstance().releaseTab(getName());
         } else {
             if(localFrame != null) {
                 localFrame.dispose();
@@ -81,19 +81,19 @@ public class TrustAwareFakeConsole extends TrustEntity {
     }
 
     @Update
-    public void update() {
+    public void update() throws TrustException {
 
         super.update();
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
             if(localFrame != null) {
-                //KevoreeLayout.getInstance().displayTab((JPanel)frame,getName());
+                KevoreeLayout.getInstance().displayTab((JPanel)frame,getName());
                 localFrame.dispose();
                 localFrame = null;
             }
         } else {
             if(localFrame == null) {
-               // KevoreeLayout.getInstance().releaseTab(getName());
+                KevoreeLayout.getInstance().releaseTab(getName());
                 localFrame = new JFrame(getName() + "@@@" + getNodeName());
                 localFrame.setContentPane(frame);
                 localFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

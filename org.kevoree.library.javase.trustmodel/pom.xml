@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <metamodel.ecore>metamodel/trustMetamodel.ecore</metamodel.ecore>
         <kotlin.version>0.5.748</kotlin.version>
-       </properties>
+      </properties>
 
     <dependencies>
            <dependency>

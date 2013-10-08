@@ -3,6 +3,7 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 //import org.kevoree.reconfigurationAPI.AdaptationManager;
+import org.kevoree.library.ui.layout.KevoreeLayout;
 import org.kevoree.trustmetamodel.TrustRoot;
 import org.kevoree.trustmetamodel.TrustmetamodelFactory;
 import org.kevoree.trustmetamodel.Variable;
@@ -33,20 +34,20 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
 @DictionaryType({
         @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext",optional = false),
         @DictionaryAttribute(name = "metric", defaultValue ="MyTrustEngine", optional = false),
-        @DictionaryAttribute(name = "role", defaultValue = "trustor", optional = false)
+        @DictionaryAttribute(name = "role", defaultValue = "trustor", vals= {"trustor", "trustee"}, optional = false)
 })
 
 //Up to now, the trustor manages metrics variables
 @Provides({
-        @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = TrustEntity.class)
-        //@ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = TrustEntity.class)
+        //@ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = ITrustEntity.class),
+        @ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = ITrustEntity.class)
 })
 /*@Requires({
         @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
 })*/
 @Library(name = "Trust")
 @ComponentType
-public class TrustEntity extends AbstractComponentType implements Runnable {
+public class TrustEntity extends AbstractComponentType implements Runnable, ITrustEntity {
 
     public TrustmetamodelFactory factory = null;
     public TrustRoot trustModel = null;
@@ -93,8 +94,14 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
     }
 
     @Update
-    public void update() {
-        initializeTrustRelationships();
+    public void update() throws TrustException {
+        if (getDictionary().get("role").equals("trustor")) {
+            initializeTrustRelationships();
+            //If it's not a trustor or a trustee
+        } else if (!getDictionary().get("role").equals("trustee")) {
+            throw new TrustException("Wrong role for " + getModelElement().getName());
+        }
+        //F();
     }
 
     @Stop
@@ -110,17 +117,19 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
     {
         String context = getDictionary().get("trustContext").toString();
         String idTrustor = getModelElement().getName();
-        String trusteeType = getDictionary().get("trusteeType").toString();
         String nameMetric = getDictionary().get("metric").toString();
+        String role = getDictionary().get("role").toString();
         Metric m = MetricFactory.createMetricInstance(nameMetric);
+
+        System.out.println(context + " " + idTrustor + " " + nameMetric + " " + role + " " + m.compute());
+
 
         //Get all the trustees to this trustor
         //trustees store: [Node 0, (CompInstance1, CompInstance2, etc)]
         //                [Node 1, (CompInstance34, CompInstance50, etc)]
         //We need this becuase the same instance name can be used in different nodes, but for the trust model
         //we need a unique identifier for trustees. In this case, "nodeName + instanceName"
-        HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(),
-                context, trusteeType);
+        HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(), context);
         //For each node, we see their instances and we change their names to "nodeName + instanceName"
         //We accumulate all the instances in the idTrustee list
         List<String> idTrustee = new ArrayList<String>();
@@ -129,18 +138,21 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         for (String nodeName: trustees.keySet()) {
             //Get the list of trustees running on this node
             temp = trustees.get(nodeName);
+            System.out.println(temp.size());
+            System.out.println("Node " + nodeName + " has the following trustees for " + getModelElement().getName());
             for (int i = 0; i < temp.size(); i++) {
                 currentName = temp.get(i);
-                temp2.set(i, nodeName + currentName);
+                temp2.add(i, nodeName + currentName);
+                System.out.println(currentName);
             }
             idTrustee.addAll(temp2);
         }
         //Now, we have all the information regarding the new trust relationship
         //We know: trustor, trustee, context and metric
         //We have to create all the necessary entities in the trust metamodel
-        for (String t : idTrustee) {
+        /*for (String t : idTrustee) {
             addTrustRelationship(m, context, idTrustor, t);
-        }
+        } */
     }
 
     //This method stores in the trust model the metric to be used by a trustor for a trustee type under
@@ -180,32 +192,6 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
         }
     }
 
-    //For now, we are going to store the trust model in the Trustor component
-    //This will change in the future (it will be shared by all components)
-    //This is why the trustor implements the method addVariable, which should be implemented by
-    //the VariableProducer
-    @Port(method = "addVariable", name = "serviceAddVariable")
-    public void addVariable(String context, String name, String idSource, String idTarget, String value)
-    {
-        Variable var = trustModel.findVariablesByID(context + name);
-        if (var == null) {
-            var = factory.createVariable();
-        }
-        var.setContext(context);
-        var.setIdVariable(context + name);
-        var.setIdSource(idSource);
-        var.setIdTarget(idTarget);
-        VariableValue varVal = factory.createVariableValue();
-        varVal.setValue(value);
-        var.setValue(varVal);
-    }
-
-    //@Port(method = "getVariable", name = "serviceGetVariable")
-    public Variable getVariable(String context, String name)
-    {
-        return trustModel.findVariablesByID(context + name);
-
-    }
 
     //This method retrieves a metric set by a trustor
     public Metric getMetric(String context, String trustor, String trustee) {
@@ -265,5 +251,31 @@ public class TrustEntity extends AbstractComponentType implements Runnable {
     }
 
 
+    @Override
+    @Port(method = "addVariable",name = "serviceGetVariable")
+    public void addVariable(String context, String name, String idSource, String idTarget, String value) {
+
+        //For now, we are going to store the trust model in the Trustor component
+        //This will change in the future (it will be shared by all components)
+        //This is why the trustor implements the method addVariable, which should be implemented by
+        //the VariableProducer
+        Variable var = trustModel.findVariablesByID(context + name);
+        if (var == null) {
+            var = factory.createVariable();
+        }
+        var.setContext(context);
+        var.setIdVariable(context + name);
+        var.setIdSource(idSource);
+        var.setIdTarget(idTarget);
+        VariableValue varVal = factory.createVariableValue();
+        varVal.setValue(value);
+        var.setValue(varVal);
+    }
+
+    @Override
+    @Port(method = "getVariable",name = "serviceGetVariable")
+    public Variable getVariable(String context, String name) {
+        return trustModel.findVariablesByID(context + name);
+    }
 }
 
