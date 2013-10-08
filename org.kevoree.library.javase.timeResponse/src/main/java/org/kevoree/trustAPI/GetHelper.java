@@ -1,6 +1,5 @@
 package org.kevoree.trustAPI;
 
-/*
 import org.kevoree.ComponentInstance;
 import org.kevoree.ContainerNode;
 import org.kevoree.ContainerRoot;
@@ -9,7 +8,7 @@ import org.kevoree.framework.KevoreePropertyHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-*/
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +17,7 @@ import java.util.List;
  * Time: 11:16
  * To change this template use File | Settings | File Templates.
  */
-/*
+
 public final class GetHelper {
 
     //It returns a list with the names of all component instances (of a componentType)
@@ -98,4 +97,3 @@ public final class GetHelper {
         return components;
     }
 }
-*/

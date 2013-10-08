@@ -7,8 +7,8 @@ import org.kevoree.framework.MessagePort;
 //import org.kevoree.library.ui.layout.KevoreeLayout;
 import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustAPI.TrustException;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.text.*;
@@ -37,7 +37,7 @@ import java.awt.event.KeyEvent;
 @ComponentType
 @Library(name = "Trust")
 public class TrustAwareFakeConsole extends TrustEntity {
-    //private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
+    private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
 
     private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 600;
@@ -208,8 +208,8 @@ public class TrustAwareFakeConsole extends TrustEntity {
                 StyledDocument doc = screen.getStyledDocument();
                 doc.insertString(doc.getLength(), formatForPrint(text), doc.getStyle("system"));
             } catch (BadLocationException ex) {
-//                ex.printStackTrace();
-                //logger.error("Error while trying to append system message in the " + this.getName(), ex);
+                ex.printStackTrace();
+                logger.error("Error while trying to append system message in the " + this.getName(), ex);
             }
         }
 
@@ -219,8 +219,8 @@ public class TrustAwareFakeConsole extends TrustEntity {
                 doc.insertString(doc.getLength(), formatForPrint(text), doc.getStyle("incoming"));
                 screen.setCaretPosition(doc.getLength());
             } catch (BadLocationException ex) {
-//                ex.printStackTrace();
-                //logger.error("Error while trying to append incoming message in the " + this.getName(), ex);
+                ex.printStackTrace();
+                logger.error("Error while trying to append incoming message in the " + this.getName(), ex);
                 //getLoggerLocal().error(ex.getClass().getSimpleName() + " occured while trying to append text in the terminal.", ex);
             }
         }
@@ -230,8 +230,8 @@ public class TrustAwareFakeConsole extends TrustEntity {
                 StyledDocument doc = screen.getStyledDocument();
                 doc.insertString(doc.getLength(), ">" + formatForPrint(text), doc.getStyle("outgoing"));
             } catch (BadLocationException ex) {
-//                ex.printStackTrace();
-                //logger.error("Error while trying to append local message in the " + this.getName(), ex);
+                ex.printStackTrace();
+                logger.error("Error while trying to append local message in the " + this.getName(), ex);
                 //getLoggerLocal().error(ex.getClass().getSimpleName() + " occured while trying to append text in the terminal.", ex);
             }
         }

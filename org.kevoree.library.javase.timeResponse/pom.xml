@@ -10,8 +10,8 @@
 
     <properties>
            <kevoree.version>2.0.8</kevoree.version>
-           <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       </properties>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -30,6 +30,12 @@
             <groupId>org.kevoree.tools</groupId>
             <artifactId>org.kevoree.tools.annotation.api</artifactId>
             <version>${kevoree.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.4</version>
         </dependency>
 
     </dependencies>
@@ -80,29 +86,29 @@
     </build>
 
     <repositories>
-           <repository>
-               <id>kevoree-release</id>
-               <url>http://maven.kevoree.org/release</url>
-           </repository>
-           <repository>
-               <id>kevoree-snapshots</id>
-               <url>http://maven.kevoree.org/snapshots</url>
-           </repository>
+           <!--<repository>-->
+               <!--<id>kevoree-release</id>-->
+               <!--<url>http://maven.kevoree.org/release</url>-->
+           <!--</repository>-->
+           <!--<repository>-->
+               <!--<id>kevoree-snapshots</id>-->
+               <!--<url>http://maven.kevoree.org/snapshots</url>-->
+           <!--</repository>-->
            <repository>
                <id>central</id>
                <url>http://repo1.maven.org/maven2/</url>
            </repository>
-       </repositories>
+    </repositories>
 
        <pluginRepositories>
-           <pluginRepository>
-               <id>plugin.kevoree-github</id>
-               <url>http://maven.kevoree.org/release</url>
-           </pluginRepository>
-           <pluginRepository>
-               <id>plugin.kevoree-snapshots</id>
-               <url>http://maven.kevoree.org/snapshots</url>
-           </pluginRepository>
+           <!--<pluginRepository>-->
+               <!--<id>plugin.kevoree-github</id>-->
+               <!--<url>http://maven.kevoree.org/release</url>-->
+           <!--</pluginRepository>-->
+           <!--<pluginRepository>-->
+               <!--<id>plugin.kevoree-snapshots</id>-->
+               <!--<url>http://maven.kevoree.org/snapshots</url>-->
+           <!--</pluginRepository>-->
            <pluginRepository>
                <id>central</id>
                <url>http://repo1.maven.org/maven2/</url>

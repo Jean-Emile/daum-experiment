@@ -1,9 +1,9 @@
 package org.kevoree.library.javase.timeResponse;
 
-/*
+
 import org.kevoree.trustAPI.Metric;
 import org.kevoree.trustmetamodel.Variable;
-   */
+
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
@@ -11,7 +11,7 @@ import org.kevoree.trustmetamodel.Variable;
  * Time: 09:51
  * To change this template use File | Settings | File Templates.
  */
-/*
+
 public class MyTrustEngine extends Metric {
     @Override
     public Object compute() {
@@ -23,4 +23,3 @@ public class MyTrustEngine extends Metric {
         return ttr1 / ttr2;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
-    */
