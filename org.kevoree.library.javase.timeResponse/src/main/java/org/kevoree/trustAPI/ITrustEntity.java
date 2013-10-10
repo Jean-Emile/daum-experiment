@@ -24,7 +24,7 @@ import org.kevoree.trustmetamodel.Variable;
 //Up to now, the trustor manages metrics variables
 @Provides({
         @ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = VariableProducer.class) ,
-        //@ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = Metric.class)
+        //@ProvidedPort(name = "serviceGetVariable", type = PortType.SERVICE, className = AbstractMetric.class)
 })
 //@Requires({
         //@RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
@@ -34,9 +34,9 @@ import org.kevoree.trustmetamodel.Variable;
 */
 public interface ITrustEntity {
 
-    public void addVariable(String context, String name, String idSource, String idTarget, String value);
+    public void addVariable(String context, String name, String idTarget, String value);
     public Variable getVariable(String context, String name);
-
+    public void addSubjectiveFactor(String context, String name, String value);
 
 }
 

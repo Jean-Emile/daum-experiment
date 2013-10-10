@@ -1,0 +1,75 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo1.maven.org/maven2/"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "https://oss.sonatype.org/content/groups/public/"
+addRepo "https://oss.sonatype.org/content/repositories/snapshots"
+addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+addNode node1:JavaSENode
+updateDictionary node1{}
+addNode node0:JavaSENode
+updateDictionary node0{}
+addNode node2:JavaSENode
+addNode node3:JavaSENode
+ {
+  addComponent TrustAwar612@node1 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
+  addComponent TrustAwar638@node1 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
+addChannel defMSG116 : defMSG {}
+addChannel defMSG483 : defMSG {}
+bind TrustAwar612.showText@node1 => defMSG483
+bind TrustAwar612.textEntered@node1 => defMSG116
+updateDictionary defMSG116 
+updateDictionary defMSG483 
+updateDictionary TrustAwar638@node1 
+updateDictionary TrustAwar612@node1 
+}
+
+ {
+  addComponent TrustAwar537@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
+  addComponent TrustAwar943@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
+addChannel defMSG296 : defMSG {}
+addChannel defMSG771 : defMSG {}
+bind TrustAwar537.textEntered@node0 => defMSG771
+bind TrustAwar537.showText@node0 => defMSG296
+updateDictionary defMSG296 
+updateDictionary TrustAwar943@node0 
+updateDictionary defMSG771 
+updateDictionary TrustAwar537@node0 
+}
+
+ {
+  addComponent TrustAwar793@node2 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
+addChannel defMSG116 : defMSG {}
+addChannel defMSG483 : defMSG {}
+bind TrustAwar793.showText@node2 => defMSG116
+bind TrustAwar793.textEntered@node2 => defMSG483
+updateDictionary defMSG483 
+updateDictionary defMSG116 
+updateDictionary TrustAwar793@node2 
+}
+
+ {
+  addComponent TrustAwar263@node3 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
+addChannel defMSG771 : defMSG {}
+addChannel defMSG296 : defMSG {}
+bind TrustAwar263.textEntered@node3 => defMSG296
+bind TrustAwar263.showText@node3 => defMSG771
+updateDictionary defMSG771 
+updateDictionary defMSG296 
+updateDictionary TrustAwar263@node3 
+}
+
+addGroup sync:BasicGroup
+addToGroup sync node1
+updateDictionary sync{ip="0.0.0.0",port="8001"}@node1
+addToGroup sync node0
+updateDictionary sync{port="8000",ip="0.0.0.0"}@node0
+addToGroup sync node2
+updateDictionary sync{port="8002",ip="0.0.0.0"}@node2
+addToGroup sync node3
+updateDictionary sync{port="8003",ip="0.0.0.0"}@node3
+}

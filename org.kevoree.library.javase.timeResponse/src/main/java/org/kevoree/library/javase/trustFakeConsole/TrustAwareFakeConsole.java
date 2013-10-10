@@ -5,8 +5,10 @@ import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
 import org.kevoree.library.ui.layout.KevoreeLayout;
+import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustAPI.TrustException;
+import org.kevoree.trustmetamodel.Trustee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,18 +38,62 @@ import java.awt.event.KeyEvent;
 })
 @ComponentType
 @Library(name = "Trust")
-public class TrustAwareFakeConsole extends TrustEntity {
+public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
+    @Override
+    public void run() {
+            System.out.println("I'm alive: " + alive);
+            while (alive)
+            {
+
+                if (getDictionary().get("role").equals("trustor")) {
+
+                    //This is provided by the Trust API
+                    //We create subjective factors of this entity
+                    System.out.println("Adding subjective factor");
+                    addSubjectiveFactor("myContext", "prejudice", "2");
+                    System.out.println("Calling getMetric");
+                    AbstractMetric m = getMetric("myContext");
+                    System.out.println("Coming back from getMetric");
+                    if (m == null) {
+                        System.out.println("No metric for that combination of context and trustor");
+                    } else {
+                        System.out.println("Metric retrieved and yielding " + m.compute());
+                    }
+
+                    System.out.println("Looking for trustees...");
+                    for (Trustee t : getTrustees()) {
+                        System.out.println("Trustee: " + t.getIdTrustee());
+                    }
+
+                }
+
+                try
+                {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
     private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
 
     private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 600;
     private MyFrame frame = null;
     private JFrame localFrame = null;
+    private Thread myThread = null;
+    private boolean alive = false;
 
     @Override
     public void start() throws TrustException {
 
         super.start();
+
+        myThread = new Thread(this);
+        alive = true;
+        myThread.start();
 
         frame = new MyFrame();
         // frame.setTitle(getName() + "@@@" + getNodeName());
@@ -62,12 +108,35 @@ public class TrustAwareFakeConsole extends TrustEntity {
             localFrame.pack();
             localFrame.setVisible(true);
         }
+
+        System.out.println("Let's try with a thread");
+
+        if (getDictionary().get("role").equals("trustor")) {
+
+
+            //This is provided by the Trust API
+        //We create subjective factors of this entity
+        System.out.println("Adding subjective factor");
+        addSubjectiveFactor("myContext", "prejudice", "2");
+        System.out.println("Calling getMetric");
+        AbstractMetric m = getMetric("myContext");
+        System.out.println("Coming back from getMetric");
+        if (m == null) {
+            System.out.println("No metric for that combination of context and trustor");
+        } else {
+            System.out.println("Metric retrieved and yielding " + m.compute());
+        }
+
+        }
+
     }
 
     @Override
     public void stop() {
 
         super.stop();
+
+        alive = false;
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
           KevoreeLayout.getInstance().releaseTab(getName());
@@ -240,6 +309,7 @@ public class TrustAwareFakeConsole extends TrustEntity {
             return (text.endsWith("\n") ? text : text + "\n");
         }
     }
+
 
     /*public static void main(String[] args) {
         FakeConsole console = null;

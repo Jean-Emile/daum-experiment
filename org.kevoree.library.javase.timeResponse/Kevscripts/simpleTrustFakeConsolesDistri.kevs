@@ -1,0 +1,39 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo1.maven.org/maven2/"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "https://oss.sonatype.org/content/groups/public/"
+addRepo "https://oss.sonatype.org/content/repositories/snapshots"
+addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+addNode node1:JavaSENode
+addNode node0:JavaSENode
+ {
+  addComponent TrustAwar371@node1 : TrustAwareFakeConsole {}
+addChannel defMSG116 : defMSG {}
+addChannel defMSG483 : defMSG {}
+bind TrustAwar371.showText@node1 => defMSG116
+bind TrustAwar371.textEntered@node1 => defMSG483
+updateDictionary TrustAwar371@node1 
+updateDictionary defMSG116 
+updateDictionary defMSG483 
+}
+
+ {
+  addComponent TrustAwar567@node0 : TrustAwareFakeConsole {}
+addChannel defMSG116 : defMSG {}
+addChannel defMSG483 : defMSG {}
+bind TrustAwar567.textEntered@node0 => defMSG116
+bind TrustAwar567.showText@node0 => defMSG483
+updateDictionary TrustAwar567@node0 
+updateDictionary defMSG116 
+updateDictionary defMSG483 
+}
+
+addGroup sync:BasicGroup
+addToGroup sync node1
+addToGroup sync node0
+}

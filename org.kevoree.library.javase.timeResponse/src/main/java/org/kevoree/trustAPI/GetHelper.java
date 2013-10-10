@@ -62,12 +62,13 @@ public final class GetHelper {
                 for(ComponentInstance component:node.getComponents()) {
                     //We obtain the context of the component and if it's a trustee
                     String trusteeContext = propertyHelper.getProperty(component, "trustContext", false, node.getName());
-                    System.out.println("trusteeContext: " +  trusteeContext);
                     boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
-                    System.out.println("is trustee: " +  isTrustee);
-                    System.out.println("Context passed as argument: " + context);
+
+                    //System.out.println("For component " + component.getName() + "...");
+                    //System.out.println("trusteeContext is " +  trusteeContext);
+                    //System.out.println("is trustee is " +  isTrustee);
                     if(isTrustee && trusteeContext.equals(context)) {
-                        System.out.println("Here I am");
+                        //System.out.println("Therefore, I add component " + component.getName() + "to the list");
                         components.add(component.getName());
                     }
 
@@ -92,13 +93,17 @@ public final class GetHelper {
             componentsOnNode.clear();
             componentsOnNode = getTrusteeInstanceName(model, context, node.getName());
             if (componentsOnNode.size() > 0)  {
-                components.put(node.getName(), componentsOnNode);
+                components.put(node.getName(), new ArrayList<String>(componentsOnNode));
             }
         }
-        System.out.println("Components returned by method: ");
-        for (String c : componentsOnNode) {
-            System.out.println(c);
-        }
+        /*
+        for (String n: components.keySet()) {
+            System.out.println("Node " + n + " is running the following trustees:");
+            for (String c : components.get(n)) {
+                System.out.println(c);
+            }
+        } */
+
         return components;
     }
 }

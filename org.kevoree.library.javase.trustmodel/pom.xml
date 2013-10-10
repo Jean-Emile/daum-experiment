@@ -58,7 +58,7 @@
                             <packagePrefix>org.kevoree</packagePrefix>
                             <!--  <modelOnly>true</modelOnly>  -->
                                      <json>false</json>
-                            <events>false</events>
+                            <events>true</events>
 
                         </configuration>
                     </execution>

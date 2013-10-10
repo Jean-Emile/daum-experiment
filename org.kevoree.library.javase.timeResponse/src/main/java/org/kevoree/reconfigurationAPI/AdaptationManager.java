@@ -3,7 +3,7 @@ package org.kevoree.reconfigurationAPI;
 /*
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
-import org.kevoree.trustAPI.Metric;
+import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.VariableProducer;
 */
 

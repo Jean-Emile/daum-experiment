@@ -5,7 +5,7 @@ import org.kevoree.Trust.TrustValue;
 import org.kevoree.Trust.Trustee;
 import org.kevoree.trustframework.Trustor;
 import org.kevoree.reconfigurationAPI.AdaptationManager;
-import org.kevoree.trustAPI.Metric;
+import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.Trustor;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.MessagePort;

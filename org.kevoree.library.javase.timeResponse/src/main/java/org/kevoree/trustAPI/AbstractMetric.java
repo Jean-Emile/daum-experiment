@@ -1,10 +1,7 @@
 package org.kevoree.trustAPI;
 
 
-import org.kevoree.annotation.ComponentType;
-import org.kevoree.annotation.PortType;
-import org.kevoree.annotation.RequiredPort;
-import org.kevoree.annotation.Requires;
+import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustmetamodel.Variable;
 
@@ -16,18 +13,20 @@ import org.kevoree.trustmetamodel.Variable;
  * To change this template use File | Settings | File Templates.
  */
 
-//@Requires({
-//        @RequiredPort(name = "serviceGetVariable", type = PortType.SERVICE, className = TrustEntity.class)
-//})
-//@ComponentType
-public abstract class Metric extends AbstractComponentType {
+@Library(name = "Trust")
+@Requires({
+        @RequiredPort(name = "factorManagement", type = PortType.SERVICE, className = ITrustEntity.class)
+})
+@ComponentType
+public abstract class AbstractMetric extends AbstractComponentType {
 
     public Variable getVariable(String context, String name) {
         //Access trust model and return variable set by source
         //Now we can only access the trust model through the trustor's service
         //This limitation must be overcome by making the trust model accessible to all components
-        return getPortByName("serviceGetVariable", TrustEntity.class).
-                getVariable("myContext", "ttr");
+        System.out.println("Returning variable " + name);
+        return getPortByName("factorManagement", ITrustEntity.class).
+                getVariable(context, name);
     }
 
     //This method must be overridden by trust engines extending this class

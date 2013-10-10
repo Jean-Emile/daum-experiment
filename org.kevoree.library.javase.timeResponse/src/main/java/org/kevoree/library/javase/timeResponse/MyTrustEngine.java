@@ -1,7 +1,10 @@
 package org.kevoree.library.javase.timeResponse;
 
 
-import org.kevoree.trustAPI.Metric;
+import org.kevoree.annotation.*;
+import org.kevoree.trustAPI.AbstractMetric;
+import org.kevoree.trustAPI.ITrustEntity;
+import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -12,15 +15,18 @@ import org.kevoree.trustmetamodel.Variable;
  * To change this template use File | Settings | File Templates.
  */
 
-public class MyTrustEngine extends Metric {
+@Library(name = "Trust")
+@ComponentType
+public class MyTrustEngine extends AbstractMetric {
     @Override
     public Object compute() {
-        /*Variable x = getVariable("mycontext", "ttr");
-        Variable y = getVariable("mycontext", "ttr2");
 
-        float ttr1 = Float.parseFloat(x.getValue().getValue());
-        float ttr2 = Float.parseFloat(x.getValue().getValue());
-        return ttr1 / ttr2; */ //To change body of implemented methods use File | Settings | File Templates.
-        return "I'm MyTrustEngine";
+        Variable x = getVariable("myContext", "prejudice");
+        float res = -1.0f;
+        if (x != null) {
+            res = Float.parseFloat(x.getValue().getValue());
+        }
+        return res * 5;
+
     }
 }
