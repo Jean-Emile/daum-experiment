@@ -48,6 +48,7 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
         @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
 })*/
 @Library(name = "Trust")
+@ComponentType
 public class TrustEntity extends AbstractComponentType implements ITrustEntity {
 
     public TrustmetamodelFactory factory = null;
@@ -161,6 +162,7 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
             System.out.println("Metric found just after inserting: " + m2.getIdMetric());
 
         }
+        System.out.println("TOTOTOTOT" + getMetric(context));
         System.out.println("Created metric with context " + context + " and entity " + idTrustor);
 
         if (trustor == null) {
