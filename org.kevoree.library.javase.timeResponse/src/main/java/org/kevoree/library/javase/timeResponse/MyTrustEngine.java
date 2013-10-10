@@ -24,8 +24,10 @@ public class MyTrustEngine extends AbstractMetric {
         Variable x = getVariable("myContext", "prejudice");
         float res = -1.0f;
         if (x != null) {
+            System.out.println("Variable obtained from metamodel: " + x);
             res = Float.parseFloat(x.getValue().getValue());
         }
+
         return res * 5;
 
     }

@@ -25,10 +25,13 @@ public abstract class AbstractMetric extends AbstractComponentType {
         //Now we can only access the trust model through the trustor's service
         //This limitation must be overcome by making the trust model accessible to all components
         System.out.println("Returning variable " + name);
-        return getPortByName("factorManagement", ITrustEntity.class).
-                getVariable(context, name);
+        return getPortByName("factorManagement", ITrustEntity.class).getVariable(context, name);
     }
 
     //This method must be overridden by trust engines extending this class
     public abstract Object compute();
+
+    public String toString() {
+        return "This is an AbstractMetric";
+    }
 }

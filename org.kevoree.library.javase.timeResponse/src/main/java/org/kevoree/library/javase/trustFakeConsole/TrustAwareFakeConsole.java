@@ -38,8 +38,8 @@ import java.awt.event.KeyEvent;
 })
 @ComponentType
 @Library(name = "Trust")
-public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
-    @Override
+public class TrustAwareFakeConsole extends TrustEntity {
+    /*@Override
     public void run() {
             System.out.println("I'm alive: " + alive);
             while (alive)
@@ -75,25 +75,24 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                 }
 
             }
-        }
+    }*/
 
     private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
-
     private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 600;
     private MyFrame frame = null;
     private JFrame localFrame = null;
-    private Thread myThread = null;
-    private boolean alive = false;
+    //private Thread myThread = null;
+    //private boolean alive = false;
 
     @Override
     public void start() throws TrustException {
 
         super.start();
 
-        myThread = new Thread(this);
-        alive = true;
-        myThread.start();
+        //myThread = new Thread(this);
+        //alive = true;
+        //myThread.start();
 
         frame = new MyFrame();
         // frame.setTitle(getName() + "@@@" + getNodeName());
@@ -109,12 +108,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
             localFrame.setVisible(true);
         }
 
-        System.out.println("Let's try with a thread");
-
-        if (getDictionary().get("role").equals("trustor")) {
-
-
-            //This is provided by the Trust API
+        //This is provided by the Trust API
         //We create subjective factors of this entity
         System.out.println("Adding subjective factor");
         addSubjectiveFactor("myContext", "prejudice", "2");
@@ -124,9 +118,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
         if (m == null) {
             System.out.println("No metric for that combination of context and trustor");
         } else {
-            System.out.println("Metric retrieved and yielding " + m.compute());
-        }
-
+            System.out.println("Metric retrieved: " + m.toString() + " and yielding " + m.compute());
         }
 
     }
@@ -135,8 +127,6 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
     public void stop() {
 
         super.stop();
-
-        alive = false;
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
           KevoreeLayout.getInstance().releaseTab(getName());

@@ -62,18 +62,20 @@ public final class GetHelper {
                 for(ComponentInstance component:node.getComponents()) {
                     //We obtain the context of the component and if it's a trustee
                     String trusteeContext = propertyHelper.getProperty(component, "trustContext", false, node.getName());
-                    boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
-
-                    //System.out.println("For component " + component.getName() + "...");
-                    //System.out.println("trusteeContext is " +  trusteeContext);
-                    //System.out.println("is trustee is " +  isTrustee);
-                    if(isTrustee && trusteeContext.equals(context)) {
-                        //System.out.println("Therefore, I add component " + component.getName() + "to the list");
-                        components.add(component.getName());
+                    if (trusteeContext != null) {   //The component has a property "trustContext"
+                        String role = propertyHelper.getProperty(component, "role", false, node.getName());
+                        if (role != null) {  //The component has a property "role"
+                            boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
+                            //System.out.println("For component " + component.getName() + "...");
+                            //System.out.println("trusteeContext is " +  trusteeContext);
+                            //System.out.println("is trustee is " +  isTrustee);
+                            if(isTrustee && trusteeContext.equals(context)) {
+                                //System.out.println("Therefore, I add component " + component.getName() + "to the list");
+                                components.add(component.getName());
+                            }
+                        }
                     }
-
                 }
-
             }
         }
 
@@ -96,13 +98,6 @@ public final class GetHelper {
                 components.put(node.getName(), new ArrayList<String>(componentsOnNode));
             }
         }
-        /*
-        for (String n: components.keySet()) {
-            System.out.println("Node " + n + " is running the following trustees:");
-            for (String c : components.get(n)) {
-                System.out.println(c);
-            }
-        } */
 
         return components;
     }

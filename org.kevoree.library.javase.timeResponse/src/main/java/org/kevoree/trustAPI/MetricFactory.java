@@ -13,7 +13,7 @@ import org.kevoree.library.javase.timeResponse.MyTrustEngine;
 public final class MetricFactory {
 
     //Could be better implemented using enums and switch statement
-    static AbstractMetric createMetricInstance(String metricName) {
+    public static AbstractMetric createMetricInstance(String metricName) {
         AbstractMetric m = null;
         if(metricName.equals("MyTrustEngine")) {
             m = new MyTrustEngine();
