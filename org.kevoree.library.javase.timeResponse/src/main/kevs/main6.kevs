@@ -1,0 +1,27 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo1.maven.org/maven2/"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "https://oss.sonatype.org/content/groups/public/"
+addRepo "https://oss.sonatype.org/content/repositories/snapshots"
+addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+addNode node0:JavaSENode
+ {
+  addComponent MyTrustEn150@node0 : MyTrustEngine {}
+  addComponent TrustAwar852@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
+addChannel defSERVIC944 : defSERVICE {}
+bind MyTrustEn150.factorManagement@node0 => defSERVIC944
+bind TrustAwar852.factorManagement@node0 => defSERVIC944
+updateDictionary defSERVIC944 
+updateDictionary TrustAwar852@node0 
+updateDictionary MyTrustEn150@node0 
+}
+
+addGroup group1158844868:BasicGroup
+addToGroup group1158844868 node0
+updateDictionary group1158844868{ip="0.0.0.0",port="8000"}@node0
+}

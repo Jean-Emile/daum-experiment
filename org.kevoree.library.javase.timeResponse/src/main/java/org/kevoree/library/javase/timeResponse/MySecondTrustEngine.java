@@ -1,26 +1,23 @@
 package org.kevoree.library.javase.timeResponse;
 
-
 import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
-import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.ITrustEntity;
-import org.kevoree.trustAPI.ITrustMetric;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
- * Date: 25/03/13
- * Time: 09:51
+ * Date: 14/10/13
+ * Time: 11:06
  * To change this template use File | Settings | File Templates.
  */
 
 @Library(name = "Trust")
 @ComponentType
-public class MyTrustEngine extends AbstractMetric implements ModelListener {//AbstractMetric implements ModelListener {
+public class MySecondTrustEngine extends AbstractMetric implements ModelListener {
 
     private boolean isAlive = false;
 
@@ -57,7 +54,6 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
     @Start
     public void start() {
 
-        super.start();
         System.out.println("My Trust Engine started");
         isAlive = true;
         //System.out.println("My Trust Engine yields now "+ compute());
@@ -76,12 +72,12 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
     public Object compute() {
 
-        float res = -1.0f;
+        float res = 50f;
 
         if (isAlive) {
-            //System.out.println("My Trust Engine is alive");
+            System.out.println("My Trust Engine is alive");
 
-            //System.out.println("Calling getPortByName... ");
+            System.out.println("Calling getPortByName... ");
             ITrustEntity o = getPortByName("factorManagement", ITrustEntity.class);
 
             if (o == null) {
@@ -89,9 +85,9 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
             }
 
             Variable x = o.getVariable("myContext", "prejudice");
-                //getVariable("myContext", "prejudice");
+            //getVariable("myContext", "prejudice");
             if (x != null) {
-                //System.out.println("Variable obtained from metamodel: " + x);
+                System.out.println("Variable obtained from metamodel: " + x);
                 res = Float.parseFloat(x.getValue().getValue());
             }
 
@@ -109,6 +105,6 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
     @Override
     public void onFactorValueChange(String context, String factorName, String idTrustor, String value) {
-
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

@@ -15,9 +15,9 @@ public final class MetricFactory {
     //Could be better implemented using enums and switch statement
     public static AbstractMetric createMetricInstance(String metricName) {
         AbstractMetric m = null;
-        if(metricName.equals("MyTrustEngine")) {
+        /*if(metricName.equals("MyTrustEngine")) {
             m = new MyTrustEngine();
-        }
+        } */
         return m;
     }
 }

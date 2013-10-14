@@ -37,6 +37,9 @@ public interface ITrustEntity {
     public void addVariable(String context, String name, String idTarget, String value);
     public Variable getVariable(String context, String name);
     public void addSubjectiveFactor(String context, String name, String value);
+    public boolean isTrustee(String potentialTrusteeName);
+    public void registerMetric(AbstractMetric am);
+    public void updateTrustRelationship(String context, String idTrustee)
 
 }
 

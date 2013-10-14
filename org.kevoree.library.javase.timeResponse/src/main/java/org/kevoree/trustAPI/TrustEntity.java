@@ -4,6 +4,7 @@ import jet.runtime.typeinfo.JetValueParameter;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 //import org.kevoree.reconfigurationAPI.AdaptationManager;
+import org.kevoree.library.javase.timeResponse.MyTrustEngine;
 import org.kevoree.modeling.api.events.ModelEvent;
 import org.kevoree.modeling.api.events.ModelTreeListener;
 import org.kevoree.trustmetamodel.TrustRoot;
@@ -44,15 +45,16 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
         //@ProvidedPort(name = "serviceAddVariable", type = PortType.SERVICE, className = ITrustEntity.class),
         @ProvidedPort(name = "factorManagement", type = PortType.SERVICE, className = ITrustEntity.class)
 })
-/*@Requires({
-        @RequiredPort(name = "reconfigure", type = PortType.SERVICE, className = AdaptationManager.class)
-})*/
+@Requires({
+        @RequiredPort(name = "instance", type = PortType.SERVICE, className = ITrustMetric.class, optional = true, needCheckDependency = true)
+})
 @Library(name = "Trust")
 @ComponentType
 public class TrustEntity extends AbstractComponentType implements ITrustEntity {
 
-    public TrustmetamodelFactory factory = null;
-    public TrustRoot trustModel = null;
+    private TrustmetamodelFactory factory = null;
+    private TrustRoot trustModel = null;
+    private List<AbstractMetric> registeredMetrics = null;
 
     //public boolean alive = false;
     //public Thread thread = null;
@@ -61,16 +63,16 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
     @Start
     public void start() throws TrustException {
 
+        System.out.println("Trust Entity started");
         factory = new DefaultTrustmetamodelFactory();
         trustModel = factory.createTrustRoot();
 
+        System.out.println("Checking whether " + getModelElement().getName() + " is a trustor");
         if (getDictionary().get("role").equals("trustor")) {
 
+            System.out.println("... and it is indeed");
         //thread = new Thread(this);
         //alive = true;
-
-        System.out.println("Address of trust model just after being init: " + trustModel);
-
         /*trustModel.addModelTreeListener(new ModelTreeListener() {
             @Override
             public void elementChanged(@JetValueParameter(name = "evt", type = "Lorg/kevoree/modeling/api/events/ModelEvent;") ModelEvent modelEvent) {
@@ -105,11 +107,13 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
     //Initialize trust relationships between the trustor and all its trustees
     private void initializeTrustRelationships()
     {
+
+        System.out.println("Initializing trust metamodel");
         String context = getDictionary().get("trustContext").toString();
         String idTrustor = getModelElement().getName();
         String nameMetric = getDictionary().get("metric").toString();
         String role = getDictionary().get("role").toString();
-        AbstractMetric m = MetricFactory.createMetricInstance(nameMetric);
+        AbstractMetric m = getPortByName("instance", ITrustMetric.class).getInstance();
 
         //Get all the trustees to this trustor
         //trustees store: [Node 0, (CompInstance1, CompInstance2, etc)]
@@ -128,6 +132,7 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
         //Now, we have all the information regarding the new trust relationship
         //We know: trustor, trustee, context and metric
         //We have to create all the necessary entities in the trust metamodel
+        System.out.println("Adding trust relationships");
         for (String t : idTrustee) {
             addTrustRelationship(m, context, idTrustor, t);
         }
@@ -135,8 +140,10 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
 
     //This method stores in the trust model the metric to be used by a trustor for a trustee type under
     //a context. It also creates a trust relationship, and adds trustor and trustee
-    private void addTrustRelationship(AbstractMetric metric, String context, String idTrustor, String idTrustee)
+    private void addTrustRelationship(ITrustMetric metric, String context, String idTrustor, String idTrustee)
     {
+
+        System.out.println("At the beginning of addTRustRelationship");
         org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
         org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
         org.kevoree.trustmetamodel.Metric m = trustModel.findMetricsByID(context + trustor);
@@ -145,11 +152,13 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
         //We create the metric
         if (m == null) {
             m = factory.createMetric();
+            System.out.println("Creating metric with the factory");
         }
         m.setContext(context);
         m.setIdMetric(context + idTrustor);
         m.setEngine(metric);
         trustModel.addMetrics(m);
+        System.out.println("Metric for context "+ context + " and trustor " + getModelElement().getName() + " created and added.");
 
         //We create the trustor
         if (trustor == null) {
@@ -166,6 +175,7 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
         }
         trustee.setIdTrustee(idTrustee);
         trustModel.addTrustees(trustee);
+        trustor.addTrustorTrustees(trustee);
 
         //We create the trust relationships
         if (tr == null) {
@@ -183,7 +193,8 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
         tr.setTrustValue(tv);
         trustModel.addTRelationships(tr);
 
-        System.out.println("Trust metamodel instatiated!");
+
+        System.out.println("trust relationship with id " + context + idTrustor + idTrustee + " initialized");
     }
 
 
@@ -192,12 +203,11 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
 
         AbstractMetric am = null;
 
+        System.out.println("Looking for metric for context " + context + " and for trustor " + getModelElement().getName());
         if (getDictionary().get("role").equals("trustor")) {
-            System.out.println("I'm looking for a metric in the context " + context +
-                    " for entity " + getModelElement().getName());
             org.kevoree.trustmetamodel.Metric met = trustModel.findMetricsByID(context + getModelElement().getName());
             if (met != null) {
-                System.out.println("Returning metric");
+                System.out.println("I found the metric for " + getModelElement().getName() + " and I returned it");
                 am = (AbstractMetric) met.getEngine();
             }
 
@@ -213,30 +223,50 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
         return m.compute();
     }
 
-    public void updateTrustRelationship(String context, String idTrustor, String idTrustee) {
-        //Update trust relationship in the model (add timestamp)
-        TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
-        if (tr.getTrustValue().getValue() == null) {
-            TrustValue value = factory.createTrustValue();
-            AbstractMetric m = (AbstractMetric) trustModel.findMetricsByID(context + idTrustor + idTrustee).getEngine();
-            java.util.Date date= new java.util.Date();
-            value.setTimeStamp(String.valueOf(date.getTime()));
-            value.setValue(m.compute().toString()); //This may fail
+    //For simplicity, we assume that the trust relationship already exists and that therefore we only update the trust value
+    @Port(name="factorManagement", method="updateTrustRelationship")
+    public void updateTrustRelationship(String context, String idTrustee) {
+
+        if (getDictionary().get("role").equals("trustor")) {
+
+
+        System.out.println("Starting the update of trust relationship with id " + context + getModelElement().getName() + idTrustee);
+        TrustRelationship tr = trustModel.findTRelationshipsByID(context + getModelElement().getName() + idTrustee);
+        TrustValue value = factory.createTrustValue();
+
+        AbstractMetric m = (AbstractMetric) trustModel.findMetricsByID(context + getModelElement().getName()).getEngine();
+
+            if (m == null) {
+                System.out.println("Metric is null");
+            }else {
+                System.out.println("Metric got!");
+            }
+
+        String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
+        value.setTimeStamp(timeStamp);
+        value.setValue(m.compute().toString());
+        tr.setTrustValue(value);
+        System.out.println("Update finished with value " + m.compute());
+
         }
     }
+
+    public String getTrustValue(String context, String idTrustee) {
+        return trustModel.findTRelationshipsByID(context + getModelElement().getName() + idTrustee).getTrustValue().getValue();
+
+    }
+
 
     public void updateAllTrustRelationships(String context, String idTrustor) {
         org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
         if (trustor != null) {
             for (org.kevoree.trustmetamodel.Trustee trustee : trustor.getTrustorTrustees()) {
-                updateTrustRelationship(context, idTrustor, trustee.getIdTrustee());
+                updateTrustRelationship(context, idTrustor);
             }
         }
     }
 
     public List<org.kevoree.trustmetamodel.Trustee> getTrustees() {
-        System.out.println("IT'S ME: " + getModelElement().getName() + " CALLING GETTRUSTEES");
-
         return trustModel.getTrustees();
     }
 
@@ -262,32 +292,54 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
     }
 
     @Override
-    @Port(method = "getVariable",name = "factorManagement")
+    @Port(name="factorManagement", method="getVariable")
     public Variable getVariable(String context, String name) {
+        //System.out.println("Engine is accessing TrustEntity getVariable");
         return trustModel.findVariablesByID(context + name);
     }
+
 
     @Override
     @Port(method = "addSubjectiveFactor",name = "factorManagement")
     public void addSubjectiveFactor(String context, String name, String value) {
 
-        System.out.println("I just entered addSubjectiveFactor");
         Variable var = trustModel.findVariablesByID(context + name);
         if (var == null) {
-            System.out.println("Creating a new variable");
             var = factory.createVariable();
         }
-        System.out.println(var + " created");
         var.setContext(context);
         var.setIdVariable(context + name);
         var.setIdSource(getModelElement().getName());
         var.setIdTarget(null);
         VariableValue varVal = factory.createVariableValue();
-        System.out.println(varVal + " created");
         varVal.setValue(value);
         var.setValue(varVal);
         trustModel.addVariables(var);
-        System.out.println("Everything was fine");
+        System.out.println("Variable " + name + " created for " + getModelElement().getName());
+        for (AbstractMetric am : registeredMetrics) {
+            am.onNewFactor(context, name, getModelElement().getName(), value);
+            am.onFactorValueChange(context, name, getModelElement().getName(), value);
+        }
+
+    }
+
+    @Override
+    @Port(name="factorManagement", method="isTrustee")
+    public boolean isTrustee(String potentialTrusteeName) {
+
+        boolean res = false;
+        if (trustModel.findTrusteesByID(potentialTrusteeName) != null) {
+            res = true;
+        }
+
+        return res;
+
+    }
+
+    @Override
+    @Port(name="factorManagement", method="registerMetric")
+    public void registerMetric(AbstractMetric am) {
+        registeredMetrics.add(am);
     }
 }
 

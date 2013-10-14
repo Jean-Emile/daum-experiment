@@ -4,8 +4,10 @@ import org.kevoree.annotation.*;
 import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
+import org.kevoree.library.javase.timeResponse.MyTrustEngine;
 import org.kevoree.library.ui.layout.KevoreeLayout;
 import org.kevoree.trustAPI.AbstractMetric;
+import org.kevoree.trustAPI.GetHelper;
 import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustAPI.TrustException;
 import org.kevoree.trustmetamodel.Trustee;
@@ -38,61 +40,60 @@ import java.awt.event.KeyEvent;
 })
 @ComponentType
 @Library(name = "Trust")
-public class TrustAwareFakeConsole extends TrustEntity {
-    /*@Override
+public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
+
+    public void onTrustValueChanged(AbstractMetric am, String trustor, String trustee, String context) {
+
+    }
+
+
+
+    @Override
     public void run() {
-            System.out.println("I'm alive: " + alive);
+
             while (alive)
             {
 
-                if (getDictionary().get("role").equals("trustor")) {
+                addSubjectiveFactor("myContext", "prejudice", "2");
+                updateTrustRelationship("myContext", GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                        "textEntered", getModelElement().getName()));
 
-                    //This is provided by the Trust API
-                    //We create subjective factors of this entity
-                    System.out.println("Adding subjective factor");
-                    addSubjectiveFactor("myContext", "prejudice", "2");
-                    System.out.println("Calling getMetric");
-                    AbstractMetric m = getMetric("myContext");
-                    System.out.println("Coming back from getMetric");
-                    if (m == null) {
-                        System.out.println("No metric for that combination of context and trustor");
-                    } else {
-                        System.out.println("Metric retrieved and yielding " + m.compute());
-                    }
-
-                    System.out.println("Looking for trustees...");
-                    for (Trustee t : getTrustees()) {
-                        System.out.println("Trustee: " + t.getIdTrustee());
-                    }
-
-                }
+                /*
+                AbstractMetric m = getMetric("myContext");
+                if (m == null) {
+                    System.out.println("No metric for that combination of context and trustor: " + getModelElement().getName());
+                } else {
+                    System.out.println("Metric retrieved: " + m.toString() + " and yielding ");
+                    System.out.println(m.compute());
+                }    */
 
                 try
                 {
-                    Thread.sleep(3000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             }
-    }*/
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
     private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 600;
     private MyFrame frame = null;
     private JFrame localFrame = null;
-    //private Thread myThread = null;
-    //private boolean alive = false;
+    private Thread myThread = null;
+    private boolean alive = false;
 
     @Override
     public void start() throws TrustException {
 
         super.start();
 
-        //myThread = new Thread(this);
-        //alive = true;
-        //myThread.start();
+        System.out.println("Trust console started");
+        myThread = new Thread(this);
+        alive = true;
+        myThread.start();
 
         frame = new MyFrame();
         // frame.setTitle(getName() + "@@@" + getNodeName());
@@ -110,16 +111,7 @@ public class TrustAwareFakeConsole extends TrustEntity {
 
         //This is provided by the Trust API
         //We create subjective factors of this entity
-        System.out.println("Adding subjective factor");
-        addSubjectiveFactor("myContext", "prejudice", "2");
-        System.out.println("Calling getMetric");
-        AbstractMetric m = getMetric("myContext");
-        System.out.println("Coming back from getMetric");
-        if (m == null) {
-            System.out.println("No metric for that combination of context and trustor");
-        } else {
-            System.out.println("Metric retrieved: " + m.toString() + " and yielding " + m.compute());
-        }
+
 
     }
 
@@ -167,9 +159,56 @@ public class TrustAwareFakeConsole extends TrustEntity {
     }
 
     public void appendOutgoing(String text) {
+
         frame.appendOutgoing(text);
         if (isPortBinded("textEntered")) {
-            getPortByName("textEntered", MessagePort.class).process(text);
+
+            //Only trustors check trust
+            if (getDictionary().get("role").equals("trustor")) {
+
+                //We search for the component instance connected with the current component through the port "textEntered"
+                String trustee = GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "textEntered", getModelElement().getName());
+
+                //If it's a trustee of the current component
+                if (isTrustee(trustee)) {
+
+                    System.out.println("The trust value of this relationship is... " + Float.parseFloat(getTrustValue("myContext", trustee)));
+                    if (Float.parseFloat(getTrustValue("myContext", trustee)) > 20) {
+                    //AbstractMetric m = getMetric("myContext");
+                    //if ((Float) m.compute() > 100) {
+                        System.out.println("Yes, " + trustee + " can be trusted by " + getModelElement().getName());
+                        getPortByName("textEntered", MessagePort.class).process(text);
+                    } else {
+                        System.out.println("Unfortunately,  " + trustee + " is not trusted by " + getModelElement().getName());
+                    }
+
+                } else {
+                    System.out.println("Sorry, I don't know what to do... He's not my trustee...");
+                }
+            }
+
+
+
+//
+//            //Only send the text if the trustee is trusted
+//            if (getDictionary().get("role").equals("trustor")) {
+//
+//                System.out.println("I'm " + getModelElement().getName());
+//
+//                for (String trustee : GetHelper.componentOnPort(getModelService().getLastModel(), "textEntered", getModelElement().getName())) {
+//                    if (isTrustee(trustee)) {
+//
+//                    }
+//                }
+//
+//
+//            }
+
+
+
+
+
+
         }
     }
 
@@ -188,6 +227,7 @@ public class TrustAwareFakeConsole extends TrustEntity {
             }
         }
     }
+
 
     private class MyFrame extends JPanel {
 
