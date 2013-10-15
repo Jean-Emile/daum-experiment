@@ -42,8 +42,10 @@ import java.awt.event.KeyEvent;
 @Library(name = "Trust")
 public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
-    public void onTrustValueChanged(AbstractMetric am, String trustor, String trustee, String context) {
-
+    //When a metric of this trustor has a new trust value available, it notifies through this method
+    //The trustor can now decide whether to update or not the trust relationship
+    public void onTrustValueChanged(String context, String metricSender, String idTrustee) {
+        updateTrustRelationship(context, idTrustee);
     }
 
 
@@ -54,9 +56,16 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
             while (alive)
             {
 
-                addSubjectiveFactor("myContext", "prejudice", "2");
-                updateTrustRelationship("myContext", GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                if (getDictionary().get("role").equals("trustor")) {
+
+                    double r = 1 + (Math.random() * ((10 - 1) + 1));
+
+                    System.out.println("New random value for prejudice generated: " + r);
+
+                    addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
+                    updateTrustRelationship("myContext", GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
                         "textEntered", getModelElement().getName()));
+                }
 
                 /*
                 AbstractMetric m = getMetric("myContext");
@@ -108,11 +117,6 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
             localFrame.pack();
             localFrame.setVisible(true);
         }
-
-        //This is provided by the Trust API
-        //We create subjective factors of this entity
-
-
     }
 
     @Override
@@ -173,7 +177,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                 if (isTrustee(trustee)) {
 
                     System.out.println("The trust value of this relationship is... " + Float.parseFloat(getTrustValue("myContext", trustee)));
-                    if (Float.parseFloat(getTrustValue("myContext", trustee)) > 20) {
+                    if (Float.parseFloat(getTrustValue("myContext", trustee)) > 10) {
                     //AbstractMetric m = getMetric("myContext");
                     //if ((Float) m.compute() > 100) {
                         System.out.println("Yes, " + trustee + " can be trusted by " + getModelElement().getName());

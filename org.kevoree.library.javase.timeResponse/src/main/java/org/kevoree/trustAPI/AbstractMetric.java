@@ -28,7 +28,13 @@ public abstract class AbstractMetric extends AbstractComponentType implements IT
     public void start() {
         isAlive = true;
         //System.out.println("Abstract Metric started");
-        GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "factorManagement", getModelElement().getName()) ;
+        GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "factorManagement", getModelElement().getName());
+
+        System.out.println("Registering metric for trust events notifications");
+
+        //At start time, we register the metric with the trustor
+        //getPortByName("factorManagement", ITrustEntity.class).registerMetric("myContext");
+        System.out.println("Metric registration successful");
     }
 
     @Stop

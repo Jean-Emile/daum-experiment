@@ -7,31 +7,40 @@ addRepo "https://oss.sonatype.org/content/repositories/snapshots"
 addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
 merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
 addNode node0:JavaSENode
  {
+  addComponent TrustAwar852@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
+  addComponent MySecondT870@node0 : MySecondTrustEngine {}
   addComponent MyTrustEn150@node0 : MyTrustEngine {}
   addComponent TrustAwar990@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
-  addComponent TrustAwar852@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
 addChannel defMSG372 : defMSG {}
-addChannel defSERVIC944 : defSERVICE {}
 addChannel defMSG228 : defMSG {}
+addChannel defSERVIC944 : defSERVICE {}
+addChannel defSERVIC527 : defSERVICE {}
 addChannel defSERVIC946 : defSERVICE {}
+addChannel defSERVIC517 : defSERVICE {}
+bind MySecondT870.factorManagement@node0 => defSERVIC517
 bind TrustAwar852.factorManagement@node0 => defSERVIC944
-bind TrustAwar852.showText@node0 => defMSG372
-bind TrustAwar852.instance@node0 => defSERVIC946
-bind MyTrustEn150.instance@node0 => defSERVIC946
-bind TrustAwar852.textEntered@node0 => defMSG228
-bind MyTrustEn150.factorManagement@node0 => defSERVIC944
-bind TrustAwar990.showText@node0 => defMSG228
 bind TrustAwar990.textEntered@node0 => defMSG372
-updateDictionary TrustAwar990@node0 
-updateDictionary defSERVIC946 
-updateDictionary defMSG372 
-updateDictionary defSERVIC944 
+bind TrustAwar852.showText@node0 => defMSG372
+bind TrustAwar990.showText@node0 => defMSG228
+bind TrustAwar852.instance@node0 => defSERVIC527
+bind MyTrustEn150.factorManagement@node0 => defSERVIC944
+bind TrustAwar852.textEntered@node0 => defMSG228
+bind MySecondT870.instance@node0 => defSERVIC527
+bind MyTrustEn150.instance@node0 => defSERVIC946
+bind TrustAwar852.factorManagement@node0 => defSERVIC517
+updateDictionary defSERVIC517 
 updateDictionary TrustAwar852@node0 
+updateDictionary defSERVIC946 
+updateDictionary defSERVIC527 
+updateDictionary defSERVIC944 
+updateDictionary defMSG372 
 updateDictionary defMSG228 
+updateDictionary MySecondT870@node0 
+updateDictionary TrustAwar990@node0 
 updateDictionary MyTrustEn150@node0 
 }
 

@@ -60,6 +60,8 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         super.start();
         System.out.println("My Trust Engine started");
         isAlive = true;
+
+
         //System.out.println("My Trust Engine yields now "+ compute());
         //getModelService().registerModelListener(this);
     }
@@ -98,17 +100,23 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         } else {
             System.out.println("My Trust Engine is NOT alive");
         }
-        return res * 5;
+        return res * 2;
 
     }
 
     @Override
     public void onNewFactor(String context, String factorName, String idTrustor, String value) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        System.out.println("New factor added to the model: " + context + " " + factorName + " " + idTrustor + " " + value);
     }
 
     @Override
     public void onFactorValueChange(String context, String factorName, String idTrustor, String value) {
+        System.out.println("Factor value changed: " + context + " " + factorName + " " + idTrustor + " " + value);
 
+        //When we make sure that the factor is one that affects this metric, we re-compute and notify the trustors
+        if (context.equals("myContext") && factorName.equals("prejudice")) {
+            //compute();
+
+        }
     }
 }
