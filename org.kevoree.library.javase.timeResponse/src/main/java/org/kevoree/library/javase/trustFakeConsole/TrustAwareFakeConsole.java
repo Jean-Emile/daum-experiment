@@ -99,7 +99,8 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
         super.start();
 
-        System.out.println("Trust console started");
+        System.out.println("Trust console " + getModelElement().getName() + " started");
+
         myThread = new Thread(this);
         alive = true;
         myThread.start();
@@ -119,10 +120,9 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
         }
     }
 
-    @Override
     public void stop() {
 
-        super.stop();
+        //super.stop();
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
           KevoreeLayout.getInstance().releaseTab(getName());
@@ -136,9 +136,9 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
     }
 
     @Update
-    public void update() throws TrustException {
+    public void update() {
 
-        super.update();
+        //super.update();
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
             if(localFrame != null) {

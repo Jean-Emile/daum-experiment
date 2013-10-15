@@ -6,36 +6,38 @@ addRepo "https://oss.sonatype.org/content/groups/public/"
 addRepo "https://oss.sonatype.org/content/repositories/snapshots"
 addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
-merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
 addNode node0:JavaSENode
  {
-  addComponent MyTrustEn150@node0 : MyTrustEngine {}
-  addComponent TrustAwar990@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
-  addComponent TrustAwar852@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
-addChannel defMSG372 : defMSG {}
-addChannel defSERVIC944 : defSERVICE {}
-addChannel defMSG228 : defMSG {}
-addChannel defSERVIC946 : defSERVICE {}
-bind TrustAwar852.factorManagement@node0 => defSERVIC944
-bind TrustAwar852.showText@node0 => defMSG372
-bind TrustAwar852.instance@node0 => defSERVIC946
-bind MyTrustEn150.instance@node0 => defSERVIC946
-bind TrustAwar852.textEntered@node0 => defMSG228
-bind MyTrustEn150.factorManagement@node0 => defSERVIC944
-bind TrustAwar990.showText@node0 => defMSG228
-bind TrustAwar990.textEntered@node0 => defMSG372
-updateDictionary TrustAwar990@node0 
-updateDictionary defSERVIC946 
-updateDictionary defMSG372 
-updateDictionary defSERVIC944 
-updateDictionary TrustAwar852@node0 
-updateDictionary defMSG228 
-updateDictionary MyTrustEn150@node0 
+  addComponent TrustAwar837@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
+  addComponent TrustMode199@node0 : TrustModel {}
+  addComponent TrustAwar952@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
+  addComponent MyTrustEn396@node0 : MyTrustEngine {}
+addChannel defSERVIC842 : defSERVICE {}
+addChannel defMSG892 : defMSG {}
+addChannel defSERVIC48 : defSERVICE {}
+addChannel defSERVIC395 : defSERVICE {}
+addChannel defMSG616 : defMSG {}
+bind TrustAwar837.textEntered@node0 => defMSG892
+bind TrustAwar837.instance@node0 => defSERVIC48
+bind MyTrustEn396.instance@node0 => defSERVIC48
+bind TrustAwar952.textEntered@node0 => defMSG616
+bind TrustAwar952.showText@node0 => defMSG892
+bind TrustAwar837.showText@node0 => defMSG616
+bind TrustAwar837.factorManagement@node0 => defSERVIC395
+bind TrustMode199.trustManagement@node0 => defSERVIC842
+bind TrustAwar837.trustManagement@node0 => defSERVIC842
+bind MyTrustEn396.factorManagement@node0 => defSERVIC395
+updateDictionary defSERVIC395 
+updateDictionary TrustMode199@node0 
+updateDictionary MyTrustEn396@node0 
+updateDictionary defMSG616 
+updateDictionary defSERVIC842 
+updateDictionary TrustAwar837@node0 
+updateDictionary TrustAwar952@node0 
+updateDictionary defSERVIC48 
+updateDictionary defMSG892 
 }
 
-addGroup group1158844868:BasicGroup
-addToGroup group1158844868 node0
-updateDictionary group1158844868{ip="0.0.0.0",port="8000"}@node0
 }

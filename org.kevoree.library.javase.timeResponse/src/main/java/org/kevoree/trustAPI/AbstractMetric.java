@@ -5,6 +5,8 @@ import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustmetamodel.Variable;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
@@ -20,13 +22,16 @@ import org.kevoree.trustmetamodel.Variable;
 @Provides({
         @ProvidedPort(name = "instance", type = PortType.SERVICE, className = ITrustMetric.class)
 })
-@ComponentType
+@ComponentFragment
 public abstract class AbstractMetric extends AbstractComponentType implements ITrustMetric, TrustEventListener {
 
-    public boolean isAlive = false;
+    //A list of trustor instances using the metric
+    //List<TrustEntity> trustors;
+    public boolean started = false;
+
     @Start
     public void start() {
-        isAlive = true;
+        started = true;
         //System.out.println("Abstract Metric started");
         GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "factorManagement", getModelElement().getName());
 
@@ -60,10 +65,15 @@ public abstract class AbstractMetric extends AbstractComponentType implements IT
 
     @Port(name="instance", method="getInstance")
     @Override
-    public AbstractMetric getInstance() {
+    public AbstractMetric getInstance(TrustEntity te) {
         System.out.println("A trustor called getInstance of the metric");
+        //trustors.add(te);
         return this;
     }
+
+    //public List<TrustEntity> getTrustors() {
+        //return trustors;
+    //}
 
     //This method must be overridden by trust engines extending this class
     public abstract Object compute();

@@ -8,5 +8,5 @@ package org.kevoree.trustAPI;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITrustMetric {
-    public AbstractMetric getInstance();
+    public AbstractMetric getInstance(TrustEntity te);
 }

@@ -8,6 +8,7 @@ import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.ITrustEntity;
 import org.kevoree.trustAPI.ITrustMetric;
+import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -22,7 +23,7 @@ import org.kevoree.trustmetamodel.Variable;
 @ComponentType
 public class MyTrustEngine extends AbstractMetric implements ModelListener {//AbstractMetric implements ModelListener {
 
-    private boolean isAlive = false;
+    private boolean started = false;
 
     @Override
     public boolean afterLocalUpdate(ContainerRoot cr, ContainerRoot cr1) {
@@ -59,7 +60,7 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
         super.start();
         System.out.println("My Trust Engine started");
-        isAlive = true;
+        started = true;
 
 
         //System.out.println("My Trust Engine yields now "+ compute());
@@ -80,7 +81,7 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
         float res = -1.0f;
 
-        if (isAlive) {
+        if (started) {
             //System.out.println("My Trust Engine is alive");
 
             //System.out.println("Calling getPortByName... ");
@@ -100,6 +101,8 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         } else {
             System.out.println("My Trust Engine is NOT alive");
         }
+
+        System.out.println("I'm coming back from compute() with value " + res * 2);
         return res * 2;
 
     }
@@ -107,16 +110,22 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
     @Override
     public void onNewFactor(String context, String factorName, String idTrustor, String value) {
         System.out.println("New factor added to the model: " + context + " " + factorName + " " + idTrustor + " " + value);
+
     }
 
     @Override
     public void onFactorValueChange(String context, String factorName, String idTrustor, String value) {
         System.out.println("Factor value changed: " + context + " " + factorName + " " + idTrustor + " " + value);
 
+
         //When we make sure that the factor is one that affects this metric, we re-compute and notify the trustors
         if (context.equals("myContext") && factorName.equals("prejudice")) {
-            //compute();
+            System.out.println("I can recompute a new trust. I'll inform the trustors that hold me");
 
         }
+    }
+
+    public String toString() {
+        return "MyTrustEngine";
     }
 }
