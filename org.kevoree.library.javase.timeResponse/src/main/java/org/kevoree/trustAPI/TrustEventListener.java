@@ -1,8 +1,5 @@
 package org.kevoree.trustAPI;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara

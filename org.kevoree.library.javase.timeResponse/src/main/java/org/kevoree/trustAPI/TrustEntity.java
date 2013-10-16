@@ -3,7 +3,6 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustmetamodel.*;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +25,7 @@ import java.util.List;
 })
 @Requires({
         @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, optional = true, needCheckDependency = true),
-        @RequiredPort(name = "instance", type = PortType.SERVICE, className = ITrustMetric.class, optional = true, needCheckDependency = true)
+        @RequiredPort(name = "instance", type = PortType.MESSAGE, className = ITrustMetric.class, optional = true, needCheckDependency = true)
 })
 @Library(name = "Trust")
 @ComponentType
@@ -101,7 +100,7 @@ public class TrustEntity extends AbstractComponentType implements ITrustEntity {
     public Variable getVariable(String context, String name) {
         System.out.println(getModelElement().getName() + " is calling getVariable " + context + name);
         System.out.println("C'monnn, what's going on??");
-        getPortByName("trustManagement",Messs)
+        getPortByName("trustManagement", MessagePort)
         new Thread(new Runnable() {
 
             @Override

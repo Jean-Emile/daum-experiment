@@ -1,9 +1,6 @@
 package org.kevoree.trustAPI;
 
-import org.kevoree.trustmetamodel.Trustee;
 import org.kevoree.trustmetamodel.Variable;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

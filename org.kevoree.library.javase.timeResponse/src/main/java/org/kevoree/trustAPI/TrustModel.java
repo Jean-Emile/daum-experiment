@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
+import static org.kevoree.trustAPI_SERVICE.GetHelper.getTrusteesInstanceName;
 
 /**
  * Created with IntelliJ IDEA.
@@ -93,7 +93,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         AbstractMetric am = null;
 
         System.out.println("Looking for metric for context " + context + " and for entity " + idTrustor);
-        org.kevoree.trustmetamodel.Metric met = trustModel.findMetricsByID(context + getModelElement().getName());
+        Metric met = trustModel.findMetricsByID(context + getModelElement().getName());
         if (met != null) {
             System.out.println("I found the metric for " + getModelElement().getName() + " and I returned it");
             am = (AbstractMetric) met.getEngine();
@@ -173,10 +173,10 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
     private void addTrustRelationship(AbstractMetric metric, String context, String idTrustor, String idTrustee) {
 
-        org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
-        org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
-        org.kevoree.trustmetamodel.Metric m = trustModel.findMetricsByID(context + trustor);
-        org.kevoree.trustmetamodel.TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
+        Trustor trustor = trustModel.findTrustorsByID(idTrustor);
+        Trustee trustee = trustModel.findTrusteesByID(idTrustee);
+        Metric m = trustModel.findMetricsByID(context + trustor);
+        TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
 
         //We create the metric
         if (m == null) {
@@ -213,7 +213,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         tr.setContext(context);
         tr.setTrustor(trustor);
         tr.setTrustee(trustee);
-        org.kevoree.trustmetamodel.TrustValue tv = factory.createTrustValue();
+        TrustValue tv = factory.createTrustValue();
         tv.setValue("Default value");
         String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
         tv.setTimeStamp(timeStamp);

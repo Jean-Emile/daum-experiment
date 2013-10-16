@@ -12,7 +12,7 @@ import java.util.*;
 import org.kevoree.trustmetamodel.*;
 import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
 
-import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
+import static org.kevoree.trustAPI_SERVICE.GetHelper.getTrusteesInstanceName;
 */
 
 /**

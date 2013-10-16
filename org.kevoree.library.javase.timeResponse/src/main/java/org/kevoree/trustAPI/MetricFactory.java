@@ -1,7 +1,5 @@
 package org.kevoree.trustAPI;
 
-import org.kevoree.library.javase.timeResponse.MyTrustEngine;
-
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara

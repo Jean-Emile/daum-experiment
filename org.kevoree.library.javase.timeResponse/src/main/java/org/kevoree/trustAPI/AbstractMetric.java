@@ -5,8 +5,6 @@ import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustmetamodel.Variable;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
