@@ -15,29 +15,24 @@ import org.kevoree.trustmetamodel.Variable;
 
 @Library(name = "Trust")
 @Requires({
-        @RequiredPort(name = "factorManagement", type = PortType.SERVICE, className = ITrustEntity.class)
+        @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, needCheckDependency = true)
 })
 @Provides({
-        @ProvidedPort(name = "instance", type = PortType.SERVICE, className = ITrustMetric.class)
+        @ProvidedPort(name = "compute", type = PortType.SERVICE, className = ITrustMetric.class)
 })
 @ComponentFragment
-public abstract class AbstractMetric extends AbstractComponentType implements ITrustMetric, TrustEventListener {
+public abstract class AbstractMetric extends AbstractComponentType {
 
-    //A list of trustor instances using the metric
-    //List<TrustEntity> trustors;
     public boolean started = false;
 
     @Start
     public void start() {
         started = true;
         //System.out.println("Abstract Metric started");
-        GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "factorManagement", getModelElement().getName());
-
-        System.out.println("Registering metric for trust events notifications");
+        //GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "factorManagement", getModelElement().getName());
 
         //At start time, we register the metric with the trustor
         //getPortByName("factorManagement", ITrustEntity.class).registerMetric("myContext");
-        System.out.println("Metric registration successful");
     }
 
     @Stop
@@ -51,29 +46,11 @@ public abstract class AbstractMetric extends AbstractComponentType implements IT
     }
 
     public Variable getVariable(String context, String name) {
-        //Access trust model and return variable set by source
-        //Now we can only access the trust model through the trustor's service
-        //This limitation must be overcome by making the trust model accessible to all components
-        //System.out.println("Returning variable " + name);
-        //System.out.println(getPortByName("factorManagement", ITrustEntity.class).getVariable(context, name));
-        //return null;
-
-        return getPortByName("factorManagement", ITrustEntity.class).getVariable(context, name);
+        return getPortByName("trustManagement", ITrustModel.class).getVariable(context, name);
     }
-
-    @Port(name="instance", method="getInstance")
-    @Override
-    public AbstractMetric getInstance(TrustEntity te) {
-        System.out.println("A trustor called getInstance of the metric");
-        //trustors.add(te);
-        return this;
-    }
-
-    //public List<TrustEntity> getTrustors() {
-        //return trustors;
-    //}
 
     //This method must be overridden by trust engines extending this class
+    @Port(name="compute", method="compute")
     public abstract Object compute();
 
     public String toString() {

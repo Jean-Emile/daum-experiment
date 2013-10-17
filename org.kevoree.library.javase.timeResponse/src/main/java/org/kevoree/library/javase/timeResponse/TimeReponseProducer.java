@@ -8,8 +8,8 @@ import org.kevoree.Trust.TrustValue;
 import org.kevoree.trustframework.VariableProducer;
 import org.kevoree.trustframework.api.IVariableProducer;
 
-import org.kevoree.trustAPI.VariableProducer;
-import org.kevoree.trustAPI.Trustor;
+import org.kevoree.trustAPI_SERVICE.VariableProducer;
+import org.kevoree.trustAPI_SERVICE.Trustor;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;

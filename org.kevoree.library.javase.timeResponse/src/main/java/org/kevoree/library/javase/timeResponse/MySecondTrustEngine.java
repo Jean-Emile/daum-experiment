@@ -98,13 +98,4 @@ public class MySecondTrustEngine extends AbstractMetric implements ModelListener
 
     }
 
-    @Override
-    public void onNewFactor(String context, String factorName, String idTrustor, String value) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onFactorValueChange(String context, String factorName, String idTrustor, String value) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

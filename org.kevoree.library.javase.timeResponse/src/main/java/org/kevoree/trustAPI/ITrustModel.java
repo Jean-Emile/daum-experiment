@@ -11,11 +11,11 @@ import org.kevoree.trustmetamodel.Variable;
  */
 public interface ITrustModel {
 
-    public boolean initializeTrustRelationships(String context, String trustor, AbstractMetric am);
+    //public void addSubjectiveFactor(String context, String name, String value);
+    //public void updateTrustRelationship(String context, String idTrustor, String idTrustee);
+    public boolean initializeTrustRelationships(String context, String trustor, String defaultValue);
     public AbstractMetric getMetric(String context, String idTrustor);
-    public void updateTrustRelationship(String context, String idTrustor, String idTrustee);
     public String getTrustValue(String context, String idTrustor, String idTrustee);
-    public void addSubjectiveFactor(String context, String name, String value);
     public boolean isTrustee(String potentialTrusteeName);
     public Variable getVariable(String context, String name);
 }

@@ -4,11 +4,9 @@ package org.kevoree.library.javase.timeResponse;
 import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
-import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.ITrustEntity;
-import org.kevoree.trustAPI.ITrustMetric;
-import org.kevoree.trustAPI.TrustEntity;
+import org.kevoree.trustAPI.ITrustModel;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -81,16 +79,18 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
         float res = -1.0f;
 
+        System.out.println("I'm a trust engine, and I'm gonna compute a new trust value");
         if (started) {
             //System.out.println("My Trust Engine is alive");
 
             //System.out.println("Calling getPortByName... ");
-            ITrustEntity o = getPortByName("factorManagement", ITrustEntity.class);
+            ITrustModel o = getPortByName("trustManagement", ITrustModel.class);
 
             if (o == null) {
                 System.out.println("...but it returns null");
             }
 
+            System.out.println("At this point, me, the trust engine, it's trying to get the variable it needs");
             Variable x = o.getVariable("myContext", "prejudice");
                 //getVariable("myContext", "prejudice");
             if (x != null) {
@@ -105,24 +105,6 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         System.out.println("I'm coming back from compute() with value " + res * 2);
         return res * 2;
 
-    }
-
-    @Override
-    public void onNewFactor(String context, String factorName, String idTrustor, String value) {
-        System.out.println("New factor added to the model: " + context + " " + factorName + " " + idTrustor + " " + value);
-
-    }
-
-    @Override
-    public void onFactorValueChange(String context, String factorName, String idTrustor, String value) {
-        System.out.println("Factor value changed: " + context + " " + factorName + " " + idTrustor + " " + value);
-
-
-        //When we make sure that the factor is one that affects this metric, we re-compute and notify the trustors
-        if (context.equals("myContext") && factorName.equals("prejudice")) {
-            System.out.println("I can recompute a new trust. I'll inform the trustors that hold me");
-
-        }
     }
 
     public String toString() {

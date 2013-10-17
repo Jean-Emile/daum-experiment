@@ -4,13 +4,11 @@ import org.kevoree.annotation.*;
 import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
-import org.kevoree.library.javase.timeResponse.MyTrustEngine;
 import org.kevoree.library.ui.layout.KevoreeLayout;
-import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.GetHelper;
+import org.kevoree.trustAPI.ITrustMetric;
 import org.kevoree.trustAPI.TrustEntity;
 import org.kevoree.trustAPI.TrustException;
-import org.kevoree.trustmetamodel.Trustee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +40,6 @@ import java.awt.event.KeyEvent;
 @Library(name = "Trust")
 public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
-    //When a metric of this trustor has a new trust value available, it notifies through this method
-    //The trustor can now decide whether to update or not the trust relationship
-    public void onTrustValueChanged(String context, String metricSender, String idTrustee) {
-        updateTrustRelationship(context, idTrustee);
-    }
-
-
 
     @Override
     public void run() {
@@ -63,19 +54,16 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                     System.out.println("New random value for prejudice generated: " + r);
 
                     addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
-                    updateTrustRelationship("myContext", GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
-                        "textEntered", getModelElement().getName()));
+
+                    //Now, we compute the new value and update the trust relationship
+                    Object newValue = computeTrust();
+
+                    updateTrustRelationship("myContext",
+                                            GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                                                                               "textEntered",
+                                                                               getModelElement().getName()),
+                                            String.valueOf(newValue));
                 }
-
-                /*
-                AbstractMetric m = getMetric("myContext");
-                if (m == null) {
-                    System.out.println("No metric for that combination of context and trustor: " + getModelElement().getName());
-                } else {
-                    System.out.println("Metric retrieved: " + m.toString() + " and yielding ");
-                    System.out.println(m.compute());
-                }    */
-
                 try
                 {
                     Thread.sleep(10000);

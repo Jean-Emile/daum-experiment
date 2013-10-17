@@ -8,36 +8,47 @@ addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
 merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
 addNode node0:JavaSENode
  {
-  addComponent TrustAwar837@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext'}
-  addComponent TrustMode199@node0 : TrustModel {}
-  addComponent TrustAwar952@node0 : TrustAwareFakeConsole {metric='MyTrustEngine',singleFrame='true',trustContext='myContext',role='trustee'}
-  addComponent MyTrustEn396@node0 : MyTrustEngine {}
-addChannel defSERVIC842 : defSERVICE {}
-addChannel defMSG892 : defMSG {}
-addChannel defSERVIC48 : defSERVICE {}
-addChannel defSERVIC395 : defSERVICE {}
-addChannel defMSG616 : defMSG {}
-bind TrustAwar837.textEntered@node0 => defMSG892
-bind TrustAwar837.instance@node0 => defSERVIC48
-bind MyTrustEn396.instance@node0 => defSERVIC48
-bind TrustAwar952.textEntered@node0 => defMSG616
-bind TrustAwar952.showText@node0 => defMSG892
-bind TrustAwar837.showText@node0 => defMSG616
-bind TrustAwar837.factorManagement@node0 => defSERVIC395
-bind TrustMode199.trustManagement@node0 => defSERVIC842
-bind TrustAwar837.trustManagement@node0 => defSERVIC842
-bind MyTrustEn396.factorManagement@node0 => defSERVIC395
-updateDictionary defSERVIC395 
-updateDictionary TrustMode199@node0 
-updateDictionary MyTrustEn396@node0 
-updateDictionary defMSG616 
-updateDictionary defSERVIC842 
-updateDictionary TrustAwar837@node0 
-updateDictionary TrustAwar952@node0 
-updateDictionary defSERVIC48 
-updateDictionary defMSG892 
+  addComponent TrustAwar574@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0'}
+  addComponent MyTrustEn508@node0 : MyTrustEngine {}
+  addComponent TrustMode91@node0 : TrustModel {}
+  addComponent TrustAwar923@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0',role='trustee'}
+addChannel defMSG991 : defMSG {}
+addChannel defMSG849 : defMSG {}
+addChannel defMSG470 : defMSG {}
+addChannel defSERVIC658 : defSERVICE {}
+addChannel defSERVIC861 : defSERVICE {}
+addChannel defSERVIC56 : defSERVICE {}
+addChannel defMSG727 : defMSG {}
+bind TrustAwar923.showText@node0 => defMSG470
+bind TrustAwar923.textEntered@node0 => defMSG991
+bind TrustAwar574.compute@node0 => defSERVIC56
+bind TrustMode91.trustManagement@node0 => defSERVIC861
+bind TrustAwar574.trustRelationUpdate@node0 => defMSG849
+bind MyTrustEn508.compute@node0 => defSERVIC56
+bind TrustMode91.trustManagement@node0 => defSERVIC658
+bind TrustAwar574.textEntered@node0 => defMSG470
+bind MyTrustEn508.trustManagement@node0 => defSERVIC658
+bind TrustAwar574.factorAddition@node0 => defMSG727
+bind TrustMode91.factorAddition@node0 => defMSG727
+bind TrustAwar574.showText@node0 => defMSG991
+bind TrustAwar574.trustManagement@node0 => defSERVIC861
+bind TrustMode91.trustRelationUpdate@node0 => defMSG849
+updateDictionary MyTrustEn508@node0 
+updateDictionary TrustAwar574@node0 
+updateDictionary defMSG849 
+updateDictionary defMSG991 
+updateDictionary defSERVIC658 
+updateDictionary defMSG470 
+updateDictionary defSERVIC56 
+updateDictionary TrustMode91@node0 
+updateDictionary defSERVIC861 
+updateDictionary defMSG727 
+updateDictionary TrustAwar923@node0 
 }
 
+addGroup group851792093:BasicGroup
+addToGroup group851792093 node0
 }
