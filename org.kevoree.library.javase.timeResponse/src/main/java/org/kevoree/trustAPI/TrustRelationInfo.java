@@ -9,21 +9,19 @@ import java.io.Serializable;
  * Time: 14:26
  * To change this template use File | Settings | File Templates.
  */
-public class TrustModelInfo implements Serializable {
+public final class TrustRelationInfo implements Serializable {
 
     private String context = null;
     private String idTrustor = null;
     private String idTrustee = null;
-    private String idMetric = null;
     private String newValue = null;
-    //private AbstractMetric am = null;
 
-    public TrustModelInfo(String ctx, String idTrustor) {
+    public TrustRelationInfo(String ctx, String idTrustor) {
         context = ctx;
         this.idTrustor = idTrustor;
     }
 
-    public TrustModelInfo(String ctx, String idTrustor, String idTrustee, String newValue) {
+    public TrustRelationInfo(String ctx, String idTrustor, String idTrustee, String newValue) {
         context = ctx;
         this.idTrustor = idTrustor;
         this.idTrustee = idTrustee;
@@ -41,10 +39,6 @@ public class TrustModelInfo implements Serializable {
 
     public String getIdTrustee() {
         return idTrustee;
-    }
-
-    public String getIdMetric() {
-        return idMetric;
     }
 
     public String getNewValue() {

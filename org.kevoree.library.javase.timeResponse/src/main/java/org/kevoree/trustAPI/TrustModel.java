@@ -2,6 +2,7 @@ package org.kevoree.trustAPI;
 
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
+import org.kevoree.framework.MessagePort;
 import org.kevoree.trustmetamodel.*;
 import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
 
@@ -28,6 +29,9 @@ import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
         @ProvidedPort(name = "factorAddition", type = PortType.MESSAGE),
         @ProvidedPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class)
 
+})
+@Requires({
+        @RequiredPort(name = "trustEvent", type = PortType.MESSAGE, optional = false)
 })
 @Library(name = "Trust")
 @ComponentType
@@ -61,15 +65,15 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
     /******************* ASYNCHRONOUS METHODS *******************/
     /************************************************************/
     @Port(name="trustRelationUpdate")
-    public final void updateTrustRelationship(Object tInfo) throws TrustException {
+    public void updateTrustRelationship(Object tInfo) throws TrustException {
 
         String context = null, idTrustor = null, idTrustee = null, newValue = null;
 
-        if (tInfo instanceof TrustModelInfo) {
-            context = ((TrustModelInfo) tInfo).getContext();
-            idTrustor = ((TrustModelInfo) tInfo).getIdTrustor();
-            idTrustee = ((TrustModelInfo) tInfo).getIdTrustee();
-            newValue = ((TrustModelInfo) tInfo).getNewValue();
+        if (tInfo instanceof TrustRelationInfo) {
+            context = ((TrustRelationInfo) tInfo).getContext();
+            idTrustor = ((TrustRelationInfo) tInfo).getIdTrustor();
+            idTrustee = ((TrustRelationInfo) tInfo).getIdTrustee();
+            newValue = ((TrustRelationInfo) tInfo).getNewValue();
         } else {
             throw new TrustException("Unable to initialize trust relationships");
         }
@@ -90,31 +94,87 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
     }
 
     @Port(name="factorAddition")
-    public final void addSubjectiveFactor(Object fi) {
+    public void addFactor(Object fi) {
 
-        System.out.println("I'm in addSubjectiveFactor of the trust model");
-        String context = null, name = null, value = null;
+        System.out.println("I'm in addFactor of the trust model");
+        String context = null, name = null, value = null, idSender = null, idTarget = null;
+        TrustEventInfo tei = new TrustEventInfo();
+
         if (fi instanceof FactorInfo) {
             context = ((FactorInfo) fi).getContext();
-            name = ((FactorInfo) fi).getName();
-            value = ((FactorInfo) fi).getValue();
+            name = ((FactorInfo) fi).getFactorName();
+            value = ((FactorInfo) fi).getFactorValue();
+            idSender =  ((FactorInfo) fi).getIdSender();
+            idTarget = ((FactorInfo) fi).getTarget();
         }
 
         Variable var = trustModel.findVariablesByID(context + name);
         if (var == null) {
             var = factory.createVariable();
+            tei.setType( TrustEventType.NEWFACTOR);
+        } else {
+            tei.setType( TrustEventType.FACTORUPDATE );
         }
+
         var.setContext(context);
         var.setIdVariable(context + name);
-        var.setIdSource(getModelElement().getName());
-        var.setIdTarget(null);
+        var.setIdSource(idSender);
+        var.setIdTarget(idTarget);
         VariableValue varVal = factory.createVariableValue();
         varVal.setValue(value);
         var.setValue(varVal);
         trustModel.addVariables(var);
         System.out.println("I created variable " + context + name + " with value " + value);
+        System.out.println("I'm gonna notify trust entities");
+
+        //We fill out the rest of the event information
+        tei.getFactorInfo().setIdSender(idSender);
+        tei.getFactorInfo().setContext(context);
+        tei.getFactorInfo().setFactorName(name);
+        tei.getFactorInfo().setTarget(idTarget);
+        tei.getFactorInfo().setFactorValue(value);
+        getPortByName("trustEvent", MessagePort.class).process(tei);
 
     }
+
+    /*public void addSubjectiveFactor(Object fi) {
+
+        System.out.println("I'm in addSubjectiveFactor of the trust model");
+        String context = null, name = null, value = null, idSender = null;
+        TrustEventInfo tei = new TrustEventInfo();
+
+        if (fi instanceof FactorInfo) {
+            context = ((FactorInfo) fi).getContext();
+            name = ((FactorInfo) fi).getName();
+            value = ((FactorInfo) fi).getValue();
+            idSender =  ((FactorInfo) fi).getIdSender();
+        }
+
+        Variable var = trustModel.findVariablesByID(context + name);
+        if (var == null) {
+            var = factory.createVariable();
+            tei.setType( TrustEventType.NEWFACTOR);
+        } else {
+            tei.setType( TrustEventType.FACTORUPDATE );
+        }
+        var.setContext(context);
+        var.setIdVariable(context + name);
+        var.setIdSource(getModelElement().getName());
+        var.setIdTarget(idSender);
+        VariableValue varVal = factory.createVariableValue();
+        varVal.setValue(value);
+        var.setValue(varVal);
+        trustModel.addVariables(var);
+        System.out.println("I created variable " + context + name + " with value " + value);
+        System.out.println("I'm gonna notify trust entities");
+
+        //We fill out the rest of the event information
+        tei.setContext(context);
+        tei.setFactorName(name);
+        tei.setValue(value);
+        tei.setIdSender(idSender);
+        getPortByName("trustEvent", MessagePort.class).process(tei);
+    }    */
 
 
     /******************* SYNCHRONOUS METHODS ********************/
@@ -148,7 +208,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
     @Override
     @Port(name="trustManagement", method="getMetric")
-    public final AbstractMetric getMetric(String context, String idTrustor) {
+    public AbstractMetric getMetric(String context, String idTrustor) {
 
         AbstractMetric am = null;
 
@@ -167,13 +227,13 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
     @Override
     @Port(name="trustManagement", method="getTrustValue")
-    public final String getTrustValue(String context, String idTrustor, String idTrustee) {
+    public String getTrustValue(String context, String idTrustor, String idTrustee) {
         return trustModel.findTRelationshipsByID(context + idTrustor + idTrustee).getTrustValue().getValue();
     }
 
     @Override
     @Port(name="trustManagement", method="isTrustee")
-    public final boolean isTrustee(String potentialTrusteeName) {
+    public boolean isTrustee(String potentialTrusteeName) {
         boolean res = false;
         if (trustModel.findTrusteesByID(potentialTrusteeName) != null) {
             res = true;
@@ -183,7 +243,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
     @Override
     @Port(name="trustManagement", method="getVariable")
-    public final Variable getVariable(String context, String name) {
+    public Variable getVariable(String context, String name) {
         System.out.println("The metric is looking for variable " + context + name);
         return trustModel.findVariablesByID(context + name);
     }

@@ -3,6 +3,7 @@ package org.kevoree.trustAPI;
 
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
+import org.kevoree.framework.MessagePort;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -15,15 +16,18 @@ import org.kevoree.trustmetamodel.Variable;
 
 @Library(name = "Trust")
 @Requires({
-        @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, needCheckDependency = true)
+        @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, needCheckDependency = true),
+        @RequiredPort(name = "trustEvent", type = PortType.MESSAGE, optional = false)
 })
 @Provides({
-        @ProvidedPort(name = "compute", type = PortType.SERVICE, className = ITrustMetric.class)
+        @ProvidedPort(name = "compute", type = PortType.SERVICE, className = ITrustMetric.class),
+        @ProvidedPort(name = "trustMetricNotification", type = PortType.MESSAGE)
 })
 @ComponentFragment
-public abstract class AbstractMetric extends AbstractComponentType {
+public abstract class AbstractMetric extends AbstractComponentType implements IFactorChangeEvent {
 
     public boolean started = false;
+    private Object lastValueComputed = null;
 
     @Start
     public void start() {
@@ -45,15 +49,37 @@ public abstract class AbstractMetric extends AbstractComponentType {
         //System.out.println("Abstract Metric updated");
     }
 
-    public Variable getVariable(String context, String name) {
+    public final Variable getVariable(String context, String name) {
         return getPortByName("trustManagement", ITrustModel.class).getVariable(context, name);
     }
 
-    //This method must be overridden by trust engines extending this class
-    @Port(name="compute", method="compute")
-    public abstract Object compute();
+    public final void notifyTrustEntities() {
+        TrustEventInfo tInfo = new TrustEventInfo( TrustEventType.NEWTRUSTVALUEAVAILABLE,
+                                                        "myContext",
+                                                         getModelElement().getName(),
+                                                         String.valueOf(lastValueComputed)
+                                                  );
+        getPortByName("trustEvent", MessagePort.class).process( tInfo );
+    }
+
+    public final void setLastValueComputed(Object v) {
+        lastValueComputed = v;
+    }
+
+    public final Object getLastValueComputed() {
+        return lastValueComputed;
+    }
 
     public String toString() {
         return "This is an AbstractMetric";
     }
+
+    /******************** ABSTRACT METHODS ***********************/
+    //These methods must be overridden by trust engines extending this class
+    @Port(name="compute", method="compute")
+    public abstract Object compute();
+
+    @Port(name="trustMetricNotification")
+    public abstract void onFactorChange(Object tInfo);
+
 }

@@ -3,8 +3,6 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
-import org.kevoree.library.javase.timeResponse.MyTrustEngine;
-import org.kevoree.trustmetamodel.Variable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,9 +30,12 @@ import org.kevoree.trustmetamodel.Variable;
         @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, optional = true, needCheckDependency = true),
         @RequiredPort(name = "compute", type = PortType.SERVICE, className = ITrustMetric.class, optional = true, needCheckDependency = true)
 })
+@Provides({
+        @ProvidedPort(name = "trustEntityNotification", type = PortType.MESSAGE)
+})
 @Library(name = "Trust")
-@ComponentType
-public class TrustEntity extends AbstractComponentType {
+@ComponentFragment
+public abstract class TrustEntity extends AbstractComponentType {
 
     @Start
     public void start() throws TrustException {
@@ -71,17 +72,15 @@ public class TrustEntity extends AbstractComponentType {
 
     }
 
-    //This method retrieves the trustor's metric for a specific context
-    public final AbstractMetric getMetric(String context) {
-        return getPortByName("trustManagement", ITrustModel.class).getMetric(context, getModelElement().getName());
-    }
+    @Port(name="trustEntityNotification")
+    public abstract void onTrustValueChange(Object tInfo);
 
     public final void updateTrustRelationship(String context, String idTrustee, String newValue) {
 
         if (getDictionary().get("role").equals("trustor")) {
 
             System.out.println(getModelElement().getName() + " is gonna call updateTrustRelationship");
-            getPortByName("trustRelationUpdate", MessagePort.class).process(new TrustModelInfo(
+            getPortByName("trustRelationUpdate", MessagePort.class).process(new TrustRelationInfo(
                                                                                     context,
                                                                                     getModelElement().getName(),
                                                                                     idTrustee,
@@ -100,7 +99,7 @@ public class TrustEntity extends AbstractComponentType {
     public final void addSubjectiveFactor(String context, String name, String value) {
        //getPortByName("trustManagement", ITrustModel.class).addSubjectiveFactor(context, name, value);
        System.out.println("In " + getModelElement().getName() + ", adding subjective factor " + context + name + " with value " + value);
-       getPortByName("factorAddition", MessagePort.class).process( new FactorInfo( context, name, value ) );
+       getPortByName("factorAddition", MessagePort.class).process( new FactorInfo(getModelElement().getName(), context, name, value ) );
     }
 
     public final Object computeTrust() {

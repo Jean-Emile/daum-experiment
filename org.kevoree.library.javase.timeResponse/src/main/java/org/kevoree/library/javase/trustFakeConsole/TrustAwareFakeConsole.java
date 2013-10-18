@@ -5,10 +5,7 @@ import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
 import org.kevoree.library.ui.layout.KevoreeLayout;
-import org.kevoree.trustAPI.GetHelper;
-import org.kevoree.trustAPI.ITrustMetric;
-import org.kevoree.trustAPI.TrustEntity;
-import org.kevoree.trustAPI.TrustException;
+import org.kevoree.trustAPI.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +37,27 @@ import java.awt.event.KeyEvent;
 @Library(name = "Trust")
 public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
+    @Override
+    public void onTrustValueChange(Object tInfo) {
+
+        String idSender = null, value = null;
+        TrustValueInfo tvi = null;
+
+        if (tInfo instanceof TrustEventInfo) {
+            tvi = ((TrustEventInfo) tInfo).getTrustValueInfo();
+            idSender = tvi.getIdSender();
+            value = tvi.getValue();
+        }
+        System.out.println(getModelElement().getName() + " received a notification from " + idSender +
+                                            " that there is a new trust value available: " + value);
+
+        updateTrustRelationship("myContext",
+                GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                        "textEntered",
+                        getModelElement().getName()),
+                        String.valueOf(value));
+
+    }
 
     @Override
     public void run() {
@@ -56,13 +74,8 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                     addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
 
                     //Now, we compute the new value and update the trust relationship
-                    Object newValue = computeTrust();
+                    //Object newValue = computeTrust();
 
-                    updateTrustRelationship("myContext",
-                                            GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
-                                                                               "textEntered",
-                                                                               getModelElement().getName()),
-                                            String.valueOf(newValue));
                 }
                 try
                 {
@@ -145,6 +158,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
             }
         }
     }
+
 
     public void appendSystem(String text) {
         frame.appendSystem(text);

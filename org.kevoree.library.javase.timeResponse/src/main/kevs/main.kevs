@@ -6,49 +6,64 @@ addRepo "https://oss.sonatype.org/content/groups/public/"
 addRepo "https://oss.sonatype.org/content/repositories/snapshots"
 addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
-merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
 merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
 merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
 addNode node0:JavaSENode
  {
-  addComponent TrustAwar574@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0'}
-  addComponent MyTrustEn508@node0 : MyTrustEngine {}
-  addComponent TrustMode91@node0 : TrustModel {}
-  addComponent TrustAwar923@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0',role='trustee'}
-addChannel defMSG991 : defMSG {}
-addChannel defMSG849 : defMSG {}
-addChannel defMSG470 : defMSG {}
-addChannel defSERVIC658 : defSERVICE {}
-addChannel defSERVIC861 : defSERVICE {}
-addChannel defSERVIC56 : defSERVICE {}
-addChannel defMSG727 : defMSG {}
-bind TrustAwar923.showText@node0 => defMSG470
-bind TrustAwar923.textEntered@node0 => defMSG991
-bind TrustAwar574.compute@node0 => defSERVIC56
-bind TrustMode91.trustManagement@node0 => defSERVIC861
-bind TrustAwar574.trustRelationUpdate@node0 => defMSG849
-bind MyTrustEn508.compute@node0 => defSERVIC56
-bind TrustMode91.trustManagement@node0 => defSERVIC658
-bind TrustAwar574.textEntered@node0 => defMSG470
-bind MyTrustEn508.trustManagement@node0 => defSERVIC658
-bind TrustAwar574.factorAddition@node0 => defMSG727
-bind TrustMode91.factorAddition@node0 => defMSG727
-bind TrustAwar574.showText@node0 => defMSG991
-bind TrustAwar574.trustManagement@node0 => defSERVIC861
-bind TrustMode91.trustRelationUpdate@node0 => defMSG849
-updateDictionary MyTrustEn508@node0 
-updateDictionary TrustAwar574@node0 
-updateDictionary defMSG849 
-updateDictionary defMSG991 
-updateDictionary defSERVIC658 
-updateDictionary defMSG470 
-updateDictionary defSERVIC56 
-updateDictionary TrustMode91@node0 
-updateDictionary defSERVIC861 
-updateDictionary defMSG727 
-updateDictionary TrustAwar923@node0 
+  addComponent TrustEven281@node0 : TrustEvent {}
+  addComponent TrustAwar289@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0',role='trustee'}
+  addComponent TrustMode51@node0 : TrustModel {}
+  addComponent MyTrustEn681@node0 : MyTrustEngine {}
+  addComponent TrustAwar157@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0',role='trustor'}
+addChannel defMSG657 : defMSG {}
+addChannel defMSG49 : defMSG {}
+addChannel defMSG564 : defMSG {}
+addChannel defMSG312 : defMSG {}
+addChannel defSERVIC629 : defSERVICE {}
+addChannel defSERVIC533 : defSERVICE {}
+addChannel defMSG751 : defMSG {}
+addChannel defMSG458 : defMSG {}
+addChannel defSERVIC886 : defSERVICE {}
+addChannel defMSG456 : defMSG {}
+bind TrustMode51.trustRelationUpdate@node0 => defMSG458
+bind TrustAwar157.showText@node0 => defMSG564
+bind TrustMode51.factorAddition@node0 => defMSG456
+bind TrustAwar157.textEntered@node0 => defMSG751
+bind TrustMode51.trustEvent@node0 => defMSG657
+bind MyTrustEn681.trustMetricNotification@node0 => defMSG49
+bind TrustAwar157.trustManagement@node0 => defSERVIC886
+bind TrustEven281.trustEvent@node0 => defMSG657
+bind MyTrustEn681.compute@node0 => defSERVIC533
+bind TrustAwar157.trustEntityNotification@node0 => defMSG312
+bind TrustEven281.trustMetricNotification@node0 => defMSG49
+bind TrustAwar289.textEntered@node0 => defMSG564
+bind TrustAwar157.compute@node0 => defSERVIC533
+bind MyTrustEn681.trustManagement@node0 => defSERVIC629
+bind TrustAwar289.showText@node0 => defMSG751
+bind TrustAwar157.factorAddition@node0 => defMSG456
+bind TrustMode51.trustManagement@node0 => defSERVIC886
+bind MyTrustEn681.trustEvent@node0 => defMSG657
+bind TrustAwar157.trustRelationUpdate@node0 => defMSG458
+bind TrustEven281.trustEntityNotification@node0 => defMSG312
+bind TrustMode51.trustManagement@node0 => defSERVIC629
+updateDictionary defSERVIC886 
+updateDictionary TrustAwar157@node0 
+updateDictionary defMSG657 
+updateDictionary defSERVIC533 
+updateDictionary defSERVIC629 
+updateDictionary defMSG312 
+updateDictionary defMSG456 
+updateDictionary defMSG49 
+updateDictionary TrustEven281@node0 
+updateDictionary defMSG751 
+updateDictionary TrustMode51@node0 
+updateDictionary defMSG458 
+updateDictionary TrustAwar289@node0 
+updateDictionary defMSG564 
+updateDictionary MyTrustEn681@node0 
 }
 
-addGroup group851792093:BasicGroup
-addToGroup group851792093 node0
+addGroup group1666679428:BasicGroup
+addToGroup group1666679428 node0
 }

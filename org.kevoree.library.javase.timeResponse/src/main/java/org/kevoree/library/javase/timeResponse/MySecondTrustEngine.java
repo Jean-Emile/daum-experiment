@@ -5,6 +5,7 @@ import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
 import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.ITrustEntity;
+import org.kevoree.trustAPI.TrustEventInfo;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -96,6 +97,11 @@ public class MySecondTrustEngine extends AbstractMetric implements ModelListener
         }
         return res * 5;
 
+    }
+
+    @Override
+    public void onFactorChange(Object tInfo) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

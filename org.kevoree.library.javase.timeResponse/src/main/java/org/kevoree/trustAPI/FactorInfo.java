@@ -9,27 +9,69 @@ import java.io.Serializable;
  * Time: 16:23
  * To change this template use File | Settings | File Templates.
  */
-public class FactorInfo implements Serializable {
+public final class FactorInfo implements Serializable {
 
+    private String idSender = null;
     private String name = null;
     private String context = null;
     private String value = null;
+    private String target = null; //The entity that refers the factor to
 
-    public FactorInfo(String c, String n, String v) {
+    public FactorInfo() {}
+
+    public FactorInfo(String id, String c, String n, String v) {
+        idSender = id;
         context = c;
         name = n;
         value = v;
+        target = null;
+    }
+
+    public FactorInfo(String id, String c, String n, String v, String t) {
+        idSender = id;
+        context = c;
+        name = n;
+        value = v;
+        target = t;
+    }
+
+    public String getIdSender() {
+        return idSender;
     }
 
     public String getContext() {
         return context;
     }
 
-    public String getName() {
+    public String getFactorName() {
         return name;
     }
 
-    public String getValue() {
+    public String getFactorValue() {
         return value;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setFactorName(String n) {
+        name = n;
+    }
+
+    public void setIdSender(String id) {
+        idSender = id;
+    }
+
+    public void setContext(String c) {
+        context = c;
+    }
+
+    public void setFactorValue(String v) {
+        value = v;
+    }
+
+    public void setTarget(String t) {
+        target = t;
     }
 }

@@ -4,9 +4,8 @@ package org.kevoree.library.javase.timeResponse;
 import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
-import org.kevoree.trustAPI.AbstractMetric;
-import org.kevoree.trustAPI.ITrustEntity;
-import org.kevoree.trustAPI.ITrustModel;
+import org.kevoree.framework.MessagePort;
+import org.kevoree.trustAPI.*;
 import org.kevoree.trustmetamodel.Variable;
 
 /**
@@ -103,11 +102,36 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         }
 
         System.out.println("I'm coming back from compute() with value " + res * 2);
+
+        setLastValueComputed(res * 2);
         return res * 2;
 
+    }
+
+    @Override
+    public void onFactorChange(Object tInfo) {
+        System.out.println(getModelElement().getName() + " received an event notification");
+
+        String context = null, factorName = null, value = null;
+        FactorInfo fi = null;
+
+        if (tInfo instanceof TrustEventInfo) {
+            fi = ((TrustEventInfo) tInfo).getFactorInfo();
+            context = fi.getContext();
+            factorName = fi.getFactorName();
+            value = fi.getFactorValue();
+        }
+
+        if (context.equals("myContext") && factorName.equals("prejudice")) {
+            System.out.println(getModelElement().getName() + " is gonna notify trust entities");
+            setLastValueComputed(Float.parseFloat(value) * 2);
+            //Notify the trustors
+            notifyTrustEntities();
+        }
     }
 
     public String toString() {
         return "MyTrustEngine";
     }
+
 }
