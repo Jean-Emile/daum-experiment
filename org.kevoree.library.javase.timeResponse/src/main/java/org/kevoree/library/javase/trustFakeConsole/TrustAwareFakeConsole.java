@@ -67,11 +67,11 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
                 if (getDictionary().get("role").equals("trustor")) {
 
-                    double r = 1 + (Math.random() * ((10 - 1) + 1));
+                    //double r = 1 + (Math.random() * ((10 - 1) + 1));
 
-                    System.out.println("New random value for prejudice generated: " + r);
+                    //System.out.println("New random value for prejudice generated: " + r);
 
-                    addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
+                    //addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
 
                     //Now, we compute the new value and update the trust relationship
                     //Object newValue = computeTrust();
