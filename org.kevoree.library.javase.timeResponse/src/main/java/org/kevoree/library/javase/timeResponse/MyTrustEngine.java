@@ -4,9 +4,8 @@ package org.kevoree.library.javase.timeResponse;
 import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
-import org.kevoree.framework.MessagePort;
 import org.kevoree.trustAPI.*;
-import org.kevoree.trustmetamodel.Variable;
+import org.kevoree.trustmetamodel.Factor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,7 +89,7 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
             }
 
             System.out.println("At this point, me, the trust engine, it's trying to get the variable it needs");
-            Variable x = o.getVariable("myContext", "prejudice");
+            Factor x = o.getFactor("myContext", "prejudice");
                 //getVariable("myContext", "prejudice");
             if (x != null) {
                 //System.out.println("Variable obtained from metamodel: " + x);

@@ -15,20 +15,20 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TrustRelationship">
     <eStructuralFeatures xsi:type="ecore:EReference" name="trustee" lowerBound="1"
-        eType="#//Trustee"/>
+        eType="#//Trustee" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trustor" lowerBound="1"
-        eType="#//Trustor"/>
+        eType="#//Trustor" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trustValue" lowerBound="1"
-        eType="#//TrustValue"/>
+        eType="#//TrustValue" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="context" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="idTRelationship" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Trustor">
     <eStructuralFeatures xsi:type="ecore:EReference" name="trustorTrustees" upperBound="-1"
-        eType="#//Trustee"/>
+        eType="#//Trustee" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="trustorMetrics" upperBound="-1"
-        eType="#//Metric"/>
+        eType="#//Metric" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="idTrustor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         iD="true"/>
   </eClassifiers>

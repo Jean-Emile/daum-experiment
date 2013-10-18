@@ -108,22 +108,23 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
             idTarget = ((FactorInfo) fi).getTarget();
         }
 
-        Variable var = trustModel.findVariablesByID(context + name);
-        if (var == null) {
-            var = factory.createVariable();
+        Factor factor = trustModel.findFactorsByID(context + name);
+        if (factor == null) {
+            factor = factory.createFactor();
             tei.setType( TrustEventType.NEWFACTOR);
         } else {
             tei.setType( TrustEventType.FACTORUPDATE );
         }
 
-        var.setContext(context);
-        var.setIdVariable(context + name);
-        var.setIdSource(idSender);
-        var.setIdTarget(idTarget);
-        VariableValue varVal = factory.createVariableValue();
-        varVal.setValue(value);
-        var.setValue(varVal);
-        trustModel.addVariables(var);
+        factor.setContext(context);
+        factor.setIdFactor(context + name);
+        factor.setIdSender(idSender);
+        factor.setIdTarget(idTarget);
+        FactorValue facVal = factory.createFactorValue();
+        facVal.setValue(value);
+        //I could add here timestamp
+        factor.setValue(facVal);
+        trustModel.addFactors(factor);
         System.out.println("I created variable " + context + name + " with value " + value);
         System.out.println("I'm gonna notify trust entities");
 
@@ -213,7 +214,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         AbstractMetric am = null;
 
         System.out.println("Looking for metric for context " + context + " and for entity " + idTrustor);
-        Metric met = trustModel.findMetricsByID(context + getModelElement().getName());
+        Metric met = trustModel.findTrustMetricsByID(context + getModelElement().getName());
         if (met != null) {
             System.out.println("I found the metric for " + getModelElement().getName() + " and I returned it");
             am = (AbstractMetric) met.getEngine();
@@ -242,10 +243,10 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
     }
 
     @Override
-    @Port(name="trustManagement", method="getVariable")
-    public Variable getVariable(String context, String name) {
+    @Port(name="trustManagement", method="getFactor")
+    public Factor getFactor(String context, String name) {
         System.out.println("The metric is looking for variable " + context + name);
-        return trustModel.findVariablesByID(context + name);
+        return trustModel.findFactorsByID(context + name);
     }
 
 
@@ -253,7 +254,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
         org.kevoree.trustmetamodel.Trustor trustor = trustModel.findTrustorsByID(idTrustor);
         org.kevoree.trustmetamodel.Trustee trustee = trustModel.findTrusteesByID(idTrustee);
-        org.kevoree.trustmetamodel.Metric m = trustModel.findMetricsByID(context + trustor);
+        org.kevoree.trustmetamodel.Metric m = trustModel.findTrustMetricsByID(context + trustor);
         TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
 
         //We create the metric
@@ -263,7 +264,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         m.setContext(context);
         m.setIdMetric(context + idTrustor);
         //m.setEngine(metric); We could remove this from the model as we don't want to store instances
-        trustModel.addMetrics(m);
+        trustModel.addTrustMetrics(m);
 
         //We create the trustor
         if (trustor == null) {

@@ -4,9 +4,8 @@ import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
 import org.kevoree.api.service.core.handler.ModelListener;
 import org.kevoree.trustAPI.AbstractMetric;
-import org.kevoree.trustAPI.ITrustEntity;
-import org.kevoree.trustAPI.TrustEventInfo;
-import org.kevoree.trustmetamodel.Variable;
+import org.kevoree.trustAPI.ITrustModel;
+import org.kevoree.trustmetamodel.Factor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -79,13 +78,13 @@ public class MySecondTrustEngine extends AbstractMetric implements ModelListener
             System.out.println("My Trust Engine is alive");
 
             System.out.println("Calling getPortByName... ");
-            ITrustEntity o = getPortByName("factorManagement", ITrustEntity.class);
+            ITrustModel o = getPortByName("factorManagement", ITrustModel.class);
 
             if (o == null) {
                 System.out.println("...but it returns null");
             }
 
-            Variable x = o.getVariable("myContext", "prejudice");
+            Factor x = o.getFactor("myContext", "prejudice");
             //getVariable("myContext", "prejudice");
             if (x != null) {
                 System.out.println("Variable obtained from metamodel: " + x);

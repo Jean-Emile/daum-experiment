@@ -1,6 +1,6 @@
 package org.kevoree.trustAPI;
 
-import org.kevoree.trustmetamodel.Variable;
+import org.kevoree.trustmetamodel.Factor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,5 +17,5 @@ public interface ITrustModel {
     public AbstractMetric getMetric(String context, String idTrustor);
     public String getTrustValue(String context, String idTrustor, String idTrustee);
     public boolean isTrustee(String potentialTrusteeName);
-    public Variable getVariable(String context, String name);
+    public Factor getFactor(String context, String name);
 }

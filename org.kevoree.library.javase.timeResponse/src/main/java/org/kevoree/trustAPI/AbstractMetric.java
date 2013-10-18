@@ -4,7 +4,7 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
-import org.kevoree.trustmetamodel.Variable;
+import org.kevoree.trustmetamodel.Factor;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,8 +49,8 @@ public abstract class AbstractMetric extends AbstractComponentType implements IF
         //System.out.println("Abstract Metric updated");
     }
 
-    public final Variable getVariable(String context, String name) {
-        return getPortByName("trustManagement", ITrustModel.class).getVariable(context, name);
+    public final Factor getFactor(String context, String name) {
+        return getPortByName("trustManagement", ITrustModel.class).getFactor(context, name);
     }
 
     public final void notifyTrustEntities() {
