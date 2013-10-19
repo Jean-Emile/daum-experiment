@@ -87,8 +87,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
         value.setTimeStamp(timeStamp);
         value.setValue(newValue);
-        tr.setTrustValue(value);
-
+        tr.addTrustValue(value);
         System.out.println("Update finished with value " + newValue);
 
     }
@@ -226,10 +225,11 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
     }
 
 
+    //Suppose that we have only one trust value
     @Override
     @Port(name="trustManagement", method="getTrustValue")
     public String getTrustValue(String context, String idTrustor, String idTrustee) {
-        return trustModel.findTRelationshipsByID(context + idTrustor + idTrustee).getTrustValue().getValue();
+        return trustModel.findTRelationshipsByID(context + idTrustor + idTrustee).getTrustValue().get(0).getValue();
     }
 
     @Override
@@ -296,9 +296,8 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         tv.setValue(defaultValue);
         String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
         tv.setTimeStamp(timeStamp);
-        tr.setTrustValue(tv);
+        tr.addTrustValue(tv);
         trustModel.addTRelationships(tr);
-
 
         System.out.println("Trust relationship with id " +
                                         context + idTrustor + idTrustee + " initialized with value " + defaultValue);
