@@ -73,7 +73,7 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
     }
 
-    public Object compute() {
+    public Object compute(String idTrustee) {
 
         float res = -1.0f;
 
@@ -82,14 +82,16 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
             //System.out.println("My Trust Engine is alive");
 
             //System.out.println("Calling getPortByName... ");
-            ITrustModel o = getPortByName("trustManagement", ITrustModel.class);
+            //ITrustModel o = getPortByName("trustManagement", ITrustModel.class);
 
-            if (o == null) {
-                System.out.println("...but it returns null");
-            }
+            //if (o == null) {
+                //System.out.println("...but it returns null");
+            //}
 
-            System.out.println("At this point, me, the trust engine, it's trying to get the variable it needs");
-            Factor x = o.getFactor("myContext", "prejudice");
+            //System.out.println("At this point, me, the trust engine, it's trying to get the factor it needs");
+            //Factor x = o.getFactor("myContext", "prejudice");
+
+            Factor x = getFactor("myContext", "prejudice");
                 //getVariable("myContext", "prejudice");
             if (x != null) {
                 //System.out.println("Variable obtained from metamodel: " + x);
@@ -109,6 +111,7 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
     @Override
     public void onFactorChange(Object tInfo) {
+
         System.out.println(getModelElement().getName() + " received an event notification");
 
         String context = null, factorName = null, value = null;
@@ -122,8 +125,10 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         }
 
         if (context.equals("myContext") && factorName.equals("prejudice")) {
+            float result = (Float) compute("get trustee");
+            System.out.println("I, Trust Engine, compute the value: " + result);
             System.out.println(getModelElement().getName() + " is gonna notify trust entities");
-            setLastValueComputed(Float.parseFloat(value) * 2);
+            setLastValueComputed(result);
             //Notify the trustors
             notifyTrustEntities();
         }

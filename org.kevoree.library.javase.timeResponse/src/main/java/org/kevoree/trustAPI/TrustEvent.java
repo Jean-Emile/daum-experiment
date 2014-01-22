@@ -31,8 +31,10 @@ public final class TrustEvent extends AbstractComponentType implements ITrustEve
         if (ti instanceof  TrustEventInfo) {
             type = ((TrustEventInfo) ti).getType();
             if (type == TrustEventType.FACTORUPDATE || type == TrustEventType.NEWFACTOR) {
+                System.out.println("Notifying trust metrics");
                 getPortByName("trustMetricNotification", MessagePort.class).process( ti );
             } else if (type == TrustEventType.NEWTRUSTVALUEAVAILABLE) {
+                System.out.println("Notifying trust entities");
                 getPortByName("trustEntityNotification", MessagePort.class).process( ti );
             }
         }

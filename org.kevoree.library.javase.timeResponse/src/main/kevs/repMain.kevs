@@ -1,0 +1,41 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo1.maven.org/maven2/"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "https://oss.sonatype.org/content/groups/public/"
+addRepo "https://oss.sonatype.org/content/repositories/snapshots"
+addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.fakeDomo/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+addNode node0:JavaSENode
+ {
+  addComponent FakeConso105@node0 : FakeConsole {}
+  addComponent Reputatio581@node0 : ReputationAwareFakeConsole {}
+  addComponent MyReputat513@node0 : MyReputationModel {}
+addChannel defSERVIC572 : defSERVICE {}
+addChannel defMSG393 : defMSG {}
+addChannel defMSG591 : defMSG {}
+addChannel defMSG871 : defMSG {}
+bind Reputatio581.showText@node0 => defMSG393
+bind MyReputat513.reputation@node0 => defSERVIC572
+bind Reputatio581.textEntered@node0 => defMSG871
+bind FakeConso105.showText@node0 => defMSG871
+bind Reputatio581.retrieveReputation@node0 => defSERVIC572
+bind FakeConso105.textEntered@node0 => defMSG393
+bind MyReputat513.receiveClaim@node0 => defMSG591
+bind Reputatio581.sendClaim@node0 => defMSG591
+updateDictionary FakeConso105@node0 
+updateDictionary defMSG591 
+updateDictionary defMSG871 
+updateDictionary defMSG393 
+updateDictionary Reputatio581@node0 
+updateDictionary defSERVIC572 
+updateDictionary MyReputat513@node0 
+}
+
+addGroup group1504011954:BasicGroup
+addToGroup group1504011954 node0
+}

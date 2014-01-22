@@ -1,6 +1,5 @@
 package org.kevoree.trustAPI;
 
-
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
@@ -24,7 +23,7 @@ import org.kevoree.trustmetamodel.Factor;
         @ProvidedPort(name = "trustMetricNotification", type = PortType.MESSAGE)
 })
 @ComponentFragment
-public abstract class AbstractMetric extends AbstractComponentType implements IFactorChangeEvent {
+public abstract class AbstractMetric extends AbstractComponentType implements IFactorChangeEvent, ITrustMetric {
 
     public boolean started = false;
     private Object lastValueComputed = null;
@@ -77,7 +76,7 @@ public abstract class AbstractMetric extends AbstractComponentType implements IF
     /******************** ABSTRACT METHODS ***********************/
     //These methods must be overridden by trust engines extending this class
     @Port(name="compute", method="compute")
-    public abstract Object compute();
+    public abstract Object compute(String idTrustee);
 
     @Port(name="trustMetricNotification")
     public abstract void onFactorChange(Object tInfo);

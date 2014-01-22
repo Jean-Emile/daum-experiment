@@ -63,7 +63,8 @@ public final class GetHelper {
                     if (trusteeContext != null) {   //The component has a property "trustContext"
                         String role = propertyHelper.getProperty(component, "role", false, node.getName());
                         if (role != null) {  //The component has a property "role"
-                            boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee");
+                            boolean isTrustee = propertyHelper.getProperty(component, "role", false, node.getName()).equals("trustee")||
+                                                propertyHelper.getProperty(component, "role", false, node.getName()).equals("both");
                             //System.out.println("For component " + component.getName() + "...");
                             //System.out.println("trusteeContext is " +  trusteeContext);
                             //System.out.println("is trustee is " +  isTrustee);

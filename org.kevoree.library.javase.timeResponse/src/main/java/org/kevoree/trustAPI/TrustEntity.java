@@ -35,7 +35,7 @@ import org.kevoree.framework.MessagePort;
 })
 @Library(name = "Trust")
 @ComponentFragment
-public abstract class TrustEntity extends AbstractComponentType {
+public abstract class TrustEntity extends AbstractComponentType implements ITrustEntity, ITrustValueChangeEvent {
 
     @Start
     public void start() throws TrustException {
@@ -102,9 +102,9 @@ public abstract class TrustEntity extends AbstractComponentType {
        getPortByName("factorAddition", MessagePort.class).process( new FactorInfo(getModelElement().getName(), context, name, value ) );
     }
 
-    public final Object computeTrust() {
+    public final Object computeTrust(String idTrustee) {
         System.out.println("I'm " + getModelElement().getName() + " and I'm gonna compute trust");
-        return getPortByName("compute", ITrustMetric.class).compute();
+        return getPortByName("compute", ITrustMetric.class).compute(idTrustee);
 
     }
 

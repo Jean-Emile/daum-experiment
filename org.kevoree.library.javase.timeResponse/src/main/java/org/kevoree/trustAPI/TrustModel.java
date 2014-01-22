@@ -213,9 +213,9 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         AbstractMetric am = null;
 
         System.out.println("Looking for metric for context " + context + " and for entity " + idTrustor);
-        Metric met = trustModel.findTrustMetricsByID(context + getModelElement().getName());
+        Metric met = trustModel.findTrustMetricsByID(context + idTrustor);
         if (met != null) {
-            System.out.println("I found the metric for " + getModelElement().getName() + " and I returned it");
+            System.out.println("I found the metric for " + idTrustor + " and I returned it");
             am = (AbstractMetric) met.getEngine();
         } else {
             am = null;

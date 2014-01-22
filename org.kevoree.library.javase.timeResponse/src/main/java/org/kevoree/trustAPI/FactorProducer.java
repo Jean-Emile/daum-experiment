@@ -16,9 +16,11 @@ import org.kevoree.framework.MessagePort;
         @RequiredPort(name = "factorAddition", type = PortType.MESSAGE, optional = false, needCheckDependency = true)
 })
 @ComponentType
-public class FactorProducer extends AbstractComponentType {
+@Library(name = "Trust")
+public class FactorProducer extends AbstractComponentType implements IFactorProducer {
 
-    public final void addFactor(String context, String name, String value, String target) {
+
+   public final void addFactor(String context, String name, String value, String target) {
         System.out.println("In " + getModelElement().getName() + ", adding subjective factor " + context + name + " with value " + value);
 
         if (getPortByName("factorAddition") == null) {

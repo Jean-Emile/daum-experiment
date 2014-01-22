@@ -8,5 +8,6 @@ package org.kevoree.trustAPI;
  * To change this template use File | Settings | File Templates.
  */
 public interface ITrustMetric {
-    public Object compute();
+    //Compute trust in a given trustee
+    public Object compute(String idTrustee);
 }
