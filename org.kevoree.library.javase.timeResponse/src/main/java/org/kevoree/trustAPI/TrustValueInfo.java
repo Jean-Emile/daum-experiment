@@ -11,14 +11,14 @@ public class TrustValueInfo {
 
     String idSender = null;
     String context = null;
-    String value = null;
+    //String value = null;
 
     public TrustValueInfo() {}
 
-    public TrustValueInfo(String id, String context, String value) {
+    public TrustValueInfo(String id, String context) {
         this.idSender = id;
         this.context = context;
-        this.value = value;
+        //this.value = value;
     }
 
     public String getIdSender() {
@@ -29,9 +29,9 @@ public class TrustValueInfo {
         return context;
     }
 
-    public String getValue() {
+    /*public String getValue() {
         return value;
-    }
+    } */
 
     public void setIdSender(String id) {
         idSender = id;
@@ -41,7 +41,7 @@ public class TrustValueInfo {
         context = c;
     }
 
-    public void setValue(String v) {
+    /*public void setValue(String v) {
         value = v;
-    }
+    } */
 }

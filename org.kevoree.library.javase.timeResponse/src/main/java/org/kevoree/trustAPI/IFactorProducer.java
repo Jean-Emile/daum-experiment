@@ -7,7 +7,8 @@ package org.kevoree.trustAPI;
  * Time: 16:42
  * To change this template use File | Settings | File Templates.
  */
-public interface IFactorProducer {
 
-    public void addFactor(String context, String name, String value, String target);
+//This interface must be implemented by FactorProducer. It simply adds a factor to the trust model
+public interface IFactorProducer {
+    public void addFactor(String name, String value);
 }

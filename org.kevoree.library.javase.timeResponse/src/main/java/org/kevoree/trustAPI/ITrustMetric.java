@@ -7,7 +7,10 @@ package org.kevoree.trustAPI;
  * Time: 10:51
  * To change this template use File | Settings | File Templates.
  */
+
+/* This interface, implemented by AbstractMetric,
+allows a trustor with id idTrustor to compute trust
+in a given trustee with id idTrustee */
 public interface ITrustMetric {
-    //Compute trust in a given trustee
-    public Object compute(String idTrustee);
+    public Object compute(String idTrustor, String idTrustee);
 }

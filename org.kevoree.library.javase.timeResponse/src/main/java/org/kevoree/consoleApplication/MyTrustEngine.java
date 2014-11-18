@@ -1,4 +1,4 @@
-package org.kevoree.library.javase.timeResponse;
+package org.kevoree.consoleApplication;
 
 
 import org.kevoree.ContainerRoot;
@@ -15,7 +15,7 @@ import org.kevoree.trustmetamodel.Factor;
  * To change this template use File | Settings | File Templates.
  */
 
-@Library(name = "Trust")
+@Library(name = "Application")
 @ComponentType
 public class MyTrustEngine extends AbstractMetric implements ModelListener {//AbstractMetric implements ModelListener {
 
@@ -58,8 +58,6 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
         System.out.println("My Trust Engine started");
         started = true;
 
-
-        //System.out.println("My Trust Engine yields now "+ compute());
         //getModelService().registerModelListener(this);
     }
 
@@ -73,42 +71,35 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
 
     }
 
-    public Object compute(String idTrustee) {
+    public Object compute(String idTrustor, String idTrustee) {
 
-        float res = -1.0f;
+        //float res = -1.0f;
+        String res = null;
 
         System.out.println("I'm a trust engine, and I'm gonna compute a new trust value");
         if (started) {
-            //System.out.println("My Trust Engine is alive");
-
-            //System.out.println("Calling getPortByName... ");
-            //ITrustModel o = getPortByName("trustManagement", ITrustModel.class);
-
-            //if (o == null) {
-                //System.out.println("...but it returns null");
-            //}
-
-            //System.out.println("At this point, me, the trust engine, it's trying to get the factor it needs");
-            //Factor x = o.getFactor("myContext", "prejudice");
-
-            Factor x = getFactor("myContext", "prejudice");
-                //getVariable("myContext", "prejudice");
-            if (x != null) {
+            //Each trust engine is associated to a unique trustor and trustee
+            Factor x = getFactor( "prejudice", idTrustor );
+            Factor y = getFactor( "timeToResponse", idTrustee );
+            if (x != null && y != null) {
                 //System.out.println("Variable obtained from metamodel: " + x);
-                res = Float.parseFloat(x.getValue().getValue());
+                float aux1 = Float.parseFloat(x.getValue().getValue());
+                float aux2 = Float.parseFloat(y.getValue().getValue());
+                res = String.valueOf(aux1 * aux2);
             }
 
         } else {
             System.out.println("My Trust Engine is NOT alive");
         }
 
-        System.out.println("I'm coming back from compute() with value " + res * 2);
-
-        setLastValueComputed(res * 2);
-        return res * 2;
+        return res;
+        //System.out.println("I'm coming back from compute() with value " + res * 2);
+        //return String.valueOf(res * 2);
 
     }
 
+    //This can be left without implementation (and it will notify all trust entities always)
+    //we allow overriding it for more elaborated logic
     @Override
     public void onFactorChange(Object tInfo) {
 
@@ -121,16 +112,14 @@ public class MyTrustEngine extends AbstractMetric implements ModelListener {//Ab
             fi = ((TrustEventInfo) tInfo).getFactorInfo();
             context = fi.getContext();
             factorName = fi.getFactorName();
-            value = fi.getFactorValue();
-        }
+            //Not necessary value = fi.getFactorValue();
 
-        if (context.equals("myContext") && factorName.equals("prejudice")) {
-            float result = (Float) compute("get trustee");
-            System.out.println("I, Trust Engine, compute the value: " + result);
-            System.out.println(getModelElement().getName() + " is gonna notify trust entities");
-            setLastValueComputed(result);
-            //Notify the trustors
-            notifyTrustEntities();
+            //In this case we only want to notify trust entities if the context of the factor that changed
+            //or the name has changed
+            if (context.equals("myContext") &&
+                (factorName.equals("prejudice") || factorName.equals("timeToResponse"))) {
+                notifyTrustEntities( tInfo );
+            }
         }
     }
 

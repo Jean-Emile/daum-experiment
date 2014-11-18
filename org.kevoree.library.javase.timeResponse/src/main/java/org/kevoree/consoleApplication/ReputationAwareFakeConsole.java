@@ -1,9 +1,13 @@
-package org.kevoree.library.javase.trustFakeConsole;
+package org.kevoree.consoleApplication;
+
 
 import org.kevoree.annotation.*;
 import org.kevoree.framework.KevoreeMessage;
 import org.kevoree.framework.MessagePort;
 
+import org.kevoree.kevReflection.GetHelper;
+import org.kevoree.kevReflection.ScriptEngine;
+import org.kevoree.reputationAPI.CentralKevReputableEntity;
 import org.kevoree.library.ui.layout.KevoreeLayout;
 import org.kevoree.trustAPI.*;
 import org.slf4j.Logger;
@@ -16,6 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,84 +41,28 @@ import java.awt.event.KeyEvent;
         @DictionaryAttribute(name = "singleFrame", defaultValue = "true", optional = true)
 })
 @ComponentType
-@Library(name = "Trust")
-public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
-
-    @Override
-    public void onTrustValueChange(Object tInfo) {
-
-        String idSender = null, value = null;
-        TrustValueInfo tvi = null;
-
-        if (tInfo instanceof TrustEventInfo) {
-            tvi = ((TrustEventInfo) tInfo).getTrustValueInfo();
-            idSender = tvi.getIdSender();
-            value = tvi.getValue();
-        }
-        System.out.println(getModelElement().getName() + " received a notification from " + idSender +
-                                            " that there is a new trust value available: " + value);
-
-        updateTrustRelationship("myContext",
-                GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
-                        "textEntered",
-                        getModelElement().getName()),
-                        String.valueOf(value));
-
-    }
-
-    @Override
-    public void run() {
-
-            while (alive)
-            {
-
-                if (getDictionary().get("role").equals("trustor")) {
-
-                    //double r = 1 + (Math.random() * ((10 - 1) + 1));
-
-                    //System.out.println("New random value for prejudice generated: " + r);
-
-                    //addSubjectiveFactor("myContext", "prejudice", String.valueOf(r));
-
-                    //Now, we compute the new value and update the trust relationship
-                    //Object newValue = computeTrust();
-
-                }
-                try
-                {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-    }
+@Library(name = "Application")
+public class ReputationAwareFakeConsole extends CentralKevReputableEntity { // implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(TrustAwareFakeConsole.class);
     private static final int FRAME_WIDTH = 300;
     private static final int FRAME_HEIGHT = 600;
     private MyFrame frame = null;
     private JFrame localFrame = null;
-    private Thread myThread = null;
-    private boolean alive = false;
 
     @Override
     public void start() throws TrustException {
 
         super.start();
 
-        System.out.println("Trust console " + getModelElement().getName() + " started");
-
-        myThread = new Thread(this);
-        alive = true;
-        myThread.start();
+        System.out.println("Reputation console " + getName() + " started");
 
         frame = new MyFrame();
         // frame.setTitle(getName() + "@@@" + getNodeName());
-        //  frame.setVisible(true);
+        // frame.setVisible(true);
         frame.appendSystem("/***** CONSOLE INITIALIZED  ********/ ");
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
-           KevoreeLayout.getInstance().displayTab((JPanel)frame, getName());
+            KevoreeLayout.getInstance().displayTab((JPanel)frame, getName());
         } else {
             localFrame = new JFrame(getName() + "@@@" + getNodeName());
             localFrame.setContentPane(frame);
@@ -126,7 +77,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
         //super.stop();
 
         if(Boolean.valueOf((String)getDictionary().get("singleFrame"))) {
-          KevoreeLayout.getInstance().releaseTab(getName());
+            KevoreeLayout.getInstance().releaseTab(getName());
         } else {
             if(localFrame != null) {
                 localFrame.dispose();
@@ -159,7 +110,6 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
         }
     }
 
-
     public void appendSystem(String text) {
         frame.appendSystem(text);
     }
@@ -168,59 +118,41 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
         frame.appendOutgoing(text);
         if (isPortBinded("textEntered")) {
+            getPortByName("textEntered", MessagePort.class).process( getName() + "." + text );
 
-            //Only trustors check trust
-            if (getDictionary().get("role").equals("trustor")) {
+            //We search for the component instance connected with the current component through the port "textEntered"
+            /*Set<String> idTargets = GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                    "textEntered", getModelElement().getName());
 
-                //We search for the component instance connected with the current component through the port "textEntered"
-                String trustee = GetHelper.getComponentBindedToPort(getModelService().getLastModel(), "textEntered", getModelElement().getName());
-
-                //If it's a trustee of the current component
-                if (isTrustee(trustee)) {
-
-                    System.out.println("The trust value of this relationship is... " + Float.parseFloat(getTrustValue("myContext", trustee)));
-                    if (Float.parseFloat(getTrustValue("myContext", trustee)) > 10) {
-                    //AbstractMetric m = getMetric("myContext");
-                    //if ((Float) m.compute() > 100) {
-                        System.out.println("Yes, " + getModelElement().getName() + " can be trusted by " + trustee);
-                        getPortByName("textEntered", MessagePort.class).process(text);
-                    } else {
-                        System.out.println("Unfortunately,  " + trustee + " is not trusted by " + getModelElement().getName());
-                    }
-
-                } else {
-                    System.out.println("Sorry, I don't know what to do... He's not my trustee...");
-                }
-
-
-                System.out.println("Now I'm forcing a recomputation of trust: " + computeTrust(trustee));
-
-
+            boolean ok = true;
+            String idT = null;
+            for( String idTarget : idTargets )
+            {
+                float reputation = Float.parseFloat( getReputation( idTarget ));
+                ok = ok && ( reputation > 0 );
+                System.out.println( "Reputation of " + idTarget + " is " + reputation );
+                idT = idTarget;
             }
+            if ( ok ) //change by ok
+            {
+                getPortByName("textEntered", MessagePort.class).process(text);
+            }
+            else
+            {
+                ScriptEngine.substituteComponent( getKevScriptEngineFactory().createKevScriptEngine(),
+                                                  "Reputatio801", "ReputationAwareFilteredFakeConsole" );
+            }    */
+            //float rep = Float.parseFloat(getReputation(idTarget));
+            //System.out.println("The reputation of " + idTarget + " is " + rep);
 
+            //if ( rep > 4 ) {
 
+            //System.out.println("Reputation ok! I'll send the message");
 
+           // } else {
 
-//
-//            //Only send the text if the trustee is trusted
-//            if (getDictionary().get("role").equals("trustor")) {
-//
-//                System.out.println("I'm " + getModelElement().getName());
-//
-//                for (String trustee : GetHelper.componentOnPort(getModelService().getLastModel(), "textEntered", getModelElement().getName())) {
-//                    if (isTrustee(trustee)) {
-//
-//                    }
-//                }
-//
-//
-//            }
-
-
-
-
-
-
+               // System.out.println("Sorry, reputation of " + idTarget + " too low");
+            //}
         }
     }
 
@@ -235,7 +167,32 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                     frame.appendIncomming(key + "=" + kmsg.getValue(key).toString());
                 }
             } else {
-                frame.appendIncomming("->" + text.toString());
+                /*Set<String> idTargets = GetHelper.getComponentBindedToPort(getModelService().getLastModel(),
+                        "textEntered", getModelElement().getName()); */
+                StringTokenizer st = new StringTokenizer( text.toString(), "." );
+                String idTarget = st.nextToken();
+                String message = st.nextToken();
+                if( message.equals("shit\n") || message.equals("fuck\n"))
+                {
+                    makeClaim( "cleanWords", "-1", idTarget );
+                }
+                else
+                {
+                    makeClaim( "cleanWords", "1", idTarget );
+                    frame.appendIncomming( "->" + message );
+                }
+
+                float reputation = Float.valueOf( getReputation( idTarget ));
+                if ( reputation <= 0 )
+                {
+                    /*ScriptEngine.substituteComponent(
+                            getKevScriptEngineFactory().createKevScriptEngine(),
+                            idTarget,
+                            "ReputationAwareFakeConsole"
+                            );  */
+
+                }
+
             }
         }
     }
@@ -255,7 +212,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
 
                 public void actionPerformed(ActionEvent e) {
                     if (inputTextField.getText().length() > 1) {
-                        TrustAwareFakeConsole.this.appendOutgoing(inputTextField.getText());
+                        ReputationAwareFakeConsole.this.appendOutgoing(inputTextField.getText());
                     }
 
                 }
@@ -296,7 +253,7 @@ public class TrustAwareFakeConsole extends TrustEntity implements Runnable {
                             inputTextField.append("\n");
                         } else {
                             if (inputTextField.getText().length() > 1) {
-                                TrustAwareFakeConsole.this.appendOutgoing(inputTextField.getText());
+                                ReputationAwareFakeConsole.this.appendOutgoing(inputTextField.getText());
                             }
                             inputTextField.setText("");
                         }

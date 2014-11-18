@@ -7,22 +7,18 @@ import org.kevoree.annotation.Stop;
 import org.kevoree.trustAPI.FactorProducer;
 
 /**
- * Created with IntelliJ IDEA.
- * User: franciscomoyanolara
- * Date: 18/10/13
- * Time: 15:23
- * To change this template use File | Settings | File Templates.
+ * Created by franciscomoyanolara on 22/01/14.
  */
 @ComponentType
 @Library(name = "Trust")
-public class PrejudiceGenerator extends FactorProducer implements Runnable {
+public class TimeToResponseGenerator extends FactorProducer implements Runnable {
 
     private Thread thread = null;
     private boolean alive = false;
 
     @Start
     public void start() {
-        System.out.println("PrejudiceGenerator started");
+        System.out.println("TimeToResponseGenerator started");
         thread = new Thread(this);
         alive = true;
         thread.start();
@@ -37,7 +33,6 @@ public class PrejudiceGenerator extends FactorProducer implements Runnable {
     @Override
     public void run() {
 
-
         while (alive)
         {
             try
@@ -48,10 +43,9 @@ public class PrejudiceGenerator extends FactorProducer implements Runnable {
             }
             double r = 1 + (Math.random() * ((10 - 1) + 1));
 
-            System.out.println("New random value for prejudice generated: " + r);
-            //This is a subjective factor: target = trustor
-            addFactor("prejudice", String.valueOf(r));
-
+            System.out.println("New random value for time to response generated: " + r);
+            //This is an objective factor about a trustee
+            addFactor( "timeToResponse", String.valueOf(r) );
 
             try
             {
@@ -61,6 +55,4 @@ public class PrejudiceGenerator extends FactorProducer implements Runnable {
             }
         }
     }
-
 }
-

@@ -30,9 +30,9 @@ public final class TrustEventInfo implements Serializable {
         fi = new FactorInfo(idSender, context, factorName, value, target);
     }
 
-    public TrustEventInfo(TrustEventType type, String context, String idSender, String value) {
+    public TrustEventInfo(TrustEventType type, String context, String idSender) {
         this.type = type;
-        tvi = new TrustValueInfo(idSender, context, value);
+        tvi = new TrustValueInfo(idSender, context);
     }
 
     public TrustEventType getType() {

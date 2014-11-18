@@ -1,4 +1,4 @@
-package org.kevoree.library.javase.timeResponse;
+/*package org.kevoree.library.javase.timeResponse;
 
 import org.kevoree.ContainerRoot;
 import org.kevoree.annotation.*;
@@ -7,13 +7,13 @@ import org.kevoree.trustAPI.AbstractMetric;
 import org.kevoree.trustAPI.ITrustModel;
 import org.kevoree.trustmetamodel.Factor;
 
-/**
+*//**
  * Created with IntelliJ IDEA.
  * User: franciscomoyanolara
  * Date: 14/10/13
  * Time: 11:06
  * To change this template use File | Settings | File Templates.
- */
+ *//*
 
 @Library(name = "Trust")
 @ComponentType
@@ -103,4 +103,4 @@ public class MySecondTrustEngine extends AbstractMetric implements ModelListener
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-}
+}*/

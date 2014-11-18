@@ -9,5 +9,10 @@ package org.kevoree.trustAPI;
  */
 public interface ITrustEntity {
 
+    public void updateTrustRelationship(String idTrustee);
+    public String getTrustValue(String idTrustee);
+    public void addSubjectiveFactor(String name, String value);
+    public Object computeTrust(String idTrustee);
+    public boolean isTrustee(String potentialTrusteeName);
 
 }

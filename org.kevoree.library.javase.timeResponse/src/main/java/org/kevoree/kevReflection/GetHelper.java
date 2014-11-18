@@ -1,11 +1,9 @@
-package org.kevoree.trustAPI;
+package org.kevoree.kevReflection;
 
 import org.kevoree.*;
 import org.kevoree.framework.KevoreePropertyHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -20,7 +18,7 @@ public final class GetHelper {
 
     //It returns a list with the names of all component instances (of a componentType)
     //running on a node with name nodeName
-    static List<String> getComponentInstanceName(ContainerRoot model, String componentType, String nodeName) {
+    public static List<String> getComponentInstanceName(ContainerRoot model, String componentType, String nodeName) {
 
         List<String> components = new ArrayList<String>();
 
@@ -38,7 +36,7 @@ public final class GetHelper {
     }
 
     //It returns a list with the names of all component instances running on every node in the model
-    static List<String> getComponentInstanceName(ContainerRoot model, String componentType) {
+    public static List<String> getComponentInstanceName(ContainerRoot model, String componentType) {
 
         List<String> components = new ArrayList<String>();
 
@@ -50,7 +48,7 @@ public final class GetHelper {
 
     //It returns a list with the names of all trustee instances with context "context" and
     //running on a node with name nodeName
-    static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String nodeName) {
+    public static List<String> getTrusteeInstanceName(ContainerRoot model, String context, String nodeName) {
 
         KevoreePropertyHelper propertyHelper = KevoreePropertyHelper.instance$;
 
@@ -85,7 +83,7 @@ public final class GetHelper {
     //The trustee instances must have the same context as "context"
     // Node 0 - compInst1, compInst2, ...
     // Node 1 - compInst45, compInst46
-    static HashMap<String, List<String>> getTrusteesInstanceName(ContainerRoot model, String context) {
+    public static HashMap<String, List<String>> getTrusteesInstanceName(ContainerRoot model, String context) {
 
         HashMap<String, List<String>> components = new HashMap<String, List<String>>();
         List<String> componentsOnNode = new ArrayList<String>();
@@ -113,19 +111,16 @@ public final class GetHelper {
                 for (Port port : component.getProvided()) {
                     if (portName.equals (port.getPortTypeRef().getName()) &&
                             !component.getName().equals(componentName)) {
-                        System.out.println("Added component " + component.getName());
                         componentsList.add(component.getName());
                     }
                 }
                 for (Port port : component.getRequired()) {
                     if (portName.equals (port.getPortTypeRef().getName()) &&
                             !component.getName().equals(componentName)) {
-                        System.out.println("Added component " + component.getName());
                         componentsList.add(component.getName());
                     }
                 }
             }
-
         }
         return componentsList;
     }
@@ -133,8 +128,10 @@ public final class GetHelper {
 
     //It returns the name of the binding of the port "portName" of component instance "componentName"
     private static String getBindingName(ContainerRoot model, String portName, String componentName) {
+
         String res = null;
 
+        //List<String> bindings = new ArrayList<String>();
         //System.out.println("Looking for all the bindings of " + portName + " of component " + componentName);
         for (ContainerNode node : model.getNodes()) {
             for (ComponentInstance component : node.getComponents()) {
@@ -146,6 +143,7 @@ public final class GetHelper {
                                 //System.out.println("Binding: " + binding.getHub().getName());
                                 //First we look for the binding of "text entered"
                                 res = binding.getHub().getName();
+                                //bindings.add( binding.getHub().getName() );
                             }
                         }
                     }
@@ -159,6 +157,7 @@ public final class GetHelper {
 
                                 //First we look for the binding of "text entered"
                                 res = binding.getHub().getName();
+                                //bindings.add( binding.getHub().getName() );
                             }
                         }
                     }
@@ -175,12 +174,14 @@ public final class GetHelper {
 
     //It returns the name of the component instance that is bounded to the port with name portName, and ignoring the
     //component instance with name componentName
-    public static String getComponentBindedToPort(ContainerRoot model, String portName, String componentName) {
+    public static Set<String> getComponentBindedToPort(ContainerRoot model, String portName, String componentName) {
 
-        String componentRes = null;
+        //String componentRes = null;
+        Set<String> components = new HashSet<String>();
 
         //We get the name of the binding of the port for component
         String sourceBinding = getBindingName(model, portName, componentName);
+        //List<String> sourceBindings = getBindingName( model, portName, componentName );
 
         //Now, we search for any binding that is equal to the aforementioned binding (but which is not from componentName)
         //System.out.println("Looking for all the bindings of other components with name " + sourceBinding);
@@ -189,25 +190,41 @@ public final class GetHelper {
                 if (!component.getName().equals(componentName)) {
                     for (Port port : component.getProvided()) {
                         for (MBinding binding : port.getBindings()) {
-                              if (binding.getHub().getName().equals(sourceBinding)) {
-                                  componentRes = component.getName();
-                               }
+                            if (binding.getHub().getName().equals(sourceBinding)) {
+                                  //componentRes = component.getName();
+                                components.add( component.getName() );
+                            }
                         }
                     }
                     for (Port port : component.getRequired()) {
                         for (MBinding binding : port.getBindings()) {
                             if (binding.getHub().getName().equals(sourceBinding)) {
-                                componentRes = component.getName();
+                                //componentRes = component.getName();
+                                components.add( component.getName() );
                             }
                         }
                     }
                 }
             }
         }
+        /*System.out.println("The component connected to " +
+                componentName + " though port " + portName + " is " + componentRes);  */
+        return components;
+    }
 
-        //System.out.println("The component connected to " + componentName + " though port " + portName + " is " + componentRes);
-
-        return componentRes;
+    public static String getComponentTypeFromInstance( ContainerRoot model, String idName )
+    {
+        for( ContainerNode n : model.getNodes() )
+        {
+            for( ComponentInstance c : n.getComponents() )
+            {
+                if( c.getName().equals( idName ))
+                {
+                    return c.getTypeDefinition().getName();
+                }
+            }
+        }
+        return null;
     }
 
     /*public static List<String> componentOnPortAndBinding(ContainerRoot model, String componentName) { //String portName, String componentName) {

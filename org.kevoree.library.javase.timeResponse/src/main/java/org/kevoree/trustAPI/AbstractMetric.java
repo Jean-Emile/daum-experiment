@@ -13,7 +13,10 @@ import org.kevoree.trustmetamodel.Factor;
  * To change this template use File | Settings | File Templates.
  */
 
-@Library(name = "Trust")
+@DictionaryType({
+        @DictionaryAttribute(name = "trustContext" , defaultValue = "myContext", optional = false)
+})
+
 @Requires({
         @RequiredPort(name = "trustManagement", type = PortType.SERVICE, className = ITrustModel.class, needCheckDependency = true),
         @RequiredPort(name = "trustEvent", type = PortType.MESSAGE, optional = false)
@@ -23,11 +26,13 @@ import org.kevoree.trustmetamodel.Factor;
         @ProvidedPort(name = "trustMetricNotification", type = PortType.MESSAGE)
 })
 @ComponentFragment
+@Library(name = "Trust")
 public abstract class AbstractMetric extends AbstractComponentType implements IFactorChangeEvent, ITrustMetric {
 
     public boolean started = false;
     private Object lastValueComputed = null;
 
+    //This method is automatically called when the runtime launches this component
     @Start
     public void start() {
         started = true;
@@ -48,23 +53,33 @@ public abstract class AbstractMetric extends AbstractComponentType implements IF
         //System.out.println("Abstract Metric updated");
     }
 
-    public final Factor getFactor(String context, String name) {
-        return getPortByName("trustManagement", ITrustModel.class).getFactor(context, name);
+    //This method retrieves a factor from the model, with id 'context+name+factorTarget'
+    public final Factor getFactor(String name, String factorTarget) {
+        System.out.println("The trust enigne is querying the factor "+ getContext()+name+factorTarget);
+        return getPortByName("trustManagement", ITrustModel.class).getFactor(getContext(), name, factorTarget);
     }
 
-    public final void notifyTrustEntities() {
+    //This method notifies trust entities that a new trust value is available
+    public final void notifyTrustEntities( Object eventInfo ) {
+        String ctx = null;
+        if ( eventInfo instanceof TrustEventInfo )
+        {
+            //Context where the factor has changed
+            ctx = ((TrustEventInfo) eventInfo).getFactorInfo().getContext();
+        }
         TrustEventInfo tInfo = new TrustEventInfo( TrustEventType.NEWTRUSTVALUEAVAILABLE,
-                                                        "myContext",
-                                                         getModelElement().getName(),
-                                                         String.valueOf(lastValueComputed)
+                                                         ctx,
+                                                         getModelElement().getName()
                                                   );
         getPortByName("trustEvent", MessagePort.class).process( tInfo );
     }
 
+    //Store the last value computed (for caching purposes)
     public final void setLastValueComputed(Object v) {
         lastValueComputed = v;
     }
 
+    //Get the last value computed (for caching purposes)
     public final Object getLastValueComputed() {
         return lastValueComputed;
     }
@@ -74,11 +89,32 @@ public abstract class AbstractMetric extends AbstractComponentType implements IF
     }
 
     /******************** ABSTRACT METHODS ***********************/
-    //These methods must be overridden by trust engines extending this class
-    @Port(name="compute", method="compute")
-    public abstract Object compute(String idTrustee);
+    //These methods can or must be overridden by trust engines extending this class
 
+    //This method should implement the actual metric used by the trust model
+    @Port(name="compute", method="compute")
+    public abstract Object compute(String idTrustor, String idTrustee);
+
+    //This method implements the action of the metric upon receival of a factor change
+    //The default behaviour is notifying trust entities if the context of the factor is the same as the context of the metric
+    //(because that means that the metric might use the factor)
     @Port(name="trustMetricNotification")
-    public abstract void onFactorChange(Object tInfo);
+    public void onFactorChange(Object tInfo)
+    {
+        if ( tInfo instanceof TrustEventInfo )
+        {
+            String ctx = ((TrustEventInfo) tInfo).getFactorInfo().getContext();
+
+            if ( ctx.equals( getDictionary().get( "trustContext" )))
+            {
+                notifyTrustEntities( tInfo );
+            }
+        }
+    }
+
+    public final String getContext()
+    {
+        return (String) getDictionary().get( "trustContext" );
+    }
 
 }

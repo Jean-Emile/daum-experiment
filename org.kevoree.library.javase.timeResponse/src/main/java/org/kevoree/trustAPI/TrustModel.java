@@ -3,6 +3,7 @@ package org.kevoree.trustAPI;
 import org.kevoree.annotation.*;
 import org.kevoree.framework.AbstractComponentType;
 import org.kevoree.framework.MessagePort;
+import org.kevoree.kevReflection.GetHelper;
 import org.kevoree.trustmetamodel.*;
 import org.kevoree.trustmetamodel.impl.DefaultTrustmetamodelFactory;
 
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.kevoree.trustAPI.GetHelper.getTrusteesInstanceName;
+import static org.kevoree.kevReflection.GetHelper.getTrusteesInstanceName;
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,12 +83,14 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         System.out.println("Starting the update of trust relationship with id " + context + idTrustor + idTrustee);
 
         TrustRelationship tr = trustModel.findTRelationshipsByID(context + idTrustor + idTrustee);
+        //TrustValue value = factory.createTrustValue();
+        tr.removeAllTrustValue();
         TrustValue value = factory.createTrustValue();
-
         String timeStamp = new SimpleDateFormat("dd/MM/yyy HH:mm").format(new Timestamp(new Date().getTime()));
         value.setTimeStamp(timeStamp);
         value.setValue(newValue);
         tr.addTrustValue(value);
+
         System.out.println("Update finished with value " + newValue);
 
     }
@@ -116,7 +119,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         }
 
         factor.setContext(context);
-        factor.setIdFactor(context + name);
+        factor.setIdFactor(context + name + idTarget);
         factor.setIdSender(idSender);
         factor.setIdTarget(idTarget);
         FactorValue facVal = factory.createFactorValue();
@@ -187,7 +190,7 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
         //                [Node 1, (CompInstance34, CompInstance50, etc)]
         //We need this becuase the same instance name can be used in different nodes, but for the trust model
         //we need a unique identifier for trustees. In this case, "nodeName + instanceName"
-        HashMap<String, List<String>> trustees = getTrusteesInstanceName(getModelService().getLastModel(), context);
+        HashMap<String, List<String>> trustees = GetHelper.getTrusteesInstanceName(getModelService().getLastModel(), context);
         List<String> idTrustee = new ArrayList<String>();
 
         //For every node in the model...
@@ -244,9 +247,9 @@ public final class TrustModel extends AbstractComponentType implements ITrustMod
 
     @Override
     @Port(name="trustManagement", method="getFactor")
-    public Factor getFactor(String context, String name) {
+    public Factor getFactor(String context, String name, String factorTarget) {
         System.out.println("The metric is looking for variable " + context + name);
-        return trustModel.findFactorsByID(context + name);
+        return trustModel.findFactorsByID(context + name + factorTarget);
     }
 
 

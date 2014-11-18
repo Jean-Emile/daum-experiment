@@ -1,0 +1,74 @@
+ {
+addRepo "http://maven.kevoree.org/release"
+addRepo "http://repo1.maven.org/maven2/"
+addRepo "http://repo.maven.apache.org/maven2"
+addRepo "https://oss.sonatype.org/content/groups/public/"
+addRepo "https://oss.sonatype.org/content/repositories/snapshots"
+addRepo "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.javaseNode/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.jexxus/2.0.4'
+merge 'mvn:org.kevoree.corelibrary.javase/org.kevoree.library.javase.defaultChannels/2.0.4'
+merge 'mvn:org.kevoree.library.javase/org.kevoree.library.javase.timeResponse/2.0.8'
+addNode node0:JavaSENode
+ {
+  addComponent TrustAwar122@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0',role='trustee'}
+  addComponent MyTrustEn24@node0 : MyTrustEngine {}
+  addComponent TrustMode637@node0 : TrustModel {}
+  addComponent TrustAwar274@node0 : TrustAwareFakeConsole {singleFrame='true',trustContext='myContext',defaultTrustValue='0'}
+  addComponent Prejudice808@node0 : PrejudiceGenerator {component='TrustAwar274',node='node0'}
+  addComponent TrustEven158@node0 : TrustEvent {}
+  addComponent TimeToRes401@node0 : TimeToResponseGenerator {component='TrustAwar122',node='node0'}
+addChannel defMSG178 : defMSG {}
+addChannel defMSG46 : defMSG {}
+addChannel defMSG677 : defMSG {}
+addChannel defSERVIC771 : defSERVICE {}
+addChannel defSERVIC340 : defSERVICE {}
+addChannel defMSG880 : defMSG {}
+addChannel defMSG477 : defMSG {}
+addChannel defMSG948 : defMSG {}
+addChannel defSERVIC168 : defSERVICE {}
+addChannel defMSG899 : defMSG {}
+bind TimeToRes401.factorAddition@node0 => defMSG477
+bind TrustAwar274.trustRelationUpdate@node0 => defMSG677
+bind TrustAwar274.trustEntityNotification@node0 => defMSG880
+bind TrustMode637.factorAddition@node0 => defMSG477
+bind TrustAwar122.textEntered@node0 => defMSG899
+bind TrustMode637.trustRelationUpdate@node0 => defMSG677
+bind TrustAwar122.showText@node0 => defMSG46
+bind TrustAwar274.compute@node0 => defSERVIC771
+bind TrustMode637.trustManagement@node0 => defSERVIC168
+bind TrustEven158.trustMetricNotification@node0 => defMSG948
+bind MyTrustEn24.trustEvent@node0 => defMSG178
+bind TrustEven158.trustEntityNotification@node0 => defMSG880
+bind TrustMode637.trustManagement@node0 => defSERVIC340
+bind MyTrustEn24.trustMetricNotification@node0 => defMSG948
+bind TrustMode637.trustEvent@node0 => defMSG178
+bind MyTrustEn24.trustManagement@node0 => defSERVIC168
+bind TrustEven158.trustEvent@node0 => defMSG178
+bind MyTrustEn24.compute@node0 => defSERVIC771
+bind Prejudice808.factorAddition@node0 => defMSG477
+bind TrustAwar274.showText@node0 => defMSG899
+bind TrustAwar274.trustManagement@node0 => defSERVIC340
+bind TrustAwar274.textEntered@node0 => defMSG46
+updateDictionary defMSG178 
+updateDictionary defMSG46 
+updateDictionary TimeToRes401@node0 
+updateDictionary defMSG948 
+updateDictionary defMSG477 
+updateDictionary TrustAwar122@node0 
+updateDictionary MyTrustEn24@node0 
+updateDictionary TrustEven158@node0 
+updateDictionary TrustMode637@node0 
+updateDictionary TrustAwar274@node0 
+updateDictionary defMSG880 
+updateDictionary defMSG677 
+updateDictionary Prejudice808@node0 
+updateDictionary defSERVIC771 
+updateDictionary defSERVIC168 
+updateDictionary defMSG899 
+updateDictionary defSERVIC340 
+}
+
+addGroup group1666679428:BasicGroup
+addToGroup group1666679428 node0
+}

@@ -1,4 +1,4 @@
-package org.kevoree.library.javase.reputationAPI;
+package org.kevoree.reputationAPI;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,6 +8,5 @@ package org.kevoree.library.javase.reputationAPI;
  * To change this template use File | Settings | File Templates.
  */
 public interface IClaimSource {
-
-    public void makeClaim(String context, String idTarget, String value);
+    public void makeClaim(String name, String value, String target);
 }

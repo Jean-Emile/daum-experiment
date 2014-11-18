@@ -1,4 +1,4 @@
-package org.kevoree.library.javase.reputationAPI;
+package org.kevoree.reputationAPI;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,42 +9,56 @@ package org.kevoree.library.javase.reputationAPI;
  */
 public final class ClaimInfo {
 
-    private static int id = 0;
-    private String context;
+    //private String context;
+    private String name;
     private String value;
-    private String timeStamp;
-    private String target;
-    private String source;
+    //private String timeStamp;
+    //private String target;
+    //private String source;
 
 
-    public ClaimInfo(String ctx, String value, String target, String timeStamp) {
+    /*public ClaimInfo(String ctx, String value, String target, String timeStamp) {
         id++;
         context = ctx;
         this.value = value;
         this.timeStamp = timeStamp;
         this.target = target;
-    }
+    }    */
 
-    public ClaimInfo(String ctx, String value, String source, String target, String timeStamp) {
+    /*public ClaimInfo(String ctx, String name, String value, String source, String target, String timeStamp) {
         id++;
-        context = ctx;
+        this.context = ctx;
+        this.name = name;
         this.value = value;
         this.timeStamp = timeStamp;
         this.target = target;
         this.source = source;
+    } */
+
+    public ClaimInfo( String name, String value )
+    {
+        this.name = name;
+        this.value = value;
     }
 
-    public int getId() {
+    /*public int getId() {
         return id;
-    }
+    }            */
 
-    public String getContext() {
-        return context;
+    public String getName()
+    {
+        return name;
     }
 
     public String getValue() {
         return value;
     }
+
+    /*public String getContext() {
+        return context;
+    }
+
+
 
     public String getTimeStamp() {
         return timeStamp;
@@ -67,6 +81,6 @@ public final class ClaimInfo {
 
     public void setTimeStamp(String ts) {
         timeStamp = ts;
-    }
+    }    */
 
 }
